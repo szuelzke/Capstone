@@ -78,3 +78,15 @@ body {
     border-radius: 10px;
     flex:50%;
 }
+
+.hide-text {
+    font-size: 40px;
+    color: transparent;
+    text-shadow: 0 0 10px #FFFFFF;
+    user-select: none;
+}
+
+.hide-text:hover {
+    text-shadow:none;
+    color:#FFFFFF;
+}
