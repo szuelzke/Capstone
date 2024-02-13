@@ -1,1 +1,2 @@
-# Capstone
+# FlashFin
+FlashFin is an all-in-one expense tracking tool catered specifically for college students. It allows users to connect their personal banking account, as well as their student account which is connected to their ID card. 

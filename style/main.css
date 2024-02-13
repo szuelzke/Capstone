@@ -58,10 +58,7 @@ body {
     }
 }
 
-.row {
-    display: flex;
-}
-
+/* page title styling */ 
 .top-bar {
     border-bottom: 1px solid var(--blue);
 }
@@ -71,14 +68,28 @@ body {
     padding:5px 20px;
 }
 
+/* each card must be within a row div */
+/* to stack card on top of each other, change flex-direction to column */
+.row {
+    display: flex;
+}
+
 .card {
     background-color: #FFFFFF;
     padding: 20px;
     margin: 15px 15px;
     border-radius: 10px;
-    flex:50%;
+    flex:100%;
 }
 
+/* styling for the account buttons */
+.acc-button i {
+    font-size:40px;
+    padding-left:10px;
+    padding-top:10px;
+}
+
+/* hides text then reveals it once hovered over */
 .hide-text {
     font-size: 40px;
     color: transparent;
