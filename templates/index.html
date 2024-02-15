@@ -7,9 +7,9 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style/main.css">
-    <link rel="stylesheet" href="style/sidebar.css">
-    <link rel="stylesheet" href="style/expenses.css">
+    <link rel="stylesheet" href="static/main.css">
+    <link rel="stylesheet" href="static/sidebar.css">
+    <link rel="stylesheet" href="static/expenses.css">
 
     <!--font awesome icons-->
     <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
@@ -27,7 +27,7 @@
     <div id="sidebar" class="sidebar">
         <div class="user-profile">
             <h1>FlashFin</h1>
-            <img src="pfp_sample.jpg"></img>
+            <img src="{{ url_for('static', filename='pfp_sample.jpg') }}"></img>
             <h2>Firstname Lastname</h2>
         </div>
         <div class="nav">
