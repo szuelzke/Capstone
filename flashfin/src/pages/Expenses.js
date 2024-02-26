@@ -1,9 +1,11 @@
-import Sidebar from "../components/Sidebar";
-
-function Home() {
+function Expenses() {
     return (
-        <Sidebar />
+        <>
+        <div className="card">
+            <h1>Expenses</h1>
+        </div>
+        </>
     );
 }
 
-export default Home;
+export default Expenses;
