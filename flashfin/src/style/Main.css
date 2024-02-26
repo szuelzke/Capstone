@@ -1,0 +1,102 @@
+:root {
+  --blue: #003875;
+  --accentblue: #002955;
+  --yellow: #CB990D;
+  --accentyellow: #754E00;
+  --white: #FFFFFF;
+  --gray: #e0e0e0;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  background-color: var(--accentblue);
+  text-overflow: clip;
+}
+
+.sidebar {
+  margin: 0px;
+  padding: 0px;
+  width: 20%;
+  background-color: var(--blue);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  text-align: center;
+  color: #FFFFFF;
+  z-index: 1;
+}
+
+.main {
+  margin-left: 20%;
+  padding: 1px 0px;
+  z-index: 0;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+  }
+
+  div.main {
+      margin-left: 0;
+  }
+
+  .row {
+      flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+      text-align: center;
+      float: none;
+  }
+}
+
+/* page title styling */ 
+.top-bar {
+  border-bottom: 1px solid var(--blue);
+}
+
+.top-bar h1 {
+  color:#FFFFFF;
+  padding:5px 20px;
+}
+
+/* each card must be within a row div */
+/* to stack card on top of each other, change flex-direction to column */
+.row {
+  display: flex;
+}
+
+.card {
+  background-color: #FFFFFF;
+  padding: 20px;
+  margin: 15px 15px;
+  border-radius: 10px;
+  flex:100%;
+}
+
+/* styling for the account buttons */
+.acc-button i {
+  font-size:40px;
+  padding-left:10px;
+  padding-top:10px;
+}
+
+/* hides text then reveals it once hovered over */
+.hide-text {
+  color: transparent;
+  text-shadow: 0 0 10px #FFFFFF;
+  user-select: none;
+}
+
+.hide-text:hover {
+  text-shadow:none;
+  color:#FFFFFF;
+}
