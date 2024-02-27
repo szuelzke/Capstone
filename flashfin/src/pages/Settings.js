@@ -1,7 +1,7 @@
 function Settings() {
     return (
         <>
-            <div class="card">
+            <div className="card">
                 <h1>Settings</h1>
             </div>
         </>

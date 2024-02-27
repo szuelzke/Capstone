@@ -4,7 +4,7 @@ import './style/Main.css';
 
 import Home from './pages/Home'
 import Expenses from './pages/Expenses'
-import Sign_In from "./pages/Sign_In";
+import SignIn from "./pages/SignIn";
 import ShareSpend from "./pages/ShareSpend";
 import Settings from "./pages/Settings";
 import Layout from "./pages/Layout";
@@ -20,7 +20,7 @@ function App() {
                         <Route path="share_spend" element={<ShareSpend />} />
                         <Route path="settings" element={<Settings />} />
                     </Route>
-                    <Route path="sign_in" element={<Sign_In />} />
+                    <Route path="sign_in" element={<SignIn />} />
                 </Routes>
             </BrowserRouter>
         </>

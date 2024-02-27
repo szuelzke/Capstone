@@ -1,7 +1,7 @@
 function ShareSpend() {
     return (
         <>
-        <div class="card">
+        <div className="card">
             <h1>Shared Spending</h1>
         </div>
         </>

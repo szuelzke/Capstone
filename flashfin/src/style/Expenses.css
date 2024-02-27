@@ -1,0 +1,39 @@
+.expenses-tbl {
+    width:100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.expenses-tbl td {
+    border-top:1px solid #000000;
+    padding:10px;
+}
+
+.exp-set {
+    visibility: hidden;
+    width:fit-content;
+    padding:0px;
+}
+
+tr:hover .exp-set {
+    visibility: visible;
+}
+
+.exp-tag { /* default, uncategorized */
+    color:#FFFFFF;
+    width:fit-content;
+    padding:5px 10px;
+    border-radius:5px;
+    margin-left:auto;
+    margin-right:auto;
+    display: inline;
+    margin:3px;
+    background-color: #3d3d3d;
+    font-size:15px;
+}
+
+.tag-red { background-color: #a41212; }
+.tag-orange { background-color: #d78417; }
+.tag-green { background-color: #22792b; }
+.tag-blue { background-color: #1912a4; }
+.tag-purple { background-color: #7303c3; }

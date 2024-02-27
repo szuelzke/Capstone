@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Home() {
     return (
         <>
-            <div class="card">
+            <div className="card">
                 <h1>Dashboard</h1>
                 <h2>Pages available: </h2>
                 <Link to="expenses">Expenses</Link><br />

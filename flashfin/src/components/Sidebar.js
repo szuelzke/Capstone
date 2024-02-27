@@ -1,5 +1,6 @@
 import '../style/Sidebar.css';
 import { Link } from 'react-router-dom';
+import QuickBalance from './QuickBalance';
 
 function Sidebar() {
     return (
@@ -7,7 +8,7 @@ function Sidebar() {
             <div id="sidebar" className="sidebar">
                 <div className="user-profile">
                     <h1>FlashFin</h1>
-                    <img src="{{ url_for('static', filename='pfp_sample.jpg') }}"></img>
+                    <img src="../public/pfp_sample.jpg"></img>
                     <h2>Firstname Lastname</h2>
                 </div>
                 <div class="nav">
@@ -17,14 +18,11 @@ function Sidebar() {
                 </div>
                 <div className="qb">
                     <h2>My Accounts <i className="fa-solid fa-caret-down"></i></h2>
-                    <div className="qb-account">
-                        <h2><a href="#">PNC</a></h2>
-                        <div className="qb-balance hide-text">$1,000,000</div>
-                    </div>
-                    <div className="qb-account">
-                        <h2><a href="#">FlashCard</a></h2>
-                        <div className="qb-balance hide-text">$1,000,000</div>
-                    </div>
+
+                    <QuickBalance accName="PNC" accBalance="1000"/>
+
+                    <QuickBalance accName="Flashcard" accBalance="20,000"/>
+
                 </div>
             </div>
         </>
