@@ -1,6 +1,13 @@
+import TopBar from '../components/TopBar';
+import TransactionsTable from '../components/TransactionsTable';
+import '../style/Expenses.css';
+import ViewBalance from '../components/ViewBalance';
+
 function Expenses() {
     return (
         <>
+            <TopBar pageTitle="Account" />
+
             <div className="row">
                 <div className="card acc-button">
                     <i class="fa-solid fa-plus"></i>
@@ -15,6 +22,16 @@ function Expenses() {
                     <h3>Spending Report</h3>
                 </div>
             </div>
+
+            <div className="row">
+                <ViewBalance balance="1,000,000" accountTitle="PNC" />
+                <div className="card">
+                    <h2>This month's breakdown</h2>
+                    <span className="placeholder">Pie chart of current month's income broken down into their categories</span>
+                </div>
+            </div>
+
+            <hr></hr>
 
             <div className="row">
                 <div className="card">
@@ -33,9 +50,13 @@ function Expenses() {
                 </div>
             </div>
 
-            {
+            <div className="row">
+                <TransactionsTable />
+                <div className="card" style={{flex:"33%"}}>
+                    <h2>Budget Goals</h2>
+                </div>
+            </div>
 
-            }
         </>
     );
 }

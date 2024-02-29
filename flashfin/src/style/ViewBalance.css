@@ -1,0 +1,16 @@
+.view-balance {
+    width:fit-content;
+    background-color: transparent;
+    border-left:2px solid var(--blue);
+    border-right:2px solid var(--blue);
+    text-align: center;
+}
+
+.acc-balance {
+    font-size:30px;
+}
+
+.acc-title {
+    font-size:20px;
+    color:var(--white);
+}

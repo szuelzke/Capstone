@@ -7,6 +7,11 @@
   --gray: #e0e0e0;
 }
 
+.placeholder {
+  color:red;
+  font-style: italic;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -56,16 +61,6 @@ body {
       text-align: center;
       float: none;
   }
-}
-
-/* page title styling */ 
-.top-bar {
-  border-bottom: 1px solid var(--blue);
-}
-
-.top-bar h1 {
-  color:#FFFFFF;
-  padding:5px 20px;
 }
 
 /* each card must be within a row div */

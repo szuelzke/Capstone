@@ -12,6 +12,10 @@
     width:100%;
 }
 
+.nav:last-child {
+    padding-bottom:20px;
+}
+
 .nav a {
     display:block;
     background-color: var(--yellow);
@@ -31,33 +35,3 @@
     padding-right:7px;
 }
 
-.qb {
-    display:block;
-    width:100%;
-    margin-top:20px;
-}
-
-.qb h2 { margin:0; padding-top: 10px; }
-
-.qb-account h2 {
-    margin:0;
-    font-size:20px;
-}
-
-.qb-account h2 a {
-    color:#FFFFFF;
-    text-decoration: none;
-}
-
-.qb-account h2 a:hover {
-    color:#FFFFFF;
-    text-decoration: underline;
-}
-
-.qb-balance {
-    background-color: var(--accentblue);
-    padding:10px;
-    margin:8px 20%;
-    border-radius:10px;
-    font-size:22px;
-}
