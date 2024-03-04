@@ -1,9 +1,23 @@
 #transactions-tbl {
     width:100%;
     border-collapse: collapse;
+    overflow-x: auto;
+}
+
+th {
+    padding:10px;
+    background-color: #000;
+    color: #FFF;
 }
 
 td {
     border-top:1px solid #000;
     text-align: center;
+    padding:10px;
+}
+
+@media screen and (max-width: 700px) {
+    #transactions-tbl {
+        display:block;
+    }
 }

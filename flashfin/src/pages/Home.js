@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import ViewBalance from '../components/ViewBalance';
 import TopBar from '../components/TopBar';
+import TransactionsTable from '../components/TransactionsTable';
 
 function Home() {
+    document.title = 'Dashboard';
+
     return (
         <>
         <TopBar pageTitle="Dashboard"/>
@@ -24,6 +27,10 @@ function Home() {
                     <Link to="settings">Settings</Link><br />
                     <Link to="sign_in">Sign In / Log In</Link><br />
                 </div>
+            </div>
+
+            <div className="row">
+                <TransactionsTable />
             </div>
         </>
 

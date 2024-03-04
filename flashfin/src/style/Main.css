@@ -3,6 +3,8 @@
   --accentblue: #002955;
   --yellow: #CB990D;
   --accentyellow: #754E00;
+  --red: #D52941;
+  --accentred: #990D35;
   --white: #FFFFFF;
   --gray: #e0e0e0;
 }
@@ -77,11 +79,10 @@ body {
   flex:100%;
 }
 
-/* styling for the account buttons */
-.acc-button i {
-  font-size:40px;
-  padding-left:10px;
-  padding-top:10px;
+.row-title {
+  color:#FFFFFF;
+  margin: 15px 15px;
+  padding-left:20px;
 }
 
 /* hides text then reveals it once hovered over */
@@ -94,4 +95,9 @@ body {
 .hide-text:hover {
   text-shadow:none;
   color:#FFFFFF;
+}
+
+.content {
+  z-index: 300;
+  background-color: aqua;
 }
