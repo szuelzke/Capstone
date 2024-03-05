@@ -59,18 +59,6 @@
     right:-20px;
 }
 
-/* content of button popup */
-.topbar-popup ul {
-    list-style-type: none;
-    padding:0px;
-    margin:0px;
-}
-
-.topbar-popup li {
-    padding:25px 10px;
-    text-overflow: ellipsis;
-}
-
 /* sizing for mobile viewing */
 @media screen and (max-width: 700px) {
     .topbar-popup {

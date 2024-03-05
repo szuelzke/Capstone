@@ -1,9 +1,22 @@
+import TopBar from '../components/TopBar';
+
 function ShareSpend() {
     return (
         
         <>
-        <div className="card">
-            <h1>Shared Spending</h1>
+        <TopBar pageTitle="Shared Spending" />
+        <div className='row'>
+            <div className='card'>
+                Amount Owed To Others
+            </div>
+            <div className='card'>
+                Amount Others Owe You
+            </div>
+        </div>
+        <div className='row'>
+            <div className='card'>
+                List of all of user's shared transactions (ongoing and paid)
+            </div>
         </div>
         </>
 
