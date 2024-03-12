@@ -2,33 +2,26 @@ import '../style/TopBar.css';
 import '../style/Popup.css';
 
 import React, {useState} from 'react';
-
-const Chatbox = () => {
-    return (
-        <ul>
-            <li>Chat text</li>
-            <li>Chat text</li>
-            <li>Chat text</li>
-            <li>Chat text</li>
-        </ul>
-    )
-}
-
-const PopUp = ({ component: Component }) => {
-    return (
-        <div className='card pop-up'>
-            <h1>Title</h1>
-            <Component />
-        </div>
-    )
-};
+import Chatbox from './Chatbox';
+import Notifications from './Notifications';
 
 function TopBar(props) {
 
     const [ShowChatbox, setShowChatbot] = useState(false);
+    const [ShowNotifications, setShowNotifications] = useState(false);
 
     function toggleChatbox() {
+        if (ShowNotifications) {
+            toggleNotifications();
+        }
         setShowChatbot(!ShowChatbox);
+    }
+
+    function toggleNotifications() {
+        if (ShowChatbox) {
+            toggleChatbox();
+        }
+        setShowNotifications(!ShowNotifications);
     }
 
     return (
@@ -37,12 +30,15 @@ function TopBar(props) {
                 <div class="topbar">
                     <ul>
                         <li className="page-title">{props.pageTitle}</li>
+                        <button class="fa-solid fa-power-off"></button>
                         <button onClick={toggleChatbox} className='fa-solid fa-comments' />
+                        <button onClick={toggleNotifications} className='fa-solid fa-bell' />
                     </ul>
                 </div>
             </div>
 
-            {ShowChatbox && (<PopUp component={Chatbox} />)}
+            {ShowChatbox && (<Chatbox />)}
+            {ShowNotifications && (<Notifications />)}
             
         </>
     );
