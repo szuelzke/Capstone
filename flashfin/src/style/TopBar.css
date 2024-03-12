@@ -12,56 +12,24 @@
     padding:0px;
 }
 
-.topbar li {
+.topbar li:first-child {
     float:left;
     display:block;
     padding:10px 15px;
     border-radius:10px;
 }
 
-
-.topbar ul button {
-    margin:25px 25px 10px 0px;
-    padding:10px 15px;
+.topbar button {
+    font-size: 20px;
     float:right;
-    font-size:x-large;
-    border-radius:10px;
-    border:2px solid #000000;
-    background-color:var(--yellow);
-    color:#FFF;
-}
-
-.topbar ul button:hover {
-    box-shadow: 5px 5px var(--blue);
+    margin:20px 10px;
+    padding:10px 15px;
+    border-radius: 5px;
+    border:none;
 }
 
 .page-title {
     font-size:xx-large;
     font-weight:bold;
     margin:25px 10px 10px 25px;
-}
-
-.topbar-popup {
-    position: absolute;
-    z-index:10px;
-    background-color: #FFFFFF;
-    padding:20px;
-    border:2px solid #000;
-    width:300px;
-    height:400px;
-    overflow-y: scroll;
-    border-radius:10px;
-}
-
-/* positioning of popup boxes */
-.topbar-popup {
-    top:40px;
-    right:-20px;
-}
-
-/* sizing for mobile viewing */
-@media screen and (max-width: 700px) {
-    .topbar-popup {
-        top:0px;
-    }
 }

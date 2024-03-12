@@ -1,13 +1,11 @@
-import '../style/ViewBalance.css'
-
 function ViewBalance(props) {
     return (
         <>
-            <div className="card view-balance">
-                <div className="acc-balance hide-text">
-                    ${props.balance}
+            <div className="card no-bg view-balance">
+                <div className="">
+                    <h1 className="hide-text">${props.balance}</h1>
+                    <h2>{props.accountTitle}</h2>
                 </div>
-                <h2 className="acc-title">{props.accountTitle}</h2>
             </div>
         </>
     );

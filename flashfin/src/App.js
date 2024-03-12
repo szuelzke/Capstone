@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import './style/Main.css';
+import './style/Card.css';
 
 import Home from './pages/Home'
 import Expenses from './pages/Expenses'

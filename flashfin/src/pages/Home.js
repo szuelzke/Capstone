@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+
+/* components */
 import ViewBalance from '../components/ViewBalance';
 import TopBar from '../components/TopBar';
 import TransactionsTable from '../components/TransactionsTable';

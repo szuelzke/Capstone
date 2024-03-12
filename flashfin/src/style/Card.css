@@ -1,0 +1,93 @@
+/* default card */
+.card {
+    background-color: #FFFFFF;
+    padding: 20px;
+    margin: 15px 15px;
+    border-radius: 10px;
+    flex: 100%;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    overflow-y: auto;
+}
+
+.card h2 {
+    text-align: center;
+}
+
+/* fixed card height */
+.c-700 {
+    height:700px;
+}
+
+/* change bg color of card */
+.no-bg {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.red-bg {
+    background-color: var(--red);
+    color: #FFFFFF;
+}
+
+/* styling for yellow main buttons */
+.card-link {
+    background-color: var(--yellow);
+    border: 3px solid var(--accentyellow);
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-shadow: 1px 1px 1px var(--accentyellow);
+    text-decoration: none;
+}
+
+.card-link:hover {
+    cursor: pointer;
+    border: 3px solid var(--accentyellow);
+    box-shadow: 5px 5px #000;
+}
+
+.card-link:active {
+    background-color: var(--accentyellow);
+}
+
+.card-link i {
+    font-size: 40px;
+    display: block;
+    padding-bottom: 10px;
+}
+
+/* show account balance */
+.view-balance {
+    color:#FFFFFF;
+    text-align: center;
+    padding:5px 0px;
+    border-radius: 5px;
+    border-left:3px solid var(--yellow);
+    border-right:3px solid var(--yellow);
+}
+
+.view-balance:hover {
+    scale: 95%;
+    transition: scale 1s;
+}
+
+/* exit button for a popup card */
+.card-x-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: var(--red);
+    padding: 5px 10px;
+    color: #FFF;
+    border: 1px solid var(--accentred);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card-x-button:hover {
+    box-shadow: 1px 1px 1px var(--accentred);
+}
+
+.card-x-button:active {
+    background-color: var(--accentred);
+}

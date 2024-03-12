@@ -5,13 +5,9 @@
   --accentyellow: #754E00;
   --red: #D52941;
   --accentred: #990D35;
+  --purple: #611C35;
   --white: #FFFFFF;
   --gray: #e0e0e0;
-}
-
-.placeholder {
-  color:red;
-  font-style: italic;
 }
 
 body {
@@ -23,19 +19,6 @@ body {
   text-overflow: clip;
 }
 
-.sidebar {
-  margin: 0px;
-  padding: 0px;
-  width: 20%;
-  background-color: var(--blue);
-  position: fixed;
-  height: 100%;
-  overflow: auto;
-  text-align: center;
-  color: #FFFFFF;
-  z-index: 1;
-}
-
 .main {
   margin-left: 20%;
   padding: 1px 0px;
@@ -43,46 +26,29 @@ body {
 }
 
 @media screen and (max-width: 700px) {
-  .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-  }
-
   div.main {
-      margin-left: 0;
+    margin-left: 0;
   }
 
   .row {
-      flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .sidebar a {
-      text-align: center;
-      float: none;
+    flex-direction: column;
   }
 }
 
 /* each card must be within a row div */
-/* to stack card on top of each other, change flex-direction to column */
+/* to stack card on top of each other, use row-v */
 .row {
   display: flex;
 }
 
-.card {
-  background-color: #FFFFFF;
-  padding: 20px;
-  margin: 15px 15px;
-  border-radius: 10px;
-  flex:100%;
+.row-v {
+  flex-direction: column;
 }
 
 .row-title {
-  color:#FFFFFF;
+  color: #FFFFFF;
   margin: 15px 15px;
-  padding-left:20px;
+  padding-left: 20px;
 }
 
 /* hides text then reveals it once hovered over */
@@ -92,12 +58,77 @@ body {
   user-select: none;
 }
 
-.hide-text:hover {
-  text-shadow:none;
-  color:#FFFFFF;
+.card:hover .hide-text {
+  text-shadow: none;
+  color: #FFFFFF;
 }
 
-.content {
-  z-index: 300;
-  background-color: aqua;
+/* used to make popups */
+.dimmer {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  z-index: 3;
+}
+
+.dimmer h2 {
+  text-align:center;
+  color:#FFF;
+  margin-top:5%;
+}
+
+.dimmer .row {
+  flex-direction: column;
+  width: 300px;
+  margin: 30px auto;
+  color: #FFF;
+  text-align: center;
+  z-index: 4;
+}
+
+/* styling forms */
+.form-deco * {
+  display: block;
+  margin: 20px auto;
+  padding: 5px;
+  width:65%;
+}
+
+.form-deco select {
+  margin: 20px 0px;
+  width: 100%;
+}
+
+.form-deco input[type='submit'] {
+  cursor: pointer;
+  background-color: var(--yellow);
+  border: 1px solid var(--accentyellow);
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #FFFFFF;
+  padding: 5px 15px;
+  border-radius: 5px;
+  text-shadow: 1px 1px 1px var(--accentyellow);
+  text-transform: uppercase;
+
+}
+
+.form-deco input[type="submit"]:hover {
+  border: 2px solid var(--accentyellow);
+  box-shadow: 2px 2px var(--accentyellow);
+}
+
+.form-deco input[type="submit"]:active {
+  background-color: var(--accentyellow);
+}
+/** MISC. STYLING **/
+/* used for adding padding to font awesome icons */
+.pd-5 {
+  padding:5px;
+}
+
+.txt-c {
+  text-align: center;
 }
