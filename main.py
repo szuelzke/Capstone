@@ -51,5 +51,3 @@ def login():
 
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
-
-app.run(host='localhost', port=5003)
