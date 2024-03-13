@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/var/www/html/your_repository')
+sys.path.insert(0, '/var/www/html/Capstone')
 
 from app import app as application
 
