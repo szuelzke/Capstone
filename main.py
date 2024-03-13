@@ -14,7 +14,6 @@ def home():
     return render_template('index.html', msg=msg)
 
 def login():
-    # Output message if something goes wrong...
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
