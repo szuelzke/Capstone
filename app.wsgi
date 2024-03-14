@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import sys
-sys.path.append('/usr/lib64/python3.9/site-packages')
+sys.path.insert(0,'/var/www/html/Capstone')
 
 from main import app as application
 
