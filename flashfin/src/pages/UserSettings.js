@@ -1,13 +1,14 @@
 import TopBar from '../components/TopBar';
+import '../style/UserSettings.css'
 
-function Settings() {
+function UserSettings() {
     document.title = 'Account Settings';
 
     return (
         <>
             <TopBar pageTitle='Settings' />
             <div className='row'>
-                <div className='card red-bg'>
+                <div className='card'>
                     <h2>My Profile</h2>
                     <img src="" alt='pfp'/>
                     <ul>
@@ -17,9 +18,28 @@ function Settings() {
                         <li><i className='fa-solid fa-calendar pd-5' />Date Account Created</li>
                     </ul>
                 </div>
-                <div className="card">
+                <div className="card connected-acc">
                     <h2>Accounts</h2>
-                    <p>TODO: List accounts connected to user. Should also be able to delete/disconnect accounts</p>
+                    <div>
+                        <h3>ACCOUNT NAME</h3>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </div>
+                    <div>
+                        <h3>ACCOUNT NAME</h3>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </div>
+                    <div>
+                        <h3>ACCOUNT NAME</h3>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </div>
+                    <div>
+                        <h3>ACCOUNT NAME</h3>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </div>
                 </div>
 
             </div>
@@ -34,10 +54,10 @@ function Settings() {
                     </form>
                 </div>
                 <div className='card'>
-                    <h2>New Name</h2>
+                    <h2>Social Name</h2>
                     <form className="form-deco">
                         <input type="input" placeholder="first name" required />
-                        <input type="input" placeholder="last name" required />
+                        <input type="password" placeholder="current password" required />
                         <input type="submit" />
                     </form>
                 </div>
@@ -54,4 +74,4 @@ function Settings() {
     );
 }
 
-export default Settings;
+export default UserSettings;

@@ -7,13 +7,17 @@ function Sidebar() {
         <>
             <div id="sidebar" className="sidebar">
                 <h1>FlashFin</h1>
-                <img src={picture}></img>
+                <div className='profile-img'>
+                    <img src={picture}></img>
+                    <button className='log-out-button'><i className='fa-solid fa-power-off'/>
+                    <span>Logout</span></button>
+
+                </div>
                 <h2>Firstname Lastname</h2>
 
                 <div className="nav">
-                    <Link to="/"><i className="fa-solid fa-house pd-5"></i>Dashboard</Link>
-                    <Link to="share_spend"><i className="fa-solid fa-share-nodes pd-5"></i>Shared Spending</Link>
-                    <Link to="settings"><i className="fa-solid fa-gear pd-5"></i>Settings</Link>
+                    <Link to="/"><i className="fa-solid fa-house pd-5"></i>Homepage</Link>
+                    <Link to="user-settings"><i className="fa-solid fa-gear pd-5"></i>Settings</Link>
                 </div>
 
                 <div className="nav">

@@ -15,8 +15,12 @@
 }
 
 /* fixed card height */
-.c-700 {
+.c-h700 {
     height:700px;
+}
+
+.c-f20 {
+    flex:50%;
 }
 
 /* change bg color of card */
@@ -69,6 +73,11 @@
 .view-balance:hover {
     scale: 95%;
     transition: scale 1s;
+}
+
+.view-balance a {
+    color:inherit;
+    text-decoration: none;
 }
 
 /* exit button for a popup card */

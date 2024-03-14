@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import TopBar from "../components/TopBar";
 
 function Layout() {
     return (
@@ -8,7 +7,7 @@ function Layout() {
 
         <Sidebar />
 
-        <div className="main">
+        <div id="main-content"className="main">
             <Outlet />
         </div>
         
