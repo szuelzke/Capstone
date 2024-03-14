@@ -1,6 +1,7 @@
 import '../style/TopBar.css';
 import '../style/Popup.css';
 
+import { Link } from 'react-router-dom';
 import React, {useState} from 'react';
 import Chatbox from './Chatbox';
 import Notifications from './Notifications';
@@ -27,10 +28,9 @@ function TopBar(props) {
     return (
         <>
             <div className="row">
-                <div class="topbar">
+                <div className="topbar">
                     <ul>
-                        <li className="page-title">{props.pageTitle}</li>
-                        <button class="fa-solid fa-power-off"></button>
+                        <Link to="."><li className="page-title">{props.pageTitle}</li></Link>
                         <button onClick={toggleChatbox} className='fa-solid fa-comments' />
                         <button onClick={toggleNotifications} className='fa-solid fa-bell' />
                     </ul>

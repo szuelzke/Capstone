@@ -5,6 +5,10 @@
     width:100%;
 }
 
+.topbar a {
+    color:#FFF;
+}
+
 .topbar ul {
     overflow:hidden;
     list-style-type:none;
@@ -19,6 +23,10 @@
     border-radius:10px;
 }
 
+.topbar li:first-child:hover {
+    text-decoration: underline;
+}
+
 .topbar button {
     font-size: 20px;
     float:right;
@@ -26,6 +34,16 @@
     padding:10px 15px;
     border-radius: 5px;
     border:none;
+    background-color: var(--yellow);
+    color:#FFF;
+}
+
+.topbar button:hover {
+    box-shadow: 3px 3px 1px var(--accentyellow);
+}
+
+.topbar button:active {
+    background-color: var(--accentyellow);
 }
 
 .page-title {

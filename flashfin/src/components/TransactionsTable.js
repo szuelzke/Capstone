@@ -1,7 +1,6 @@
 import '../style/TransactionsTable.css';
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 function TransactionsTable() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -75,33 +74,34 @@ function TransactionsTable() {
 
     return (
         <>
-            <div className='card c-700'>
+            <div className='card'>
                 <h2>{month}'s Transactions</h2>
-                <button onClick={toggleShowTransactions}>
+                <button onClick={toggleShowTransactions} className='transtbl-nav tooltip'>
                     <i className='fa-solid fa-plus pd-5' />
-                    Add Transaction
+                    <span className='tooltiptext'>Add Transaction</span>
                 </button>
-                <Link to=''>
-                    <i className='fa-solid fa-plus pd-5' />
-                    View All Transactions
-                </Link>
 
                 <table id="transactions-tbl">
-                    <tr>
-                        <th><i class="fa-regular fa-calendar" /></th>
-                        <th><i class="fa-solid fa-building-columns" /></th>
-                        <th><i class="fa-solid fa-money-bill" /></th>
-                        <th><i class="fa-solid fa-money-bill" /></th>
-                        <th><i class="fa-solid fa-tags" /></th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th className='tooltip'><i className="fa-regular fa-calendar" /><span className='tooltiptext'>Date</span></th>
+                            <th className='tooltip'><i className="fa-solid fa-building-columns" />
+                                <span className='tooltiptext'>Description</span> </th>
 
-                    {placeholderData(TransactionEntry, maxEntries)}
+                            <th className='tooltip'><i className="fa-solid fa-money-bill" /><span className='tooltiptext'>Amount</span></th>
+                            <th>Balance</th>
+                            <th className='tooltip'><i className="fa-solid fa-tags" /><span className='tooltiptext'>Category</span></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {placeholderData(TransactionEntry, maxEntries)}
+                    </tbody>
 
                 </table>
             </div>
 
-            {ShowTransaction &&
-                (<AddForm />)}
+            {ShowTransaction && (<AddForm />)}
         </>
     );
 }

@@ -1,10 +1,9 @@
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 
 function ShareSpend() {
     return (
         
         <>
-        <TopBar pageTitle="Shared Spending" />
         <div className='row'>
             <div className='card'>
                 Amount Owed To Others

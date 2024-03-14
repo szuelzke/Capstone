@@ -4,6 +4,30 @@
     overflow-x: auto;
 }
 
+.transtbl-nav {
+    position:absolute;
+    top:10px;
+    left:10px;
+    border-radius: 10px;
+    font-size:30px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000;
+
+}
+
+.transtbl-nav:hover {
+    background-color: var(--yellow);
+    color:#FFF;
+    box-shadow: 4px 4px 1px var(--accentyellow);
+    transition: background-color 0.25s, box-shadow 0.25s;
+}
+
+.transtbl-nav:active {
+    background-color: var(--accentyellow);
+}
+
 th {
     padding:10px;
     background-color: #000;

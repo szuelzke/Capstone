@@ -70,7 +70,13 @@ body {
   top: 0;
   width: 80%;
   height: 100%;
-  z-index: 3;
+  z-index: 101;
+}
+
+@media screen and (max-width:700px) {
+  .dimmer {
+    width:100%;
+  }
 }
 
 .dimmer h2 {
@@ -123,6 +129,37 @@ body {
 .form-deco input[type="submit"]:active {
   background-color: var(--accentyellow);
 }
+
+/** Tool tips **/ 
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  max-width: 150px;
+  text-align: center;
+  padding: 5px 10px;
+  background-color: var(--gray);
+  color:#000;
+  border:1px solid #000;
+  font-size:13px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 100;
+  top: 60%;
+  opacity:0;
+  transition: opacity 0.5s;
+  transition-property: opacity;
+  transition-delay: 1s;
+  text-shadow: none;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 /** MISC. STYLING **/
 /* used for adding padding to font awesome icons */
 .pd-5 {
