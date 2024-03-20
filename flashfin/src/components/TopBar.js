@@ -37,7 +37,7 @@ function TopBar(props) {
                 </div>
             </div>
 
-            {ShowChatbox && (<Chatbox />)}
+            {ShowChatbox && (<Chatbox toggle={toggleChatbox}/>)}
             {ShowNotifications && (<Notifications />)}
             
         </>

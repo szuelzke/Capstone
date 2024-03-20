@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../style/Chatbox.css';
 
-function Chatbox() {
+function Chatbox(props) {
     const [messages, setMessages] = useState([{ text: "Hi there! How can I assist you?", sender: "chatbot" }]);
     const [value, setValue] = useState("");
 
@@ -27,7 +27,8 @@ function Chatbox() {
     };
 
     return (
-        <div className="chat-container">
+        <div className="card pop-up">
+            <button className='card-x-button fa-solid fa-x' onClick={props.toggle}></button>
             <div className="chat-window">
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.sender}`}>
