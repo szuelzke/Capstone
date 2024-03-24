@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import mysql.connector
+from sqlalchemy import create_engine
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-cnx = mysql.connector.connect(user='capstone', password='CapStone2024',
-                              host='localhost',
-                              database='FLASHFIN')
-cnx.close()
+engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
+
+# Test the connection
+try:
+    connection = engine.connect()
+    print("Connection successful!")
+except Exception as e:
+    print("Connection failed:", e)
 
 @app.route('/')
 def home():
