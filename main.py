@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
-engine = create_engine('mysql+mysqldb://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
+engine = create_engine('mysql+pymysql://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
 
 # Test the connection
 try:
