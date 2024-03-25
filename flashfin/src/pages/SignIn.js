@@ -1,4 +1,6 @@
 import "../style/Login.css"
+import { Link } from 'react-router-dom';
+
 
 function Sign_In() {
     return (
@@ -12,9 +14,10 @@ function Sign_In() {
 
 
                     <input type="checkbox" name="rememberuser" id="rememberuser" />
-                    <label for="rememberuser">Remember Me</label>
+                    <label for="rememberuser">Remember Me</label><br />
 
-                    <a href="">Forgot Password?</a>
+                    <a href="">Forgot Password?</a><br />
+                    <Link to="/sign_up">New User?</Link><br />
 
                 </form>
 
