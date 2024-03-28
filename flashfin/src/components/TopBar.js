@@ -31,6 +31,7 @@ function TopBar(props) {
                 <div className="topbar">
                     <ul>
                         <Link to="."><li className="page-title">{props.pageTitle}</li></Link>
+                        <button className='fa-solid fa-power-off'/>
                         <button onClick={toggleChatbox} className='fa-solid fa-comments' />
                         <button onClick={toggleNotifications} className='fa-solid fa-bell' />
                     </ul>

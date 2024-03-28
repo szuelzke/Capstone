@@ -12,6 +12,11 @@
     z-index: 1;
 }
 
+.sidebar h1 a {
+    color:#FFF;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 700px) {
     .sidebar {
         width: 100%;
@@ -41,32 +46,6 @@
     border-radius: 50%;
 }
 
-.log-out-button {
-    visibility: hidden;
-    position:absolute;
-    font-size:50px;
-    top:0;
-    width:100%;
-    height:100%;
-    border:none;
-    left:0;
-    border-radius: 50%;
-    opacity: 0;
-    transition:opacity 2s;
-    cursor: pointer;
-}
-.profile-img:hover .log-out-button {
-    visibility: visible;
-    opacity: 1;
-}
-.profile-img span {
-    display: block;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: small;
-}
-
-
 .nav {
     display: block;
     width: 100%;
@@ -89,15 +68,11 @@
     text-align: left;
 }
 
-.nav a:hover, .log-out-button:hover {
+.nav a:hover {
     background-color: var(--yellow);
     box-shadow: 2px 2px var(--accentyellow);
     transition: background-color 0.25s;
     text-shadow: 1px 1px 1px var(--accentyellow);
-}
-
-.log-out-button:hover {
-    color:#FFF;
 }
 
 .nav a:active {

@@ -6,11 +6,9 @@ function Sidebar() {
     return (
         <>
             <div id="sidebar" className="sidebar">
-                <h1>FlashFin</h1>
+                <h1><Link to="/">FlashFin</Link></h1>
                 <div className='profile-img'>
                     <img src={picture}></img>
-                    <button className='log-out-button'><i className='fa-solid fa-power-off'/>
-                    <span>Logout</span></button>
 
                 </div>
                 <h2>Firstname Lastname</h2>
