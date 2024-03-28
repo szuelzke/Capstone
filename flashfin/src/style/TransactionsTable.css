@@ -4,6 +4,10 @@
     overflow-x: auto;
 }
 
+#transactions-tbl button {
+    margin:1px 3px;
+}
+
 .transtbl-nav {
     position:absolute;
     top:10px;

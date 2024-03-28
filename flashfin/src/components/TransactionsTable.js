@@ -1,4 +1,7 @@
 import '../style/TransactionsTable.css';
+import AddTransaction from './forms/AddTransaction';
+import ShareTransaction from './forms/ShareTransaction';
+import EditTransaction from './forms/EditTransaction';
 
 import React, { useState } from 'react';
 
@@ -9,10 +12,23 @@ function TransactionsTable() {
 
     const maxEntries = 25;
 
+    // add new transaction form
     const [ShowTransaction, setShowTransaction] = useState(false);
+    // edit transaction form
+    const [ShowEditTransaction, setShowEditTransaction] = useState(false);
+    // share transaction form
+    const [ShowShareTransaction, setShowShareTransaction] = useState(false);
 
     function toggleShowTransactions() {
         setShowTransaction(!ShowTransaction);
+    }
+
+    function toggleShowEdit() {
+        setShowEditTransaction(!ShowEditTransaction);
+    }
+
+    function toggleShowShare() {
+        setShowShareTransaction(!ShowShareTransaction);
     }
 
     function TransactionEntry(props) {
@@ -24,46 +40,17 @@ function TransactionsTable() {
                     <td>${props.amount}</td>
                     <td>${props.balanceremain}</td>
                     <td>{props.category}</td>
+                    <td className="sharespend-button">
+                        <button onClick={toggleShowEdit}><i class="fa-solid fa-pen-to-square" /> Edit</button>
+                        <button><i className="fa-solid fa-trash" /> Delete</button> 
+                        <button onClick={toggleShowShare}><i className="fa-solid fa-share" /> Share</button>   
+                    </td>
                 </tr>
             </>
         );
     }
 
-    function AddForm() {
-        return (
-            <>
-                <div className='dimmer'>
-                    <h2>Add Transaction</h2>
-                    <div className='row card'>
-                        <button className='card-x-button fa-solid fa-x' onClick={toggleShowTransactions}></button>
-                        <form className='form-deco'>
-                            <input
-                                type='date'
-                                placeholder='Date'
-                                required />
-                            <input
-                                type='text'
-                                placeholder='Title'
-                                required />
-                            <input
-                                type='number'
-                                min='0'
-                                placeholder='Amount'
-                                required />
-                            <select>
-                                <option name='category'>Category</option>
-                                <option name='category'>Category</option>
-                                <option name='category'>Category</option>
-                                <option name='category'>Category</option>
-                            </select>
-                            <input type='submit' />
-                        </form>
-                    </div>
-                </div>
-            </>
-        )
-    };
-
+    // insert placeholder transaction
     function placeholderData(Component, count) {
         const instances = [];
         for (let i = 0; i < count; i++) {
@@ -91,6 +78,7 @@ function TransactionsTable() {
                             <th className='tooltip'><i className="fa-solid fa-money-bill" /><span className='tooltiptext'>Amount</span></th>
                             <th>Balance</th>
                             <th className='tooltip'><i className="fa-solid fa-tags" /><span className='tooltiptext'>Category</span></th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -101,7 +89,9 @@ function TransactionsTable() {
                 </table>
             </div>
 
-            {ShowTransaction && (<AddForm />)}
+            {ShowTransaction && <AddTransaction toggle={toggleShowTransactions} />}
+            {ShowEditTransaction && <EditTransaction toggle={toggleShowEdit} />}
+            {ShowShareTransaction && <ShareTransaction toggle={toggleShowShare} />}
         </>
     );
 }
