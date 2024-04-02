@@ -1,10 +1,12 @@
+import BudgetsTable from "../../components/BudgetsTable";
+
+
 function Budget() {
+
     return (
         <>
         <div className="row">
-            <div className="card">
-                <h2>Budget</h2>
-            </div>
+            <BudgetsTable />
         </div>
         </>
     )

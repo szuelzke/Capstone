@@ -15,6 +15,20 @@
     text-align: center;
 }
 
+.card-budget{
+    background-color: #FFFFFF;
+    padding: 5px;
+    margin: 5px 5px;
+    border-radius: 10px;
+    flex: 100%;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    overflow-y: auto;
+    color: #000;
+    height: 85%;
+    width: 85%;
+}
+
 /* fixed card height */
 .c-h700 {
     height:700px;
