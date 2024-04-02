@@ -2,42 +2,34 @@ import BudgetTransactionTable from "./BudgetTransactionTable";
 import BudgetAmount from './BudgetAmount';
 import BudgetAmountRemaining from './BudgetAmountRemaining';
 
-function EditBudget(props) {
+function ViewBudget(props) {
     return (
         <>
             <div className='dimmer'>
-            <div className='card card-budget'>
-                <button className='card-x-button fa-solid fa-x' onClick={props.toggle}></button>    
-                <div style={{ width: '50%', float: 'left' }}>
-                    <div className='card card-budget'>
-                        <div className="row">
-                            <div className= 'card'>Budget Title: Account, Category...</div>
+                <div className='card card-budget'>  
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>  
+                        <div className="card-row2">
+                                    Budget Title 
+                                    <br />Account, Category...
                         </div>
-                        <div className="row">
-                                <div className='card'>
-                                    <BudgetAmount balance="1,000,000" accountTitle="Budget Amount" />
-                                    <BudgetAmountRemaining balance="1,000,000" accountTitle="Amount Remaining" />
-                                </div>
+                        <div className="card-row2">
+                                <div className='card-h3'>4 days Remaining!</div>
                         </div>
-                        <div className="row">
-                            <BudgetTransactionTable />
+                        <div className="card-row2" style={{ display: 'flex' }}>
+                            <div className='card'><BudgetAmount balance="1,000,000" accountTitle="Budget Amount" /></div>                           
+                            <div className='card'><BudgetAmountRemaining balance="1,000,000" accountTitle="Amount Remaining" /></div>
+                        </div>
+                        <div className="card-row2">
+                            <div className='card' style={{ flex: '1' }}><BudgetTransactionTable /></div>
                         </div>
                     </div>
+                    <button className='card-x-button fa-solid fa-x' onClick={props.toggle}></button>
                 </div>
-
-                <div style= {{ width: '50%', float: 'right' }}>
-                    <div className="row">
-                        <div className= 'card'>4 days Remaining!</div>
-                    </div>
-                    <div className="row">
-                        <div className= 'card'>visualization...</div>
-                    </div>
-                </div>
-            </div>
             </div>
         </>
     )
+    
 
 }
 
-export default EditBudget
+export default ViewBudget

@@ -10,7 +10,7 @@ function BudgetTransactionTable() {
     const date = new Date();
     let month = months[date.getMonth()];
 
-    const maxEntries = 10;
+    const maxEntries = 5;
 
 
     function TransactionEntry(props) {
@@ -38,8 +38,7 @@ function BudgetTransactionTable() {
     return (
         <>
             <div className='card'>
-                <h2>Transactions</h2>
-
+                <h3>Transactions</h3>
                 <table id="transactions-tbl">
                     <thead>
                         <tr>
