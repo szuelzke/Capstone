@@ -81,6 +81,24 @@
     text-decoration: none;
 }
 
+/*shared spending - amount owed and due*/
+.amount-owed {
+    color:#003875;
+    text-align: center;
+    padding:5px 0px;
+    border-radius: 5px;
+    border-left:3px solid var(--yellow);
+    border-right:3px solid var(--yellow);
+}
+.amount-due {
+    color:#003875;
+    text-align: center;
+    padding:5px 0px;
+    border-radius: 5px;
+    border-left:3px solid var(--yellow);
+    border-right:3px solid var(--yellow);
+}
+
 /* exit button for a popup card */
 .card-x-button {
     position: absolute;

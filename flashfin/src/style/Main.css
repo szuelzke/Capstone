@@ -51,6 +51,12 @@ body {
   padding-left: 20px;
 }
 
+.row-title2 {
+  text-align:center;
+  color:#FFF;
+  margin-top:5%;
+}
+
 /* hides text then reveals it once hovered over */
 .hide-text {
   color: transparent;
