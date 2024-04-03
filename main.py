@@ -43,8 +43,8 @@ except Exception as e:
 
 @app.route('/')
 def home():
-    userid = request.args.get('id')
     if 'user_id' in session:
+        userid = request.args.get('id')
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=userid).first()
         db_session.close()
