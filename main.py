@@ -56,7 +56,7 @@ def login():
         user = session.query(User).filter_by(email=email).first()
         session.close()
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
             return redirect(url_for('test'))
