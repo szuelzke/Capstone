@@ -27,12 +27,31 @@ class User(Base):
     created_date = Column(String(255))
     is_active = Column(Boolean)
 
+class Account(Base):
+    __tablename__ = 'account'
+
+    account_id = Column(Integer, primary_key=True)
+    account_name = Column(String(255))
+    user_id = Column(Integer)
+    is_active = Column(Boolean)
 
 try:
     connection = engine.connect()
     print("Connection successful!")
 except Exception as e:
     print("Connection failed:", e)
+
+@app.route('/')
+def home():
+    userid = request.args.get('id')
+    if 'user_id' in session:
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=userid).first()
+        db_session.close()
+        return render_template('index.html', firstname=user.first_name, lastname=user.last_name)
+    else:
+        msg = ''
+        return render_template('landing.html', msg=msg)
 
 @app.route('/test')
 def test():
@@ -54,7 +73,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            return redirect(url_for('account'))
+            return redirect(url_for('home'), id=user.user_id)
         else:
             return render_template('login.html', error='Invalid email or password')
 
@@ -106,14 +125,6 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-@app.route('/')
-def home():
-    if 'user_id' in session:
-        return render_template('index.html')
-    else:
-        msg = ''
-        return render_template('landing.html', msg=msg)
-
 @app.route('/settings')
 def settings():
     if 'user_id' in session:
@@ -127,3 +138,20 @@ def account():
         return render_template('/account/dashboard.html')
     else:
         return redirect(url_for('login'))
+
+@app.route('/add-account', methods=['POST', 'GET'])
+def add_account():
+    if request.method == 'POST':
+        account_name = request.form['accountname']
+        new_account = Account(
+            account_name = account_name
+        )
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        session.add(new_account)
+        session.commit()
+        session.close()
+        return redirect(url_for('home'))
+    return render_template('/account/add_account.html')
+    

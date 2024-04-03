@@ -32,7 +32,7 @@
             <img src={picture}></img>
 
         </div>
-        <h2>FirstName Lastname</h2>
+        <h2>{firstname} {lastname}</h2>
 
         <div class="nav">
             <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
@@ -44,6 +44,10 @@
             <a href="{{ url_for('account') }}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 PNC
+            </a>
+            <a href="{{ url_for('add_account')}}">
+                <i class="fa-solid fa-plus pd-5"></i>
+                Add Account
             </a>
             <h2>Student</h2>
             <a href="/">
