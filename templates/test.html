@@ -8,5 +8,8 @@
 <body>
     <h1>Sign In Successful!</h1>
     <p>You have successfully signed in.</p>
+    <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>
