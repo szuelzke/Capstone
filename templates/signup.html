@@ -34,9 +34,9 @@
             <input type="text" name="email" id="email" placeholder="Email" required />
             <input type="password" name="password" id="password" placeholder="Password" required />
             <input type="password" name="password2" id="password2" placeholder="Verify Password" required />
-            <button type="submit">Sign Up</button>
+            <input type="submit" value="Sign Up" />
 
-            <Link to="/login">Sign In?</Link><br />
+            <a href="{{ url_for('login')}}">Sign In?</a><br />
                     
         </form>
     </div>

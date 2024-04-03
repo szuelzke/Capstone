@@ -59,7 +59,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('test'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
