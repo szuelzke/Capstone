@@ -113,8 +113,14 @@ def logout():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')
+    if 'user_id' in session:
+        return render_template('settings.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/account')
 def account():
-    return render_template('index.html')
+    if 'user_id' in session:
+        return render_template('index.html')
+    else:
+        return redirect(url_for('login'))
