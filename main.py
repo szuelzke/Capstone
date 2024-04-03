@@ -70,12 +70,12 @@ def signup():
     if request.method == 'POST':
        
         username = request.form['username']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
+        first_name = request.form['firstname']
+        last_name = request.form['lastname']
         phone = request.form['phone']
         email = request.form['email']
         password = request.form['password']
-        confirm_password = request.form['confirm_password']
+        confirm_password = request.form['password2']
 
        
         if password != confirm_password:
