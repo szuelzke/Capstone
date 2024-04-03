@@ -21,7 +21,7 @@ class User(Base):
     last_name = Column(String(255))
     email = Column(String(255), unique=True)
     phone_number = Column(String(20))
-    password_hash = Column(String(255))  # Store hashed password instead of plain text
+    password = Column(String(255))  # Store hashed password instead of plain text
     image_link = Column(String(255))
     social_name = Column(String(255))
     created_date = Column(String(255))
