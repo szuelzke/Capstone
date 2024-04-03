@@ -34,11 +34,6 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
-@app.route('/')
-def home():
-    msg = ''
-    return render_template('landing.html', msg=msg)
-
 @app.route('/test')
 def test():
     if 'user_id' in session:
@@ -111,6 +106,14 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route('/')
+def home():
+    if 'user_id' in session:
+        return render_template('index.html')
+    else:
+        msg = ''
+        return render_template('landing.html', msg=msg)
+
 @app.route('/settings')
 def settings():
     if 'user_id' in session:
@@ -121,6 +124,6 @@ def settings():
 @app.route('/account')
 def account():
     if 'user_id' in session:
-        return render_template('index.html')
+        return render_template('/account/dashboard.html')
     else:
         return redirect(url_for('login'))

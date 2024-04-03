@@ -35,13 +35,13 @@
         <h2>FirstName Lastname</h2>
 
         <div class="nav">
-            <a href="/"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
-            <a href="/settings"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
+            <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
+            <a href="{{ url_for('settings') }}"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
         </div>
 
         <div class="nav">
             <h2>Personal</h2>
-            <a href="/account">
+            <a href="{{ url_for('account') }}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 PNC
             </a>
@@ -62,7 +62,9 @@
             <div class="topbar">
                 <ul>
                     <a href="/"><li class="page-title">{% block title %}Home{% endblock %}</li></a>
-                    <button class='fa-solid fa-power-off'></button>
+                    <form action="{{ url_for('logout') }}" method="post">
+                        <button class='fa-solid fa-power-off'></button>
+                    </form>
                     <button class='fa-solid fa-comments'></button>
                     <button class='fa-solid fa-bell'></button>
                 </ul>
