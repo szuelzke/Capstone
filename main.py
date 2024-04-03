@@ -91,7 +91,7 @@ def signup():
             last_name=last_name,
             phone_number=phone,
             email=email,
-            password_hash=password_hash,
+            password=password_hash,
             is_active=True  # Assuming user is active upon signup
         )
 
