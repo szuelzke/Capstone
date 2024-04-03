@@ -52,9 +52,9 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        session = Session()
-        user = session.query(User).filter_by(email=email).first()
-        session.close()
+        db_session = Session()
+        user = db_session.query(User).filter_by(email=email).first()
+        db_session.close()
 
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
