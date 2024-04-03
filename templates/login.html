@@ -28,10 +28,10 @@
 
     <div class="log-in card">
         <h1>FlashFin</h1>
-        <form action="{{ url_for('login') }}" method="POST">
+        <form action="{{ url_for('login') }}" method="post">
             <input type="text" name="email" id="email" placeholder="Email" required>
             <input type="password" name="username" id="password" placeholder="Password" required>
-            <button type="submit">Log In</button>
+            <input type="submit" value="Log In"/>
 
             
             <input type="checkbox" name="rememberuser" id="rememberuser">
