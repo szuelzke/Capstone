@@ -105,7 +105,7 @@ def signup():
     
     return render_template('signup.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Clear session data
     session.clear()
