@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from sqlalchemy import create_engine, Column, Integer, String, Boolean 
+from flask import Flask, render_template, request, redirect, url_for, session
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import sessionmaker 
 import bcrypt
 
 app = Flask(__name__)
@@ -11,6 +10,7 @@ app.secret_key = 'your_secret_key_here'
 engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
 
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
 
 class User(Base):
     __tablename__ = 'user'
@@ -27,13 +27,7 @@ class User(Base):
     created_date = Column(String(255))
     is_active = Column(Boolean)
 
-Base.metadata.create_all(engine)
 
-Session = sessionmaker(bind=engine)
-
-
-
-# Test the connection
 try:
     connection = engine.connect()
     print("Connection successful!")
@@ -45,28 +39,68 @@ def home():
     msg = ''
     return render_template('index.html', msg=msg)
 
-@app.route('/login', methods=['POST'])
+@app.route('/test')
+def test():
+    if 'user_id' in session:
+        return render_template('test.html')
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET','POST'])
 def login():
-    data = request.json
-    email = data.get('email')
-    password = data.get('password')
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
 
-    if not email or not password:
-        return jsonify({'error': 'Email and password are required'}), 400
-
-    try:
         session = Session()
-        user = session.query(User).filter(User.email == email).first()
-
-        if user:
-            # Compare hashed password with bcrypt
-            if bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
-                return jsonify({'message': 'Login successful'}), 200
-            else:
-                return jsonify({'error': 'Invalid email or password'}), 401
-        else:
-            return jsonify({'error': 'User not found'}), 404
-    except SQLAlchemyError as e:
-        return jsonify({'error': str(e)}), 500
-    finally:
+        user = session.query(User).filter_by(email=email).first()
         session.close()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
+            session['user_id'] = user.user_id
+            session['email'] = user.email
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('login.html', error='Invalid email or password')
+
+    return render_template('login.html')
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+       
+        username = request.form['username']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        phone = request.form['phone']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+       
+        if password != confirm_password:
+            return render_template('signup.html', error='Passwords do not match')
+
+       
+        password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        
+        new_user = User(
+            social_name=username,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone,
+            email=email,
+            password_hash=password_hash,
+            is_active=True  # Assuming user is active upon signup
+        )
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        session.add(new_user)
+        session.commit()
+        session.close()
+        
+        return redirect(url_for('login'))
+    
+    return render_template('signup.html')
