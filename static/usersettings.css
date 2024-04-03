@@ -1,0 +1,44 @@
+.connected-acc div * {
+    display: inline-block;
+}
+
+.connected-acc div:nth-child(even) {
+    background-color: var(--gray);
+}
+
+.connected-acc h3 {
+    margin-left: 10px;
+}
+
+.connected-acc button {
+    float: right;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    padding:5px 10px;
+    margin-right:10px;
+    font-family: 'Roboto', sans-serif;
+    border-radius:5px;
+    border:none;
+    border:1px solid #000;
+    cursor: pointer;
+}
+
+/* delete button */
+.connected-acc div button:nth-child(odd) {
+    background-color: var(--red);
+    color:#FFF;
+}
+.connected-acc div button:nth-child(odd):hover {
+    background-color: var(--accentred);
+}
+
+/* edit button */
+.connected-acc div button:nth-child(even) {
+    background-color: var(--gray);
+    color:#000;
+}
+.connected-acc div button:nth-child(even):hover {
+    background-color: #FFF;
+    color:#000;
+    box-shadow: 3px 3px 1px var(--gray);
+}

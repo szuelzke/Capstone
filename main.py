@@ -37,7 +37,7 @@ except Exception as e:
 @app.route('/')
 def home():
     msg = ''
-    return render_template('index.html', msg=msg)
+    return render_template('landing.html', msg=msg)
 
 @app.route('/test')
 def test():
@@ -59,7 +59,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            return redirect(url_for('test'))
+            return redirect(url_for('account'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
@@ -110,3 +110,11 @@ def logout():
     # Clear session data
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
+@app.route('/account')
+def account():
+    return render_template('index.html')

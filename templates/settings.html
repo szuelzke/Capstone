@@ -1,0 +1,75 @@
+{% extends 'home.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='usersettings.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='card'>
+        <h2>My Profile</h2>
+        <img src="" alt='pfp'/>
+        <ul>
+            <li><i class='fa-solid fa-user pd-5'></i>Firstname Lastname</li>
+            <li><i class='fa-solid fa-envelope pd-5'></i>Email</li>
+            <li><i class='fa-solid fa-phone pd-5'></i>Phone Number</li>
+            <li><i class='fa-solid fa-calendar pd-5'></i>Date Account Created</li>
+        </ul>
+    </div>
+    <div class="card connected-acc">
+        <h2>Accounts</h2>
+        <div>
+            <h3>ACCOUNT NAME</h3>
+            <button>Edit</button>
+            <button>Delete</button>
+        </div>
+        <div>
+            <h3>ACCOUNT NAME</h3>
+            <button>Edit</button>
+            <button>Delete</button>
+        </div>
+        <div>
+            <h3>ACCOUNT NAME</h3>
+            <button>Edit</button>
+            <button>Delete</button>
+        </div>
+        <div>
+            <h3>ACCOUNT NAME</h3>
+            <button>Edit</button>
+            <button>Delete</button>
+        </div>
+    </div>
+
+</div>
+
+<h2 class='row row-title'>Edit My Profile</h2>
+<div class='row'>
+    <div class='card'>
+        <h2>Upload Profile Picture</h2>
+        <form class="form-deco">
+            <input type="file" />
+            <input type="submit" />
+        </form>
+    </div>
+    <div class='card'>
+        <h2>Social Name</h2>
+        <form class="form-deco">
+            <input type="input" placeholder="first name" required />
+            <input type="password" placeholder="current password" required />
+            <input type="submit" />
+        </form>
+    </div>
+    <div class='card'>
+        <h2>Change Password</h2>
+        <form class="form-deco">
+            <input type="password" placeholder="current password" required />
+            <input type="password" placeholder="new password" required />
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+.topbar {
+    color:var(--white);
+    padding: 0px;
+    margin:0px;
+    width:100%;
+}
+
+.topbar a {
+    color:#FFF;
+}
+
+.topbar ul {
+    overflow:hidden;
+    list-style-type:none;
+    margin:0px;
+    padding:0px;
+}
+
+.topbar li:first-child {
+    float:left;
+    display:block;
+    padding:10px 15px;
+    border-radius:10px;
+}
+
+.topbar li:first-child:hover {
+    text-decoration: underline;
+}
+
+.topbar button {
+    font-size: 20px;
+    float:right;
+    margin:20px 10px;
+    padding:10px 15px;
+    border-radius: 5px;
+    border:none;
+    background-color: var(--yellow);
+    color:#FFF;
+}
+
+.topbar button:hover {
+    box-shadow: 3px 3px 1px var(--accentyellow);
+}
+
+.topbar button:active {
+    background-color: var(--accentyellow);
+}
+
+.page-title {
+    font-size:xx-large;
+    font-weight:bold;
+    margin:25px 10px 10px 25px;
+}

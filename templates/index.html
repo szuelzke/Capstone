@@ -1,63 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #003875;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
+    {% block stylesheet %}
+    {% endblock %}
 
-        .container {
-            text-align: center;
-        }
+    <!--font awesome icons-->
+    <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #CB990D;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            text-decoration: none;
-            color: #fff;
-            background-color: #CB990D;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
-        <h1>FlashFin</h1>
-        <p>A Finance Management Tool for Students</p>
-        <br />
-        <a href="{{ url_for('login') }}" class="btn">Login</a>
-        <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+    <div id="sidebar" class="sidebar">
+        <h1><a href="/">FlashFin</a></h1>
+        <div class='profile-img'>
+            <img src={picture}></img>
+
+        </div>
+        <h2>FirstName Lastname</h2>
+
+        <div class="nav">
+            <a href="/"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
+            <a href="/settings"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
+        </div>
+
+        <div class="nav">
+            <h2>Personal</h2>
+            <a href="/account">
+                <i class="fa-solid fa-credit-card pd-5"></i>
+                PNC
+            </a>
+            <h2>Student</h2>
+            <a href="/">
+                <i class="fa-solid fa-id-card pd-5"></i>
+                FlashCash
+            </a>
+            <a href="/">
+                <i class="fa-solid fa-wallet pd-5"></i>
+                Declining Balance
+            </a>
+        </div>
     </div>
+
+    <div id="main-content" class="main">
+        <div class="row">
+            <div class="topbar">
+                <ul>
+                    <a href="/"><li class="page-title">{% block title %}Home{% endblock %}</li></a>
+                    <button class='fa-solid fa-power-off'></button>
+                    <button class='fa-solid fa-comments'></button>
+                    <button class='fa-solid fa-bell'></button>
+                </ul>
+            </div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+
+
 </body>
+
 </html>
