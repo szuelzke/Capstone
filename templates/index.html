@@ -1,166 +1,63 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='expenses.css') }}">
+    <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #003875;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <!--font awesome icons-->
-    <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
+        .container {
+            text-align: center;
+        }
 
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #CB990D;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            background-color: #CB990D;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
 <body>
-
-    <div id="sidebar" class="sidebar">
-        <div class="user-profile">
-            <h1>FlashFin</h1>
-            <img src="{{ url_for('static', filename='pfp_sample.jpg') }}"></img>
-            <h2>Firstname Lastname</h2>
-        </div>
-        <div class="nav">
-            <a href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a>
-            <a href=""><i class="fa-solid fa-share-nodes"></i>Shared Spending</a>
-            <a href=""><i class="fa-solid fa-gear"></i>Settings</a>
-        </div>
-        <div class="qb">
-            <h2>My Accounts <i class="fa-solid fa-caret-down"></i></h2>
-            <div class="qb-account">
-                <h2><a href="account-expenses.html">PNC</a></h2>
-                <div class="qb-balance hide-text">$1,000,000</div>
-            </div>
-            <div class="qb-account">
-                <h2><a href="account-expenses.html">FlashCard</a></h2>
-                <div class="qb-balance hide-text">$1,000,000</div>
-            </div>
-        </div>
+    <div class="container">
+        <h1>FlashFin</h1>
+        <p>A Finance Management Tool for Students</p>
+        <br />
+        <a href="{{ url_for('login') }}" class="btn">Login</a>
+        <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
     </div>
-
-    <div class="main">
-        <div class="row top-bar">
-            <h1>Dashboard</h1>
-        </div>
-        <div class="row">
-            <div class="card card-50">
-                <h2>Main Expenses</h2>
-                <table class="expenses-tbl">
-                    <tr>
-                        <th><i class="fa-regular fa-calendar"></th>
-                        <th><i class="fa-solid fa-building-columns"></th>
-                        <th><i class="fa-solid fa-money-bill"></th>
-                        <th><i class="fa-solid fa-tags"></th>
-                    </tr>
-                    <tr>
-                        <td>2/1</td>
-                        <td>Apartment Complex</td>
-                        <td>$1,000</td>
-                        <td><div class="exp-tag tag-green">Housing</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-
-                    </tr>
-                    <tr>
-                        <td>1/29</td>
-                        <td>Netflix</td>
-                        <td>$20.99</td>
-                        <td><div class="exp-tag tag-orange">Subscription</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1/28</td>
-                        <td>BP</td>
-                        <td>$30.27</td>
-                        <td><div class="exp-tag tag-red">Gas</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                    </tr>
-                </table>
-                <a href="">View all...</a>
-            </div>
-            <div class="card card-50">
-                <h2>FlashCard Expenses</h2>
-                <table class="expenses-tbl">
-                    <tr>
-                        <th><i class="fa-regular fa-calendar"></th>
-                        <th><i class="fa-solid fa-building-columns"></th>
-                        <th><i class="fa-solid fa-money-bill"></th>
-                        <th><i class="fa-solid fa-tags"></th>
-                    </tr>
-                    <tr>
-                        <td>2/8</td>
-                        <td>Rosies</td>
-                        <td>$9.99</td>
-                        <td><div class="exp-tag tag-blue">Food</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-
-                    </tr>
-                    <tr>
-                        <td>2/3</td>
-                        <td>Flashprint</td>
-                        <td>$0.45</td>
-                        <td><div class="exp-tag">Other</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                    </tr>
-                    <tr>
-                        <td>1/29</td>
-                        <td>Bookstore</td>
-                        <td>$1,000</td>
-                        <td><div class="exp-tag">Other</div></td>
-                        <td class="exp-set"><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                    </tr>
-                </table>
-                <a href="">View all...</a>
-            </div>
-        </div>
-        <div class="card">
-            <h1>Heading</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Scelerisque in dictum non consectetur. Luctus venenatis lectus magna fringilla urna
-                porttitor rhoncus dolor purus. Ac tortor dignissim convallis aenean et tortor. Sit amet aliquam id diam
-                maecenas ultricies mi eget. Egestas congue quisque egestas diam in arcu cursus euismod. Sem nulla
-                pharetra diam sit amet. Vulputate eu scelerisque felis imperdiet proin fermentum. Vel pharetra vel
-                turpis nunc eget. Tortor aliquam nulla facilisi cras fermentum. Quisque sagittis purus sit amet. Amet
-                mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan. Ultricies leo integer malesuada
-                nunc vel risus commodo.
-            </p>
-        </div>
-        <div class="card">
-            <h1>Heading</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Scelerisque in dictum non consectetur. Luctus venenatis lectus magna fringilla urna
-                porttitor rhoncus dolor purus. Ac tortor dignissim convallis aenean et tortor. Sit amet aliquam id diam
-                maecenas ultricies mi eget. Egestas congue quisque egestas diam in arcu cursus euismod. Sem nulla
-                pharetra diam sit amet. Vulputate eu scelerisque felis imperdiet proin fermentum. Vel pharetra vel
-                turpis nunc eget. Tortor aliquam nulla facilisi cras fermentum. Quisque sagittis purus sit amet. Amet
-                mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan. Ultricies leo integer malesuada
-                nunc vel risus commodo.
-            </p>
-        </div>
-        <div class="card">
-            <h1>Heading</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Scelerisque in dictum non consectetur. Luctus venenatis lectus magna fringilla urna
-                porttitor rhoncus dolor purus. Ac tortor dignissim convallis aenean et tortor. Sit amet aliquam id diam
-                maecenas ultricies mi eget. Egestas congue quisque egestas diam in arcu cursus euismod. Sem nulla
-                pharetra diam sit amet. Vulputate eu scelerisque felis imperdiet proin fermentum. Vel pharetra vel
-                turpis nunc eget. Tortor aliquam nulla facilisi cras fermentum. Quisque sagittis purus sit amet. Amet
-                mattis vulputate enim nulla aliquet porttitor lacus luctus accumsan. Ultricies leo integer malesuada
-                nunc vel risus commodo.
-            </p>
-        </div>
-
-    </div>
-
 </body>
-
 </html>
