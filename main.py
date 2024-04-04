@@ -150,7 +150,7 @@ def signup():
             phone_number=phone,
             email=email,
             password=password_hash,
-            created_date = date.today(),
+            #created_date = date.today(),
             is_active=True  # Assuming user is active upon signup
         )
 
