@@ -109,17 +109,22 @@ def mfa():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        db_session.close()
-        if request.method == 'POST':
-            otp = request.form['otp']
+        if user:
             mfa_key = user.mfa_key
-            if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
-               return redirect(url_for('home'))
-            else:
-                return render_template('mfa.html', error='Invalid OTP', setup_key=mfa_key)
-        return render_template('mfa.html', setup_key = mfa_key)
+            if request.method == 'POST':
+                otp = request.form['otp']
+                if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
+                    db_session.close()
+                    return redirect(url_for('home'))
+                else:
+                    db_session.close()
+                    return render_template('mfa.html', error='Invalid OTP', setup_key=mfa_key)
+            db_session.close()
+            return render_template('mfa.html', setup_key=mfa_key)
+        else:
+            db_session.close()
+            return redirect(url_for('login'))  # Redirect to login if user not found
     return render_template('login.html')
-    
 
 def get_user_id(email):
     db_session = Session()
