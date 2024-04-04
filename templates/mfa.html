@@ -75,10 +75,6 @@
         {% if error %}
         <p class="error-message">{{ error }}</p>
         {% endif %}
-        <div class="qr-code">
-            <p>If you haven't added your account to Google Authenticator yet, scan the QR code below:</p>
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
-        </div>
         <div class="setup-key">
             <p>Alternatively, you can add the account manually using the following setup key:</p>
             <p>{{ setup_key }}</p>
