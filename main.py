@@ -6,6 +6,7 @@ from flask_mail import Mail, Message
 import bcrypt
 import pyotp
 import qrcode
+import qrcode.image.pil
 import base64
 import secrets
 import datetime
