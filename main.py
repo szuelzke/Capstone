@@ -212,6 +212,7 @@ def add_account():
         return redirect(url_for('home'))
     return render_template('/forms/add_account.html')
 
+
 @app.route('/account/transaction', methods=['GET'])
 def transactions():
     # show all transactions
