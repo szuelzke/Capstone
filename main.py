@@ -71,10 +71,10 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
-            otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
-            session['otp_secret'] = otp_secret  # Store OTP secret in session
-            session['otp_uri'] = otp_uri  # Store OTP URI in session
+            #otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+            #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
+            #session['otp_secret'] = otp_secret  # Store OTP secret in session
+            #session['otp_uri'] = otp_uri  # Store OTP URI in session
             return redirect(url_for('verify_mfa'))
             
             #return redirect(url_for('home'))
@@ -97,15 +97,16 @@ def verify_mfa():
 #               return redirect(url_for('home'))
 #            else:
 #                return render_template('verify_mfa.html', error='Invalid OTP', qr_code='', setup_key='')
-        otp_uri = session['otp_uri']
+        #otp_uri = session['otp_uri']
         # Generate QR code image
-        qr = qrcode.make(otp_uri)
+        #qr = qrcode.make(otp_uri)
         # Convert QR code image to Base64 string
-        qr_base64 = base64.b64encode(qr.tobytes()).decode()
+        #qr_base64 = base64.b64encode(qr.tobytes()).decode()
         # Get setup key for manual addition to Google Authenticator
-        setup_key = pyotp.TOTP(session['otp_secret']).secret
+        #setup_key = pyotp.TOTP(session['otp_secret']).secret
         # Render the template with QR code and setup key
-        return render_template('verify_mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+        #return render_template('verify_mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+        return render_template('verify_mfa.html')
     return render_template('login.html')
     
 
