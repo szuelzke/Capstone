@@ -80,20 +80,20 @@ def login():
             #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             #session['otp_secret'] = otp_secret  # Store OTP secret in session
             #session['otp_uri'] = otp_uri  # Store OTP URI in session
-            return redirect(url_for('mfa'))
+            #return redirect(url_for('mfa'))
             
-            #return redirect(url_for('home'))
+            return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
     return render_template('login.html')
 
-@app.route('/mfa')
-def mfa():
-    if 'user_id' in session:
-        user_id = session['user_id']
-        db_session = Session()
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-        db_session.close()
+#@app.route('/mfa', methods=['GET','POST'])
+#def mfa():
+#    if 'user_id' in session:
+#        user_id = session['user_id']
+#        db_session = Session()
+#        user = db_session.query(User).filter_by(user_id=user_id).first()
+#        db_session.close()
 #        if request.method == 'POST':
         
 #            otp = request.form['otp']
@@ -111,8 +111,8 @@ def mfa():
         #setup_key = pyotp.TOTP(session['otp_secret']).secret
         # Render the template with QR code and setup key
         #return render_template('mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
-        return render_template('mfa.html')
-    return render_template('login.html')
+#        return render_template('mfa.html')
+#    return render_template('login.html')
     
 
 def get_user_id(email):
