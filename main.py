@@ -73,14 +73,13 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
+            
             otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
             otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             session['otp_secret'] = otp_secret  # Store OTP secret in session
             session['otp_uri'] = otp_uri  # Store OTP URI in session
-            session['email'] = user.email
-            return redirect(url_for('verify_2fa'))
 
-            #return redirect(url_for('home'))
+            return redirect(url_for('verify_2fa'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
@@ -88,22 +87,20 @@ def login():
 
 @app.route('/verify_2fa', methods=['GET', 'POST'])
 def verify_2fa():
+    if 'otp_secret' not in session or 'otp_uri' not in session:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         otp = request.form['otp']
         
         otp_secret = session.get('otp_secret')
-        if otp_secret:
-            if pyotp.TOTP(otp_secret).verify(otp):
-                session['user_id'] = get_user_id(session['email'])
-                return redirect(url_for('home'))
-            else:
-                return render_template('2fa.html', error='Invalid OTP', qr_code='', setup_key='')
+        if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
+            session['user_id'] = get_user_id(session['email'])
+            return redirect(url_for('home'))
         else:
-            return redirect(url_for('login'))  # If no OTP secret found, redirect to login
+            return render_template('2fa.html', error='Invalid OTP', qr_code='', setup_key='')
 
-    otp_uri = session.get('otp_uri')
-    if not otp_uri:
-        return redirect(url_for('login'))  # If no OTP URI found, redirect to login
+    otp_uri = session['otp_uri']
 
     # Generate QR code image
     qr = qrcode.make(otp_uri)
@@ -122,7 +119,6 @@ def get_user_id(email):
     user = db_session.query(User).filter_by(email=email).first()
     db_session.close()
     return user.user_id if user else None
-
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
