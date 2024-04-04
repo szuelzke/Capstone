@@ -74,10 +74,10 @@ def login():
             session['user_id'] = user.user_id
             session['email'] = user.email
 
-            otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
-            otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
-            session['otp_secret'] = otp_secret  # Store OTP secret in session
-            session['otp_uri'] = otp_uri  # Store OTP URI in session
+            #otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+            #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
+            #session['otp_secret'] = otp_secret  # Store OTP secret in session
+            #session['otp_uri'] = otp_uri  # Store OTP URI in session
 
             return redirect(url_for('2fa'))
 
