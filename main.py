@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker 
 import bcrypt
@@ -36,7 +36,7 @@ class Account(Base):
 
     account_id = Column(Integer, primary_key=True)
     account_name = Column(String(255))
-    user_id = Column(Integer)
+    user_id = Column(Integer, ForeignKey(User.user_id))
     is_active = Column(Boolean)
 
 try:
@@ -48,7 +48,12 @@ except Exception as e:
 @app.route('/')
 def home():
     if 'user_id' in session:
-        return render_template('index.html')
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        accounts = db_session.query(Account).filter_by(user_id=user_id)
+        db_session.close()
+        return render_template('index.html', user=user, accounts=accounts)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
@@ -190,7 +195,9 @@ def add_account():
     if request.method == 'POST':
         account_name = request.form['accountname']
         new_account = Account(
-            account_name = account_name
+            account_name = account_name,
+            user_id = session['user_id'],
+            is_active = True
         )
 
         Session = sessionmaker(bind=engine)
