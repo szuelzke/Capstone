@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker 
 import bcrypt
@@ -40,7 +40,7 @@ class Account(Base):
 
     account_id = Column(Integer, primary_key=True)
     account_name = Column(String(255))
-    user_id = Column(Integer)
+    user_id = Column(Integer, ForeignKey(User.user_id))
     is_active = Column(Boolean)
 
 try:
@@ -52,7 +52,12 @@ except Exception as e:
 @app.route('/')
 def home():
     if 'user_id' in session:
-        return render_template('index.html')
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        accounts = db_session.query(Account).filter_by(user_id=user_id)
+        db_session.close()
+        return render_template('index.html', user=user, accounts=accounts)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
@@ -75,20 +80,20 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
-            otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
-            session['otp_secret'] = otp_secret  # Store OTP secret in session
-            session['otp_uri'] = otp_uri  # Store OTP URI in session
-            return redirect(url_for('verify_mfa'))
+            #otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+            #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
+            #session['otp_secret'] = otp_secret  # Store OTP secret in session
+            #session['otp_uri'] = otp_uri  # Store OTP URI in session
+            #return redirect(url_for('mfa'))
             
-            #return redirect(url_for('home'))
+            return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
     return render_template('login.html')
 
-@app.route('/verify_mfa', methods=['GET', 'POST'])
-def verify_mfa():
-    if 'user_id' in session:
+#@app.route('/mfa', methods=['GET','POST'])
+#def mfa():
+#    if 'user_id' in session:
 #        user_id = session['user_id']
 #        db_session = Session()
 #        user = db_session.query(User).filter_by(user_id=user_id).first()
@@ -100,17 +105,18 @@ def verify_mfa():
 #            if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
 #               return redirect(url_for('home'))
 #            else:
-#                return render_template('verify_mfa.html', error='Invalid OTP', qr_code='', setup_key='')
-        otp_uri = session['otp_uri']
+#                return render_template('mfa.html', error='Invalid OTP', qr_code='', setup_key='')
+        #otp_uri = session['otp_uri']
         # Generate QR code image
-        qr = qrcode.make(otp_uri)
+        #qr = qrcode.make(otp_uri)
         # Convert QR code image to Base64 string
-        qr_base64 = base64.b64encode(qr.tobytes()).decode()
+        #qr_base64 = base64.b64encode(qr.tobytes()).decode()
         # Get setup key for manual addition to Google Authenticator
-        setup_key = pyotp.TOTP(session['otp_secret']).secret
+        #setup_key = pyotp.TOTP(session['otp_secret']).secret
         # Render the template with QR code and setup key
-        return render_template('verify_mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
-    return render_template('login.html')
+        #return render_template('mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+#        return render_template('mfa.html')
+#    return render_template('login.html')
     
 
 def get_user_id(email):
@@ -193,7 +199,9 @@ def add_account():
     if request.method == 'POST':
         account_name = request.form['accountname']
         new_account = Account(
-            account_name = account_name
+            account_name = account_name,
+            user_id = session['user_id'],
+            is_active = True
         )
 
         Session = sessionmaker(bind=engine)
