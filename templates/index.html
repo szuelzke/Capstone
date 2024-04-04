@@ -32,7 +32,7 @@
             <img src={picture}></img>
 
         </div>
-        <h2>{{firstname}} {{lastname}}</h2>
+        <h2>{{user.firstname}} {{user.lastname}}</h2>
 
         <div class="nav">
             <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
@@ -41,10 +41,12 @@
 
         <div class="nav">
             <h2>Personal</h2>
+            {% for account in accounts %}
             <a href="{{ url_for('account') }}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
-                PNC
+                {{ account.account_name }}
             </a>
+            {% endfor %}
             <a href="{{ url_for('add_account')}}">
                 <i class="fa-solid fa-plus pd-5"></i>
                 Add Account
