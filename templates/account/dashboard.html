@@ -9,7 +9,7 @@
 {% block content %}
 <div class="row">
     <div class="card no-bg view-balance">
-        <a href="/">
+        <a href="{{ url_for('account') }}">
             <h1 class="hide-text">Balance</h1>
             <h2>Account Title</h2>
         </a>
@@ -18,54 +18,42 @@
 
     <a href="" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>View/Edit Budget</a>
 
-    <a href="" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
+    <a href="{{url_for('transactions')}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
 
     <a href="" class="card card-link c-f20"><i class='fa-solid fa-share-nodes'></i>Shared Expenses</a>
 
 </div>
 
+{% block inner_content %}
 <div class="row">
-    <div class='card'>
-        <h2>{month}'s Transactions</h2>
-        <button onClick={toggleShowTransactions} class='transtbl-nav tooltip'>
-            <i class='fa-solid fa-plus pd-5'></i>
-            <span class='tooltiptext'>Add Transaction</span>
-        </button>
-
+    <div class="card">
+        <h2>Account Notifications</h2>
+    </div>
+    <div class="card">
+        <h2>Recent Transactions</h2>
         <table id="transactions-tbl">
             <thead>
-                <tr>
-                    <th class='tooltip'><i class="fa-regular fa-calendar"></i><span class='tooltiptext'>Date</span></th>
-                    <th class='tooltip'><i class="fa-solid fa-building-columns"></i>
-                        <span class='tooltiptext'>Description</span> </th>
-
-                    <th class='tooltip'><i class="fa-solid fa-money-bill" ></i><span class='tooltiptext'>Amount</span></th>
-                    <th>Balance</th>
-                    <th class='tooltip'><i class="fa-solid fa-tags"></i><span class='tooltiptext'>Category</span></th>
-                    <th></th>
-                </tr>
+                <th class='tooltip'><i class="fa-regular fa-calendar"></i><span class='tooltiptext'>Date</span></th>
+                <th class='tooltip'><i class="fa-solid fa-building-columns"></i>
+                    <span class='tooltiptext'>Description</span>
+                </th>
+                <th class='tooltip'><i class="fa-solid fa-money-bill"></i><span class='tooltiptext'>Amount</span>
+                </th>
             </thead>
-
             <tbody>
-                <tr>
-                    <td>{props.date}</td>
-                    <td>{props.title}</td>
-                    <td>${props.amount}</td>
-                    <td>${props.balanceremain}</td>
-                    <td>{props.category}</td>
-                    <td class="sharespend-button">
-                        <button onClick={toggleShowEdit}><i class="fa-solid fa-pen-to-square"></i>Edit</button>
-                        <button><i class="fa-solid fa-trash"></i> Delete</button> 
-                        <button onClick={toggleShowShare}><i class="fa-solid fa-share"></i> Share</button>   
-                    </td>
-                </tr>
+                <td>date</td>
+                <td>desc</td>
+                <td>amount</td>
             </tbody>
-
         </table>
     </div>
 </div>
 
-<script>
-    
-</script>
+
+<div class="row">
+    <div class="card">
+        Account summary
+    </div>
+</div>
+{% endblock %}
 {% endblock %}

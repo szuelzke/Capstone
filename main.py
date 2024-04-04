@@ -202,6 +202,7 @@ def account():
 
 @app.route('/add-account', methods=['POST', 'GET'])
 def add_account():
+    # don't know if this works 
     if request.method == 'POST':
         account_name = request.form['accountname']
         new_account = Account(
@@ -214,5 +215,31 @@ def add_account():
         session.commit()
         session.close()
         return redirect(url_for('home'))
-    return render_template('/account/add_account.html')
-    
+    return render_template('/forms/add_account.html')
+
+@app.route('/account/transaction', methods=['GET'])
+def transactions():
+    # show all transactions
+    return render_template('account/transactions.html')
+
+@app.route('/account/transaction/add', methods=['POST', 'GET'])
+def addtransaction():
+    if request.method == 'POST':
+        # add new transaction
+        return redirect(url_for('transactions'))
+    return render_template('forms/add_transaction.html')
+
+@app.route('/account/transaction/edit', methods=['POST', 'GET'])
+def edittransaction():
+    if request.method == 'POST':
+        # post editted transaction
+        return redirect(url_for('transactions'))
+    # display transaction info to form
+    return render_template('forms/edit_transaction.html')
+
+@app.route('/account/transaction/share', methods=['POST', 'GET'])
+def sharetransaction():
+    if request.method == 'POST':
+        # post share request
+        return redirect(url_for('transactions'))
+    return render_template('forms/share_transaction.html')

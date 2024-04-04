@@ -166,6 +166,9 @@
   }
   
   /** MISC. STYLING **/
+  a {
+    text-decoration: none;
+  }
   /* used for adding padding to font awesome icons */
   .pd-5 {
     padding:5px;
