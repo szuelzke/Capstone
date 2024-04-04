@@ -27,6 +27,7 @@ engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/F
 
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
+mfa = False
 
 class User(Base):
     __tablename__ = 'user'
@@ -62,7 +63,7 @@ except Exception as e:
 
 @app.route('/')
 def home():
-    if 'user_id' in session:
+    if 'user_id' in session and mfa is True:
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
@@ -115,6 +116,7 @@ def mfa():
                 otp = request.form['otp']
                 if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
                     db_session.close()
+                    mfa = True
                     return redirect(url_for('home'))
                 else:
                     db_session.close()
@@ -176,13 +178,14 @@ def signup():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    mfa = False
     # Clear session data
     session.clear()
     return redirect(url_for('login'))
 
 @app.route('/settings')
 def settings():
-    if 'user_id' in session:
+    if 'user_id' in session and mfa is True:
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
@@ -195,7 +198,7 @@ def settings():
 
 @app.route('/account')
 def account():
-    if 'user_id' in session:
+    if 'user_id' in session and mfa is True:
         return render_template('/account/dashboard.html')
     else:
         return redirect(url_for('login'))
