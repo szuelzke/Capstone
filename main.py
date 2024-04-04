@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker 
+from sqlalchemy.orm import sessionmaker
+from flask_mail import Mail, Message
 import bcrypt
 import pyotp
 import qrcode
@@ -12,6 +13,15 @@ from datetime import date
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your_password'
+
+mail = Mail(app)
 
 engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
 
@@ -248,6 +258,19 @@ def calculate_expiry_time():
     expiry_time = datetime.datetime.now() + datetime.timedelta(hours=1)
     return expiry_time
 
+def send_reset_password_email(user_email, reset_token):
+    subject = "Reset Your Password"
+    sender = "your_email@gmail.com"
+    recipients = [user_email]
+    text_body = f"Hello,\n\nPlease click the following link to reset your password:\n\nReset Password Link: http://your_website.com/reset-password/{reset_token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nYour Website Team"
+    html_body = f"<p>Hello,</p><p>Please click the following link to reset your password:</p><p><a href='http://your_website.com/reset-password/{reset_token}'>Reset Password Link</a></p><p>If you did not request a password reset, please ignore this email.</p><p>Best regards,<br>Your Website Team</p>"
+
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+
+    mail.send(msg)
+
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -269,7 +292,7 @@ def forgot_password():
             session.commit()
             session.close()
             
-            # send_reset_password_email(user.email, reset_token)
+            send_reset_password_email(user.email, reset_token)
 
             return render_template('password_reset_link_sent.html', email=email)
         else:
