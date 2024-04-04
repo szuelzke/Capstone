@@ -98,7 +98,6 @@ def login():
                 user.mfa_key = otp_secret
                 db_session.commit()
             db_session.close()
-            session['otp_secret'] = user.mfa_key
             return redirect(url_for('mfa'))
         else:
             return render_template('login.html', error='Invalid email or password')
@@ -113,11 +112,11 @@ def mfa():
         db_session.close()
         if request.method == 'POST':
             otp = request.form['otp']
-            mfa_key = session.get('otp_secret')
+            mfa_key = user.mfa_key
             if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
                return redirect(url_for('home'))
             else:
-                return render_template('mfa.html', error='Invalid OTP', setup_key='')
+                return render_template('mfa.html', error='Invalid OTP', setup_key=mfa_key)
         return render_template('mfa.html', setup_key = mfa_key)
     return render_template('login.html')
     
