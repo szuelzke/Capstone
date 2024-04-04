@@ -206,6 +206,10 @@ def account():
 
 @app.route('/add-account', methods=['POST', 'GET'])
 def add_account():
+    user_id = session['user_id']
+    db_session = Session()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
+    db_session.close()
     # don't know if this works 
     if request.method == 'POST':
         account_name = request.form['accountname']
@@ -221,7 +225,7 @@ def add_account():
         session.commit()
         session.close()
         return redirect(url_for('home'))
-    return render_template('/forms/add_account.html')
+    return render_template('/forms/add_account.html', user=user)
 
 
 
