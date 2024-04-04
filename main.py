@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker 
 import bcrypt
 import pyotp
 import qrcode
 import base64
+import secrets
+import datetime
 from datetime import date
 
 app = Flask(__name__)
@@ -30,6 +32,8 @@ class User(Base):
     social_name = Column(String(255))
     created_date = Column(String(255))
     is_active = Column(Boolean)
+    reset_token = Column(String(255))
+    reset_token_expiry = Column(DateTime)
 
 class Account(Base):
     __tablename__ = 'account'
@@ -226,3 +230,62 @@ def sharetransaction():
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
+
+def generate_reset_token():
+    return secrets.token_urlsafe(32)
+
+def calculate_expiry_time():
+    expiry_time = datetime.datetime.now() + datetime.timedelta(hours=1)
+    return expiry_time
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(email=email).first()
+        db_session.close()
+
+        if user:
+            # Generate and store reset token
+            reset_token = generate_reset_token()
+            user.reset_token = reset_token
+            user.reset_token_expiry = calculate_expiry_time()
+            
+            # send_reset_password_email(user.email, reset_token)
+
+            return render_template('password_reset_link_sent.html', email=email)
+        else:
+            return render_template('forgot_password.html', error='Email not found')
+    return render_template('forgot_password.html')
+
+@app.route('/reset-password/<reset_token>', methods=['GET', 'POST'])
+def reset_password(reset_token):
+    if request.method == 'POST':
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        session = Session()
+        user = session.query(User).filter_by(reset_token=reset_token).first()
+        session.close()
+
+        if user:
+            if new_password == confirm_password:
+                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+                user.password = hashed_password
+                user.reset_token = None
+                user.reset_token_expiry = None
+
+                session = Session()
+                session.add(user)
+                session.commit()
+                session.close()
+
+                return render_template('password_reset_success.html')
+            else:
+                return render_template('password_mismatch_error.html')
+        else:
+            return render_template('invalid_reset_token_error.html')
+    return render_template('reset_password.html')
