@@ -99,6 +99,7 @@ def login():
                 user.mfa_key = otp_secret
                 db_session.commit()
                 #session['mfa_key'] = user.mfa_key
+
             db_session.close()
             otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             session['otp_uri'] = otp_uri  # Store OTP URI in session
@@ -133,7 +134,7 @@ def mfa():
         # Get setup key for manual addition to Google Authenticator
         setup_key = pyotp.TOTP(mfa_key).secret
         # Render the template with QR code and setup key
-        return render_template('mfa.html', setup_key=setup_key)
+        return render_template('mfa.html', setup_key=mfa_key)
     return render_template('login.html')
     
 
