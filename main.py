@@ -132,7 +132,7 @@ def mfa():
         # Convert QR code image to Base64 string
         #qr_base64 = base64.b64encode(qr.tobytes()).decode()
         # Get setup key for manual addition to Google Authenticator
-        setup_key = pyotp.TOTP(mfa_key).secret
+        #setup_key = pyotp.TOTP(mfa_key).secret
         # Render the template with QR code and setup key
         return render_template('mfa.html', setup_key=mfa_key)
     return render_template('login.html')
