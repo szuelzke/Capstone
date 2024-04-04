@@ -282,9 +282,9 @@ def reset_password(reset_token):
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
 
+        Session = sessionmaker(bind=engine)
         session = Session()
         user = session.query(User).filter_by(reset_token=reset_token).first()
-        session.close()
 
         if user:
             if user.reset_token_expiry and user.reset_token_expiry > datetime.now():
@@ -294,17 +294,15 @@ def reset_password(reset_token):
                     user.password = hashed_password
                     user.reset_token = None
                     user.reset_token_expiry = None
-
-                    session = Session()
-                    session.add(user)
+                    
                     session.commit()
                     session.close()
-
+                   
                     return render_template('password_reset_success.html')
                 else:
-                    return render_template('password_mismatch_error.html')
+                    return render_template('reset_password.html', error='Passwords Do Not Match')
             else:
-                return render_template('expired_reset_token_error.html')
+                return render_template('reset_password.html', error='Expired Code')
         else:
-            return render_template('invalid_reset_token_error.html')
+            return render_template('reset_password.html', error='Invalid Token')
     return render_template('reset_password.html')
