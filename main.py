@@ -94,9 +94,10 @@ def login():
 
             db_session = Session()
             if user.mfa_key is None:
-                otp_secret = pyotp.random_base32()
+                otp_secret = pyotp.random_base32() # generate secret setup key
                 user.mfa_key = otp_secret
                 db_session.commit()
+                
             db_session.close()
             return redirect(url_for('mfa'))
         else:
