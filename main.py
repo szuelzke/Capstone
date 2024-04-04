@@ -168,13 +168,14 @@ def logout():
 @app.route('/settings')
 def settings():
     if 'user_id' in session:
-        first_name = session['first_name']
-        last_name = session['last_name']
-        phone = session['phone']
-        email = session['email']
-        created_date = session['current_date']
+        #first_name = session['first_name']
+        #last_name = session['last_name']
+        #phone = session['phone']
+        #email = session['email']
+        #created_date = session['current_date']
+        return render_template('settings.html')
         
-        return render_template('settings.html', first_name = first_name, last_name = last_name, phone = phone, email = email, created_date = created_date)
+        #return render_template('settings.html', first_name = first_name, last_name = last_name, phone = phone, email = email, created_date = created_date)
     else:
         return redirect(url_for('login'))
 
