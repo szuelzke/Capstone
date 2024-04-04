@@ -87,24 +87,20 @@ def login():
         password = request.form['password']
         db_session = Session()
         user = db_session.query(User).filter_by(email=email).first()
-        db_session.close()
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
 
-            db_session = Session()
             if user.mfa_key is None:
                 otp_secret = pyotp.random_base32() # generate secret setup key
                 user.mfa_key = otp_secret
-                try:
-                    db_session.commit()
-                except Exception as e:
-                    print("An error occurred during commit:", str(e))
+                db_session.commit()
 
-            db_session.close()
+            db_session.close()  # Close the session after all database operations
             return redirect(url_for('mfa'))
         else:
-            return render_template('login.html', error='Invalid email or password')
+           db_session.close()
+           return render_template('login.html', error='Invalid email or password')
     return render_template('login.html')
 
 @app.route('/mfa', methods=['GET', 'POST'])
