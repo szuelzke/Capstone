@@ -208,7 +208,7 @@ def add_account():
         return redirect(url_for('home'))
     return render_template('/forms/add_account.html')
 
-'''
+
 @app.route('/account/transaction', methods=['GET'])
 def transactions():
     # show all transactions
@@ -235,4 +235,3 @@ def sharetransaction():
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
-'''
