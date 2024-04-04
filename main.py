@@ -70,17 +70,21 @@ def login():
         user = db_session.query(User).filter_by(email=email).first()
         
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            '''
             otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
             otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             session['otp_secret'] = otp_secret  # Store OTP secret in session
             session['otp_uri'] = otp_uri  # Store OTP URI in session
             session['email'] = user.email
             return redirect(url_for('verify_2fa'))
+            '''
+            return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
     return render_template('login.html')
 
+'''
 @app.route('/verify_2fa', methods=['GET', 'POST'])
 def verify_2fa():
     if request.method == 'POST':
@@ -117,6 +121,7 @@ def get_user_id(email):
     user = db_session.query(User).filter_by(email=email).first()
     db_session.close()
     return user.user_id if user else None
+'''
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
