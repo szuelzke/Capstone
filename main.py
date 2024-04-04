@@ -3,9 +3,9 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker 
 import bcrypt
-import pyotp
-import qrcode
-import base64
+#import pyotp
+#import qrcode
+#import base64
 from datetime import date
 
 app = Flask(__name__)
@@ -73,55 +73,55 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
-            '''
-            otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
-            otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
-            session['otp_secret'] = otp_secret  # Store OTP secret in session
-            session['otp_uri'] = otp_uri  # Store OTP URI in session
 
-            return redirect(url_for('verify_2fa'))
-            '''
+            #otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+            #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
+            #session['otp_secret'] = otp_secret  # Store OTP secret in session
+            #session['otp_uri'] = otp_uri  # Store OTP URI in session
+
+            #return redirect(url_for('verify_2fa'))
+
             return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
     return render_template('login.html')
-'''
-@app.route('/verify_2fa', methods=['GET', 'POST'])
-def verify_2fa():
-    if 'otp_secret' not in session or 'otp_uri' not in session:
-        return redirect(url_for('login'))
 
-    if request.method == 'POST':
-        otp = request.form['otp']
-        
-        otp_secret = session.get('otp_secret')
-        if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
-            session['user_id'] = get_user_id(session['email'])
-            return redirect(url_for('home'))
-        else:
-            return render_template('2fa.html', error='Invalid OTP', qr_code='', setup_key='')
-
-    otp_uri = session['otp_uri']
-
-    # Generate QR code image
-    qr = qrcode.make(otp_uri)
-
-    # Convert QR code image to Base64 string
-    qr_base64 = base64.b64encode(qr.tobytes()).decode()
-
-    # Get setup key for manual addition to Google Authenticator
-    setup_key = pyotp.TOTP(session['otp_secret']).secret
-
-    # Render the template with QR code and setup key
-    return render_template('2fa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+#@app.route('/verify_2fa', methods=['GET', 'POST'])
+#def verify_2fa():
+#    if 'otp_secret' not in session or 'otp_uri' not in session:
+#        return redirect(url_for('login'))
+#
+#    if request.method == 'POST':
+#        otp = request.form['otp']
+#        
+#       otp_secret = session.get('otp_secret')
+#       if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
+#           session['user_id'] = get_user_id(session['email'])
+#           return redirect(url_for('home'))
+#       else
+#           return render_template('2fa.html', error='Invalid OTP', qr_code='', setup_key='')
+#
+#    otp_uri = session['otp_uri']
+#
+#    # Generate QR code image
+#    qr = qrcode.make(otp_uri)
+#
+#    # Convert QR code image to Base64 string
+#    qr_base64 = base64.b64encode(qr.tobytes()).decode()
+#
+#    # Get setup key for manual addition to Google Authenticator
+#    setup_key = pyotp.TOTP(session['otp_secret']).secret
+#
+#    # Render the template with QR code and setup key
+#    return render_template('2fa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
 
 def get_user_id(email):
     db_session = Session()
     user = db_session.query(User).filter_by(email=email).first()
     db_session.close()
     return user.user_id if user else None
-'''
+
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
