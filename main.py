@@ -287,21 +287,24 @@ def reset_password(reset_token):
         session.close()
 
         if user:
-            if new_password == confirm_password:
-                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+            if user.reset_token_expiry and user.reset_token_expiry > datetime.now():
+                if new_password == confirm_password:
+                    hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
 
-                user.password = hashed_password
-                user.reset_token = None
-                user.reset_token_expiry = None
+                    user.password = hashed_password
+                    user.reset_token = None
+                    user.reset_token_expiry = None
 
-                session = Session()
-                session.add(user)
-                session.commit()
-                session.close()
+                    session = Session()
+                    session.add(user)
+                    session.commit()
+                    session.close()
 
-                return render_template('password_reset_success.html')
+                    return render_template('password_reset_success.html')
+                else:
+                    return render_template('password_mismatch_error.html')
             else:
-                return render_template('password_mismatch_error.html')
+                return render_template('expired_reset_token_error.html')
         else:
             return render_template('invalid_reset_token_error.html')
     return render_template('reset_password.html')
