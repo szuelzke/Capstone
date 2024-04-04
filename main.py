@@ -6,7 +6,7 @@ import bcrypt
 #import pyotp
 #import qrcode
 #import base64
-#from datetime import date
+from datetime import date
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -153,7 +153,7 @@ def signup():
             phone_number=phone,
             email=email,
             password=password_hash,
-            #created_date = date.today(),
+            created_date = date.today(),
             is_active=True  # Assuming user is active upon signup
         )
 
@@ -176,14 +176,14 @@ def logout():
 @app.route('/settings')
 def settings():
     if 'user_id' in session:
-        #first_name = session['first_name']
-        #last_name = session['last_name']
-        #phone = session['phone']
-        #email = session['email']
-        #created_date = session['current_date']
-        return render_template('settings.html')
-        
-        #return render_template('settings.html', first_name = first_name, last_name = last_name, phone = phone, email = email, created_date = created_date)
+        first_name = session['first_name']
+        last_name = session['last_name']
+        phone = session['phone']
+        email = session['email']
+        created_date = session['current_date']
+
+        #return render_template('settings.html')
+        return render_template('settings.html', first_name = first_name, last_name = last_name, phone = phone, email = email, created_date = created_date)
     else:
         return redirect(url_for('login'))
 
