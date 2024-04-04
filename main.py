@@ -80,15 +80,16 @@ def login():
             #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             #session['otp_secret'] = otp_secret  # Store OTP secret in session
             #session['otp_uri'] = otp_uri  # Store OTP URI in session
-            return redirect(url_for('verify-mfa'))
+            print("test")
+            return redirect(url_for('mfa'))
             
             #return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
     return render_template('login.html')
 
-@app.route('/verify-mfa', methods=['GET', 'POST'])
-def verify_mfa():
+@app.route('/mfa', methods=['GET', 'POST'])
+def mfa():
     if 'user_id' in session:
 #        user_id = session['user_id']
 #        db_session = Session()
@@ -101,7 +102,7 @@ def verify_mfa():
 #            if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
 #               return redirect(url_for('home'))
 #            else:
-#                return render_template('verify-mfa.html', error='Invalid OTP', qr_code='', setup_key='')
+#                return render_template('mfa.html', error='Invalid OTP', qr_code='', setup_key='')
         #otp_uri = session['otp_uri']
         # Generate QR code image
         #qr = qrcode.make(otp_uri)
@@ -110,8 +111,8 @@ def verify_mfa():
         # Get setup key for manual addition to Google Authenticator
         #setup_key = pyotp.TOTP(session['otp_secret']).secret
         # Render the template with QR code and setup key
-        #return render_template('verify-mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
-        return render_template('verify-mfa.html')
+        #return render_template('mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+        return render_template('mfa.html')
     return render_template('login.html')
     
 
