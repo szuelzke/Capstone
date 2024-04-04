@@ -44,6 +44,7 @@ class User(Base):
     is_active = Column(Boolean)
     reset_token = Column(String(255))
     reset_token_expiry = Column(DateTime)
+    mfa_key = Column(String(255))
 
 class Account(Base):
     __tablename__ = 'account'
@@ -91,9 +92,14 @@ def login():
             session['user_id'] = user.user_id
             session['email'] = user.email
 
-            otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+            if user.mfa_key != None:
+                session['mfa_key'] = user.mfa_key
+            else:
+                otp_secret = pyotp.random_base32()  # Generate new OTP secret for each login attempt
+                user.mfa_key = otp_secret
+                session['mfa_key'] = user.mfa_key
+
             otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
-            session['otp_secret'] = otp_secret  # Store OTP secret in session
             session['otp_uri'] = otp_uri  # Store OTP URI in session
             
             return redirect(url_for('mfa'))
@@ -112,8 +118,8 @@ def mfa():
         if request.method == 'POST':
         
             otp = request.form['otp']
-            otp_secret = session.get('otp_secret')
-            if otp_secret and pyotp.TOTP(otp_secret).verify(otp):
+            mfa_key = session.get('mfa_key')
+            if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
                return redirect(url_for('home'))
             else:
                 return render_template('mfa.html', error='Invalid OTP', qr_code='', setup_key='')
@@ -124,7 +130,7 @@ def mfa():
         # Convert QR code image to Base64 string
         #qr_base64 = base64.b64encode(qr.tobytes()).decode()
         # Get setup key for manual addition to Google Authenticator
-        setup_key = pyotp.TOTP(session['otp_secret']).secret
+        setup_key = pyotp.TOTP(session['mfa_key']).secret
         # Render the template with QR code and setup key
         return render_template('mfa.html', setup_key=setup_key)
     return render_template('login.html')
