@@ -96,8 +96,11 @@ def login():
             if user.mfa_key is None:
                 otp_secret = pyotp.random_base32() # generate secret setup key
                 user.mfa_key = otp_secret
-                db_session.commit()
-                
+                try:
+                    db_session.commit()
+                except Exception as e:
+                    print("An error occurred during commit:", str(e))
+
             db_session.close()
             return redirect(url_for('mfa'))
         else:
