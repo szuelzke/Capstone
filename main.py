@@ -297,7 +297,6 @@ def forgot_password():
             user.reset_token = reset_token
             user.reset_token_expiry = calculate_expiry_time()
 
-            Session = sessionmaker(bind=engine)
             session = Session()
             session.add(user)
             session.commit()
