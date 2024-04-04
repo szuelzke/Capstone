@@ -79,16 +79,15 @@ def login():
             #session['otp_secret'] = otp_secret  # Store OTP secret in session
             #session['otp_uri'] = otp_uri  # Store OTP URI in session
 
-            return redirect(url_for('verify_2fa'))
-
+            return redirect(url_for('verify_mfa'))
             #return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
 
     return render_template('login.html')
 
-@app.route('/verify_2fa', methods=['GET', 'POST'])
-def verify_2fa():
+@app.route('/verify_mfa', methods=['GET', 'POST'])
+def verify_mfa():
     if 'otp_secret' not in session or 'otp_uri' not in session:
         return redirect(url_for('login'))
 
@@ -100,7 +99,7 @@ def verify_2fa():
            session['user_id'] = get_user_id(session['email'])
            return redirect(url_for('home'))
         else:
-           return render_template('verify_2fa.html', error='Invalid OTP', qr_code='', setup_key='')
+           return render_template('verify_mfa.html', error='Invalid OTP', qr_code='', setup_key='')
 
     otp_uri = session['otp_uri']
 
@@ -114,7 +113,7 @@ def verify_2fa():
     setup_key = pyotp.TOTP(session['otp_secret']).secret
 
     # Render the template with QR code and setup key
-    return render_template('verify_2fa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
+    return render_template('verify_mfa.html', otp_uri=otp_uri, qr_code=qr_base64, setup_key=setup_key)
 
 def get_user_id(email):
     db_session = Session()
