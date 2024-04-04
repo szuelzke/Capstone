@@ -122,9 +122,9 @@ def mfa():
                     return redirect(url_for('home'))
                 else:
                     db_session.close()
-                    return render_template('mfa.html', error='Invalid OTP', setup_key=mfa_key)
+                    return render_template('mfa.html', error='Invalid OTP', user=user)
             db_session.close()
-            return render_template('mfa.html', setup_key=mfa_key)
+            return render_template('mfa.html', user=user)
         else:
             db_session.close()
             return redirect(url_for('login'))  # Redirect to login if user not found
