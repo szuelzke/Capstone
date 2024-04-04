@@ -80,14 +80,14 @@ def login():
             #otp_uri = pyotp.totp.TOTP(otp_secret).provisioning_uri(user.email, issuer_name="FlashFin")
             #session['otp_secret'] = otp_secret  # Store OTP secret in session
             #session['otp_uri'] = otp_uri  # Store OTP URI in session
-            #return redirect(url_for('mfa'))
+            return redirect(url_for('mfa'))
             
-            return redirect(url_for('home'))
+            #return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid email or password')
     return render_template('login.html')
 
-@app.route('/mfa', methods=['GET', 'POST'])
+@app.route('/mfa')
 def mfa():
     if 'user_id' in session:
         user_id = session['user_id']
