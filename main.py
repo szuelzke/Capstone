@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_mail import Mail, Message
@@ -9,7 +9,7 @@ import qrcode
 import base64
 import secrets
 import datetime
-from datetime import date
+from datetime import date, datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -53,6 +53,29 @@ class Account(Base):
     account_name = Column(String(255))
     user_id = Column(Integer, ForeignKey(User.user_id))
     is_active = Column(Boolean)
+
+class Category(Base):
+    __tablename__ = 'category'
+
+    category_id = Column(Integer, primary_key=True, autoincrement=True)
+    category_name = Column(String(255))
+    symbol = Column(String(50))
+    color = Column(String(50))
+
+class Transaction(Base):
+    __tablename__ = 'transaction'
+
+    transaction_id = Column(Integer, primary_key=True, autoincrement=True)
+    account_id = Column(Integer, ForeignKey(Account.account_id))
+    date = Column(Date)
+    amount = Column(DECIMAL(10, 2))
+    title = Column(String(255))
+    category_id = Column(Integer, ForeignKey(Category.category_id))
+    amount_remaining = Column(DECIMAL(10, 2))
+
+
+
+
 
 try:
     connection = engine.connect()
@@ -197,7 +220,18 @@ def settings():
 @app.route('/account')
 def account():
     if 'user_id' in session  and session.get('mfa_completed', False):
-        return render_template('/account/dashboard.html')
+        user_id = session['user_id']
+        account = Account.query.filter_by(user_id=user_id).first()
+        if account:
+            account_id = account.account_id
+            
+            current_month = datetime.now().month
+            
+            transactions = Transaction.query.filter(extract('month', Transaction.date) == current_month,Transaction.account_id == account_id).all()
+
+            return render_template('/account/dashboard.html', transactions = transactions)
+        else:
+            return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
@@ -228,15 +262,43 @@ def add_account():
 
 @app.route('/account/transaction', methods=['GET'])
 def transactions():
-    # show all transactions
-    return render_template('account/transactions.html')
+    if 'user_id' in session  and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        account = Account.query.filter_by(user_id=user_id).first()
+
+        if account:
+            account_id = account.account_id
+            transactions = Transaction.query.filter_by(account_id=account_id).all()
+            return render_template('account/transactions.html',transactions=transactions)
+        else:
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/account/transaction/add', methods=['POST', 'GET'])
 def addtransaction():
-    if request.method == 'POST':
-        # add new transaction
-        return redirect(url_for('transactions'))
-    return render_template('forms/add_transaction.html')
+    if 'user_id' in session  and session.get('mfa_completed', False):
+        if request.method == 'POST':
+            user_id = session['user_id']
+            date = request.form['date']
+            amount = request.form['amount']
+            title = request.form['title']
+            category_id = request.form['category_id']
+            db_session = Session()  
+            account = db_session.query(Account).filter_by(user_id=user_id).first()
+            db_session.close()
+            if account:
+                new_transaction = Transaction(account_id=account.account_id, date=date, amount=amount,title=title, category_id=category_id)
+                db_session = Session() 
+                db_session.add(new_transaction)
+                db_session.commit()
+                db_session.close()
+                return redirect(url_for('transactions'))
+            else:
+                return "Account not found"
+        return render_template('forms/add_transaction.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/account/transaction/edit', methods=['POST', 'GET'])
 def edittransaction():
