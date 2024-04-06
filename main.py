@@ -419,7 +419,7 @@ def edit_account(account_id):
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
-
+'''
 @app.route('/account')
 def account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -447,6 +447,40 @@ def account():
             return redirect(url_for('home'))
     else:
         return redirect(url_for('login'))
+'''
+@app.route('/account/<int:account_id>')
+def account(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+
+        # Query the user from the database
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        if user:
+            # If user exists, query the specific account associated with the user
+            account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+
+            if account:
+                current_month = datetime.now().month
+
+                # Query transactions for the current month associated with the specific account
+                transactions = db_session.query(Transaction).filter(
+                    extract('month', Transaction.date) == current_month,
+                    Transaction.account_id == account_id
+                ).all()
+
+                db_session.close()
+                return render_template('dashboard.html', user=user, account=account, transactions=transactions)
+            else:
+                db_session.close()
+                return render_template('error.html', message="Account not found")
+        else:
+            db_session.close()
+            return redirect(url_for('home'))
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
