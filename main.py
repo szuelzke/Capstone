@@ -10,6 +10,8 @@ import base64
 import secrets
 import datetime
 from datetime import date, datetime
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -27,6 +29,14 @@ engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/F
 
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
+
+UPLOAD_FOLDER = 'path/to/upload/folder'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class User(Base):
     __tablename__ = 'user'
@@ -281,14 +291,36 @@ def settings():
     else:
         return redirect(url_for('login'))
 
-# Function to upload profile picture
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
-        # Handle file upload logic here
-        flash('Profile picture uploaded successfully.')
-        return redirect(url_for('settings'))
+        if 'profile_picture' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        
+        file = request.files['profile_picture']
+        
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            
+            db_session = Session()
+            user = db_session.query(User).filter_by(user_id=user_id).first()
+            user.image_link = file_path  # Save the file path to the database
+            db_session.commit()
+            db_session.close()
+            
+            flash('Profile picture uploaded successfully.')
+            return redirect(url_for('settings'))
+        else:
+            flash('Invalid file format. Only images are allowed.')
+            return redirect(request.url)
     else:
         return redirect(url_for('login'))
 

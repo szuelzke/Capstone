@@ -29,7 +29,7 @@
     <div id="sidebar" class="sidebar">
         <h1><a href="{{ url_for('account') }}">FlashFin</a></h1>
         <div class='profile-img'>
-            <img src={picture}></img>
+            <img src="{{ user.image_link }}"></img>
 
         </div>
         <h2>{{user.firstname}} {{user.lastname}}</h2>

@@ -22,8 +22,8 @@
             <form action="{{ url_for('delete_account', account_id=acc.account_id) }}" method="post">
                 <input type="password" name="current_password" placeholder="Current Password" required />
                 <button type="submit">Delete</button>
+                <button onclick="openEditForm('{{ acc.account_id }}', '{{ acc.account_name }}')">Edit</button>
             </form>
-            <button onclick="openEditForm('{{ acc.account_id }}', '{{ acc.account_name }}')">Edit</button>
         </div>
         {% endfor %}
     </div>
