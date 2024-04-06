@@ -452,29 +452,31 @@ def account():
 '''
 @app.route('/account/<int:account_id>')
 def account(account_id):
-    if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = session['user_id']
-        db_session = Session()
+    try:
+        if 'user_id' in session and session.get('mfa_completed', False):
+            user_id = session['user_id']
+            db_session = Session()
 
-        # Query the account by both account_id and user_id to ensure the user has access to it
-        account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
+            account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
 
-        if account:
-            current_month = datetime.now().month
-            # Query transactions for the current month associated with the specific account
-            transactions = db_session.query(Transaction).filter(
-                extract('month', Transaction.date) == current_month,
-                Transaction.account_id == account_id
-            ).all()
+            if account:
+                current_month = datetime.now().month
+                transactions = db_session.query(Transaction).filter(
+                    extract('month', Transaction.date) == current_month,
+                    Transaction.account_id == account_id
+                ).all()
 
-            db_session.close()
-            return render_template('dashboard.html', account=account, transactions=transactions)
+                db_session.close()
+                return render_template('dashboard.html', account=account, transactions=transactions)
+            else:
+                db_session.close()
+                return redirect(url_for('home'))
         else:
-            db_session.close()
-            return redirect(url_for('home'))
-    else:
-        return redirect(url_for('login'))
-
+            return redirect(url_for('login'))
+    except Exception as e:
+        # Log the exception details
+        print("Error occurred:", str(e))
+        return "Internal Server Error", 500  # Return an HTTP 500 response
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
