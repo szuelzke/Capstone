@@ -457,26 +457,22 @@ def account():
 '''
 @app.route('/account/<int:account_id>', methods=['GET', 'POST'])
 def account(account_id):
-    if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = session['user_id']
-        db_session = Session()
-
-        account = db_session.query(Account).filter_by(account_id=account_id).first()
-
-        if account:
-            current_month = datetime.now().month
-            transactions = db_session.query(Transaction).filter(
-                extract('month', Transaction.date) == current_month,
-                Transaction.account_id == account_id
-            ).all()
-
-            db_session.close()
-            return render_template('dashboard.html', account=account, transactions=transactions)
-        else:
-            db_session.close()
-            return redirect(url_for('home'))
-    else:
+    if 'user_id' not in session or not session.get('mfa_completed', False):
         return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    db_session = Session()
+
+    account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
+
+    if not account:
+        db_session.close()
+        return redirect(url_for('home'))
+
+    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).limit(10).all()
+
+    db_session.close()
+    return render_template('dashboard.html', account=account, transactions=transactions)
         
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
