@@ -261,7 +261,7 @@ def settings():
     else:
         return redirect(url_for('login'))
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']

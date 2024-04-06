@@ -25,8 +25,7 @@
         {% for acc in account %}
         <div>
             <h3>{{ acc.account_name }}</h3>
-            <btn href="{{ url_for('edit_account', acc_id=acc.id) }}">Edit</btn> <!-- Link to edit_account route -->
-            <btn href="{{ url_for('delete_account', acc_id=acc.id) }}">Delete</btn> <!-- Link to delete_account route -->
+            
         </div>
         {% endfor %}
 
