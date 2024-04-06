@@ -298,10 +298,10 @@ def add_account():
                 is_active=True
             )
 
-            session = Session()
-            session.add(new_account)
-            session.commit()
-            session.close()
+            db_session_add = Session()
+            db_session_add.add(new_account)
+            db_session_add.commit()
+            db_session_add.close()
             return redirect(url_for('home'))
             
         return render_template('add_account.html', user=user)
