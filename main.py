@@ -265,14 +265,15 @@ def settings():
 def account():
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
-        account = Account.query.filter_by(user_id=user_id).first()
+        db_session = Session()
+        account = db_session.query(Account).filter_by(user_id=user_id).first()
         if account:
             account_id = account.account_id
             
             current_month = datetime.now().month
             
-            transactions = Transaction.query.filter(extract('month', Transaction.date) == current_month,Transaction.account_id == account_id).all()
-
+            transactions = db_session.query(Transaction).filter(extract('month', Transaction.date) == current_month,Transaction.account_id == account_id).all()
+            db_session.close()
             return render_template('dashboard.html', transactions = transactions)
         else:
             return redirect(url_for('login'))
