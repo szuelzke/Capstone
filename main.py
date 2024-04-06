@@ -276,7 +276,9 @@ def account():
             db_session.close()
             return render_template('dashboard.html', transactions = transactions)
         else:
+            db_session.close()
             return redirect(url_for('login'))
+        
     else:
         return redirect(url_for('login'))
 
