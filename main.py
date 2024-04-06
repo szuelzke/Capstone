@@ -287,6 +287,7 @@ def allowed_file(filename):
 
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
+    '''
     if 'user_id' in session and session.get('mfa_completed', False):
         # Check if the POST request has the file part
         if 'profile_picture' not in request.files:
@@ -315,6 +316,8 @@ def upload_picture():
         else:
             flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
             return redirect(url_for('settings'))
+    '''
+    pass
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
@@ -380,19 +383,14 @@ def delete_account(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(account_id=account_id).first()
 
-        # Verify current password
-        if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
-            if account:
-                db_session.delete(account)
-                db_session.commit()
-                db_session.close()
-                flash('Account deleted successfully.')
-            else:
-                db_session.close()
-                flash('Account not found.')
+        if account:
+            db_session.delete(account)
+            db_session.commit()
+            db_session.close()
+            flash('Account deleted successfully.')
         else:
             db_session.close()
-            flash('Incorrect current password.')
+            flash('Account not found.')
 
         return redirect(url_for('settings'))
     else:

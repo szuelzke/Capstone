@@ -19,11 +19,8 @@
         {% for acc in accounts %}
         <div>
             <h3>{{ acc.account_name }}</h3>
-            <form action="{{ url_for('delete_account', account_id=acc.account_id) }}" method="post">
-                <input type="password" name="current_password" placeholder="Current Password" required />
-                <button type="submit">Delete</button>
-                <button onclick="openEditForm('{{ acc.account_id }}', '{{ acc.account_name }}')">Edit</button>
-            </form>
+            <a href="{{ url_for('delete_account') }}" class="btn">Delete</a>
+            <a href="{{ url_for('edit_account') }}" class="btn">Edit</a>
         </div>
         {% endfor %}
     </div>
@@ -56,31 +53,5 @@
         </form>
     </div>
 </div>
-
-<!-- Edit Account Form Popup -->
-<div id="editAccountForm" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeEditForm()">&times;</span>
-    <h2>Edit Account</h2>
-    <form class="form-deco" id="editAccountFormInner" action="" method="post">
-        <input type="text" name="new_account_name" id="new_account_name" placeholder="New Account Name" required />
-        <input type="password" name="current_password" placeholder="Current Password" required />
-        <input type="submit" value="Save" />
-    </form>
-  </div>
-</div>
-
-<script>
-
-    function openEditForm(accountId, accountName) {
-        document.getElementById('new_account_name').value = accountName;
-        document.getElementById('editAccountFormInner').action = '/edit_account/' + accountId;
-        document.getElementById('editAccountForm').style.display = "block";
-    }
-
-    function closeEditForm() {
-        document.getElementById('editAccountForm').style.display = "none";
-    }
-</script>
 
 {% endblock %}
