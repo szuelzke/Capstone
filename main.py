@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -210,10 +210,54 @@ def settings():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        db_session.close()
+        account = db_session.query(Account).filter_by(user_id=user_id).first()
+        
+        if request.method == 'POST':
+            new_email = request.form.get('email')
+            if new_email:
+                user.email = new_email
+            
+            new_account_name = request.form.get('account_name')
+            if new_account_name:
+                account.account_name = new_account_name
+            
+            new_first_name = request.form.get('first_name')
+            if new_first_name:
+                user.first_name = new_first_name
 
-        return render_template('settings.html', user=user)
+            new_last_name = request.form.get('last_name')
+            if new_last_name:
+                user.last_name = new_last_name
+            
+            new_student_id = request.form.get('student_id')
+            if new_student_id:
+                user.student_id = new_student_id
 
+            new_phone_number = request.form.get('phone_number')
+            if new_phone_number:
+                user.phone_number = new_phone_number
+            
+            new_image_link = request.form.get('image_link')
+            if new_image_link:
+                user.image_link = new_image_link
+            
+            new_social_name = request.form.get('social_name')
+            if new_social_name:
+                user.social_name = new_social_name
+            
+            new_password = request.form.get('password')
+            confirm_password = request.form.get('confirm_password')
+            if new_password and confirm_password and new_password == confirm_password:
+                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+                user.password = hashed_password
+            else:
+                flash('Passwords do not match.')
+                db_session.close()
+                return render_template('settings.html', user=user, account=account)
+            
+            db_session.commit()
+            db_session.close()
+        return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
 
