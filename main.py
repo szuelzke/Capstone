@@ -255,8 +255,8 @@ def settings():
                 db_session.close()
                 return render_template('settings.html', user=user, account=account)
             
-            db_session.commit()
-            db_session.close()
+        db_session.commit()
+        db_session.close()
         return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
