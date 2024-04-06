@@ -457,26 +457,26 @@ def account():
 '''
 @app.route('/account/<int:account_id>', methods=['GET', 'POST'])
 def account(account_id):
-        if 'user_id' in session and session.get('mfa_completed', False):
-            user_id = session['user_id']
-            db_session = Session()
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
 
-            account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
+        account = db_session.query(Account).filter_by(account_id=account_id).first()
 
-            if account:
-                current_month = datetime.now().month
-                transactions = db_session.query(Transaction).filter(
-                    extract('month', Transaction.date) == current_month,
-                    Transaction.account_id == account_id
-                ).all()
+        if account:
+            current_month = datetime.now().month
+            transactions = db_session.query(Transaction).filter(
+                extract('month', Transaction.date) == current_month,
+                Transaction.account_id == account_id
+            ).all()
 
-                db_session.close()
-                return render_template('dashboard.html', account=account, transactions=transactions)
-            else:
-                db_session.close()
-                return redirect(url_for('home'))
+            db_session.close()
+            return render_template('dashboard.html', account=account, transactions=transactions)
         else:
-            return redirect(url_for('login'))
+            db_session.close()
+            return redirect(url_for('home'))
+    else:
+        return redirect(url_for('login'))
         
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
