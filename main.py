@@ -410,20 +410,30 @@ def account():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
+
+        # Query the user from the database
         user = db_session.query(User).filter_by(user_id=user_id).first()
+
         if user:
+            # If user exists, query the accounts associated with the user
             accounts = db_session.query(Account).filter_by(user_id=user_id).all()
             current_month = datetime.now().month
+
+            # Query transactions for the current month associated with the user's accounts
             transactions = db_session.query(Transaction).filter(
                 extract('month', Transaction.date) == current_month,
                 Transaction.account_id.in_([account.account_id for account in accounts])
             ).all()
+
             db_session.close()
+            # Render the dashboard template with user, accounts, and transactions
             return render_template('dashboard.html', user=user, accounts=accounts, transactions=transactions)
         else:
+            # If user does not exist, redirect to the home page
             db_session.close()
             return redirect(url_for('home'))
     else:
+        # If user is not logged in or MFA is not completed, redirect to the login page
         return redirect(url_for('login'))
 
 @app.route('/add-account', methods=['GET','POST'])
