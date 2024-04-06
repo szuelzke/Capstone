@@ -387,17 +387,21 @@ def delete_account(account_id):
     else:
         return redirect(url_for('login'))
 
-# Function to edit account
+@app.route('/edit_popup/<int:account_id>', methods=['GET'])
+def edit_popup(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        return render_template('edit_account.html', account_id=account_id)
+    else:
+        return redirect(url_for('login'))
+    
 @app.route('/edit_account/<int:account_id>', methods=['POST'])
 def edit_account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         new_account_name = request.form.get('new_account_name')
         current_password = request.form.get('current_password')
-
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-
         # Verify current password
         if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
             account = db_session.query(Account).filter_by(account_id=account_id).first()
@@ -412,7 +416,6 @@ def edit_account(account_id):
         else:
             db_session.close()
             flash('Incorrect current password.')
-
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
