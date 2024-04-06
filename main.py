@@ -30,7 +30,7 @@ engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/F
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
-UPLOAD_FOLDER = 'path/to/upload/folder'
+UPLOAD_FOLDER = '/var/www/Capstone/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
