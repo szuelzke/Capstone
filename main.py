@@ -273,7 +273,7 @@ def account():
             
             transactions = Transaction.query.filter(extract('month', Transaction.date) == current_month,Transaction.account_id == account_id).all()
 
-            return render_template('/account/dashboard.html', transactions = transactions)
+            return render_template('account/dashboard.html', transactions = transactions)
         else:
             return redirect(url_for('login'))
     else:
