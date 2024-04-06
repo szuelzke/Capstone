@@ -276,27 +276,39 @@ def settings():
     else:
         return redirect(url_for('login'))
     
-'''
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Function to handle file uploads
-def upload_picture(user_id):
+@app.route('/upload_picture', methods=['POST'])
+def upload_picture():
+    if 'user_id' not in session:
+        flash('You need to be logged in to upload a picture.')
+        return redirect(url_for('login'))  # Redirect to login page if not logged in
+
+    if 'profile_picture' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+
     file = request.files['profile_picture']
+
     if file.filename == '':
         flash('No selected file')
-    elif file:
-        db_session = Session()
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-        user.image_link = file.read()  # Store the file content in the database
-        db_session.commit()
-        db_session.close()
-        flash('Profile picture uploaded successfully.')
-    else:
-        flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
+        return redirect(request.url)
+
+    user_id = session['user_id']
+    db_session = Session()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
+
+    # Read the file as bytes and store it in the database
+    user.image_link = file.read()
+    db_session.commit()
+    db_session.close()
+
+    flash('Profile picture uploaded successfully.')
     return redirect(url_for('settings'))
-'''
+
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
@@ -426,14 +438,11 @@ def account():
             ).all()
 
             db_session.close()
-            # Render the dashboard template with user, accounts, and transactions
             return render_template('dashboard.html', user=user, accounts=accounts, transactions=transactions)
         else:
-            # If user does not exist, redirect to the home page
             db_session.close()
             return redirect(url_for('home'))
     else:
-        # If user is not logged in or MFA is not completed, redirect to the login page
         return redirect(url_for('login'))
 
 @app.route('/add-account', methods=['GET','POST'])
