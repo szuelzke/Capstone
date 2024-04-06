@@ -297,7 +297,7 @@ def add_account():
             is_active = True
         )
 
-        Session = sessionmaker(bind=engine)
+        
         session = Session()
         session.add(new_account)
         session.commit()
