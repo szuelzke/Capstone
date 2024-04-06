@@ -255,13 +255,13 @@ def settings():
                 db_session.close()
                 return render_template('settings.html', user=user, account=account)
             
-        db_session.commit()
-        db_session.close()
+            db_session.commit()
+            db_session.close()
         return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
 
-@app.route('/account', methods=['GET', 'POST'])
+@app.route('/account')
 def account():
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
