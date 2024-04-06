@@ -204,6 +204,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+'''
 @app.route('/settings', methods=['GET','POST'])
 def settings():
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -260,6 +261,150 @@ def settings():
         return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
+'''
+# Function to render settings page
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id).all()
+        db_session.close()
+        
+        if request.method == 'POST':
+            if 'delete_account' in request.form:
+                account_id = int(request.form.get('delete_account'))
+                return redirect(url_for('delete_account', account_id=account_id))
+        
+        return render_template('settings.html', user=user, account=account)
+    else:
+        return redirect(url_for('login'))
+
+# Function to upload profile picture
+@app.route('/upload_picture', methods=['POST'])
+def upload_picture():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        # Handle file upload logic here
+        flash('Profile picture uploaded successfully.')
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('login'))
+
+# Function to update password
+@app.route('/update_password', methods=['POST'])
+def update_password():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        # Verify current password
+        if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
+            if new_password == confirm_password:
+                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+                user.password = hashed_password.decode('utf-8')
+                db_session.commit()
+                db_session.close()
+                flash('Password updated successfully.')
+            else:
+                flash('New passwords do not match.')
+        else:
+            flash('Incorrect current password.')
+
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('login'))
+
+# Function to update social name
+@app.route('/update_social_name', methods=['POST'])
+def update_social_name():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        social_name = request.form.get('social_name')
+        current_password = request.form.get('current_password')
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        # Verify current password
+        if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
+            user.social_name = social_name
+            db_session.commit()
+            db_session.close()
+            flash('Social name updated successfully.')
+        else:
+            flash('Incorrect current password.')
+
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('login'))
+
+# Function to delete account
+@app.route('/delete_account/<int:account_id>', methods=['POST'])
+def delete_account(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        current_password = request.form.get('current_password')
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(account_id=account_id).first()
+
+        # Verify current password
+        if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
+            if account:
+                db_session.delete(account)
+                db_session.commit()
+                db_session.close()
+                flash('Account deleted successfully.')
+            else:
+                db_session.close()
+                flash('Account not found.')
+        else:
+            db_session.close()
+            flash('Incorrect current password.')
+
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('login'))
+
+# Function to edit account
+@app.route('/edit_account/<int:account_id>', methods=['POST'])
+def edit_account(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        new_account_name = request.form.get('new_account_name')
+        current_password = request.form.get('current_password')
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        # Verify current password
+        if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
+            account = db_session.query(Account).filter_by(account_id=account_id).first()
+            if account:
+                account.account_name = new_account_name
+                db_session.commit()
+                db_session.close()
+                flash('Account updated successfully.')
+            else:
+                db_session.close()
+                flash('Account not found.')
+        else:
+            db_session.close()
+            flash('Incorrect current password.')
+
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('login'))
+
+
 
 @app.route('/account')
 def account():

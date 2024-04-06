@@ -2,74 +2,85 @@
 
 {% block title %}Settings{% endblock %}
 
-{% block stylesheet %}
-<link rel="stylesheet" href="{{ url_for('static', filename='usersettings.css') }}">
-{% endblock %}
-
 {% block content %}
-
 <div class='row'>
     <div class='card'>
         <h2>My Profile</h2>
-        <img src="" alt='pfp'/>
+        <img src="{{ user.image_link }}" alt='Profile Picture'/>
         <ul>
             <li><i class='fa-solid fa-user pd-5'></i>{{ user.first_name }} {{ user.last_name }}</li>
             <li><i class='fa-solid fa-envelope pd-5'></i>{{ user.email }}</li>
-            <li><i class='fa-solid fa-phone pd-5'></i>{{ user.phone }}</li>
+            <li><i class='fa-solid fa-phone pd-5'></i>{{ user.phone_number }}</li>
             <li><i class='fa-solid fa-calendar pd-5'></i>{{ user.created_date }}</li>
         </ul>
     </div>
     <div class="card connected-acc">
         <h2>Accounts</h2>
+        {% for acc in accounts %}
         <div>
-            <h3>ACCOUNT NAME</h3>
-            <button>Edit</button>
-            <button>Delete</button>
+            <h3>{{ acc.account_name }}</h3>
+            <form action="{{ url_for('delete_account', account_id=acc.account_id) }}" method="post">
+                <input type="password" name="current_password" placeholder="Current Password" required />
+                <button type="submit">Delete</button>
+            </form>
+            <button onclick="openEditForm('{{ acc.account_id }}', '{{ acc.account_name }}')">Edit</button>
         </div>
-        <div>
-            <h3>ACCOUNT NAME</h3>
-            <button>Edit</button>
-            <button>Delete</button>
-        </div>
-        <div>
-            <h3>ACCOUNT NAME</h3>
-            <button>Edit</button>
-            <button>Delete</button>
-        </div>
-        <div>
-            <h3>ACCOUNT NAME</h3>
-            <button>Edit</button>
-            <button>Delete</button>
-        </div>
+        {% endfor %}
     </div>
-
 </div>
 
 <h2 class='row row-title'>Edit My Profile</h2>
 <div class='row'>
     <div class='card'>
         <h2>Upload Profile Picture</h2>
-        <form class="form-deco">
-            <input type="file" />
-            <input type="submit" />
+        <form class="form-deco" action="{{ url_for('upload_picture') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="profile_picture" />
+            <input type="submit" value="Upload" />
         </form>
     </div>
     <div class='card'>
         <h2>Social Name</h2>
-        <form class="form-deco">
-            <input type="input" placeholder="first name" required />
-            <input type="password" placeholder="current password" required />
-            <input type="submit" />
+        <form class="form-deco" action="{{ url_for('update_social_name') }}" method="post">
+            <input type="text" name="social_name" value="{{ user.social_name }}" placeholder="Social Name" required />
+            <input type="password" name="current_password" placeholder="Current Password" required />
+            <input type="submit" value="Save" />
         </form>
     </div>
     <div class='card'>
         <h2>Change Password</h2>
-        <form class="form-deco">
-            <input type="password" placeholder="current password" required />
-            <input type="password" placeholder="new password" required />
-            <input type="submit" />
+        <form class="form-deco" action="{{ url_for('update_password') }}" method="post">
+            <input type="password" name="current_password" placeholder="Current Password" required />
+            <input type="password" name="new_password" placeholder="New Password" required />
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required />
+            <input type="submit" value="Change Password" />
         </form>
     </div>
 </div>
+
+<!-- Edit Account Form Popup -->
+<div id="editAccountForm" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEditForm()">&times;</span>
+    <h2>Edit Account</h2>
+    <form class="form-deco" id="editAccountFormInner" action="" method="post">
+        <input type="text" name="new_account_name" id="new_account_name" placeholder="New Account Name" required />
+        <input type="password" name="current_password" placeholder="Current Password" required />
+        <input type="submit" value="Save" />
+    </form>
+  </div>
+</div>
+
+<script>
+
+    function openEditForm(accountId, accountName) {
+        document.getElementById('new_account_name').value = accountName;
+        document.getElementById('editAccountFormInner').action = '/edit_account/' + accountId;
+        document.getElementById('editAccountForm').style.display = "block";
+    }
+
+    function closeEditForm() {
+        document.getElementById('editAccountForm').style.display = "none";
+    }
+</script>
 
 {% endblock %}
