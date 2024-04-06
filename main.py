@@ -422,6 +422,7 @@ def edit_account(account_id):
     
 ##### Handling Accounts
 
+'''
 @app.route('/account')
 def account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -449,9 +450,9 @@ def account():
             return redirect(url_for('home'))
     else:
         return redirect(url_for('login'))
-
 '''
-@app.route('/account/<int:account_id>')
+
+@app.route('/<int:account_id>')
 def account(account_id):
     try:
         if 'user_id' in session and session.get('mfa_completed', False):
@@ -478,7 +479,7 @@ def account(account_id):
         # Log the exception details
         print("Error occurred:", str(e))
         return "Internal Server Error", 500  # Return an HTTP 500 response
-'''
+
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
