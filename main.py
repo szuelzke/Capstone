@@ -272,9 +272,9 @@ def settings():
         account = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
         
-        if request.method == 'POST':
-            if 'profile_picture' in request.files:
-                return upload_picture(user_id)
+        #if request.method == 'POST':
+        #    if 'profile_picture' in request.files:
+        #        return upload_picture(user_id)
         
         return render_template('settings.html', user=user, accounts=account)
     else:
