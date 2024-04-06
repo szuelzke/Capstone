@@ -455,24 +455,26 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/account/<int:account_id>', methods=['GET', 'POST'])
+@app.route('/account/<int:account_id>', methods=['GET'])
 def account(account_id):
-    if 'user_id' not in session or not session.get('mfa_completed', False):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        return render_template('dashboard.html', account_id=account_id)
+    else:
         return redirect(url_for('login'))
+    
+    #user_id = session['user_id']
+    #db_session = Session()
 
-    user_id = session['user_id']
-    db_session = Session()
+    #account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
 
-    account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
+    #if not account:
+     #   db_session.close()
+      #  return redirect(url_for('home'))
 
-    if not account:
-        db_session.close()
-        return redirect(url_for('home'))
+    #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).limit(10).all()
 
-    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).limit(10).all()
-
-    db_session.close()
-    return render_template('dashboard.html', account=account, transactions=transactions)
+    #db_session.close()
+    #return render_template('dashboard.html', account=account, transactions=transactions)
         
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
