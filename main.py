@@ -282,7 +282,7 @@ def account():
     else:
         return redirect(url_for('login'))
 
-@app.route('/add-account', methods=['POST','GET'])
+@app.route('/add-account', methods=['GET','POST'])
 def add_account():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
