@@ -83,6 +83,8 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
+#### Handling Login System 
+
 @app.route('/')
 def home():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -203,6 +205,8 @@ def logout():
     # Clear session data
     session.clear()
     return redirect(url_for('login'))
+
+### Handling Settings
 
 '''
 @app.route('/settings', methods=['GET','POST'])
@@ -421,7 +425,7 @@ def edit_account(account_id):
         return redirect(url_for('login'))
     
 ##### Handling Accounts
-
+'''
 @app.route('/account')
 def account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -451,7 +455,7 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/account/<int:account_id>')
+@app.route('/account/<int:account_id>', methods=['GET'])
 def account(account_id):
     try:
         if 'user_id' in session and session.get('mfa_completed', False):
@@ -475,10 +479,8 @@ def account(account_id):
         else:
             return redirect(url_for('login'))
     except Exception as e:
-        # Log the exception details
-        print("Error occurred:", str(e))
-        return "Internal Server Error", 500  # Return an HTTP 500 response
-'''
+        app.logger.error("Error occurred: %s", str(e))
+        return "Internal Server Error", 500
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
