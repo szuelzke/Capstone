@@ -502,7 +502,7 @@ def add_account():
     else:
         return redirect(url_for('login'))
 
-'''
+
 @app.route('/account/transaction', methods=['GET'])
 def transactions():
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -590,7 +590,7 @@ def sharetransaction():
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
-'''
+
 
 def generate_reset_token():
     return secrets.token_urlsafe(32)
