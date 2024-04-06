@@ -455,18 +455,19 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/account/<int:account_id>', methods=['GET', 'POST'])
-def account(account_id):
+@app.route('/account', methods=['GET', 'POST'])
+def account():
     if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
         db_session = Session()
-
-        account = db_session.query(Account).filter_by(account_id=account_id).first()
+        
+        account = db_session.query(Account).filter_by(user_id=user_id).first()
 
         if not account:
             db_session.close()
             return redirect(url_for('home'))
 
-        transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).limit(10).all()
+        transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
 
         db_session.close()
         return render_template('dashboard.html', account=account, transactions=transactions)
