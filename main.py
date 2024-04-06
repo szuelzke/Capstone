@@ -280,7 +280,7 @@ def settings():
         return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
-
+'''
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -300,6 +300,7 @@ def upload_picture(user_id):
     else:
         flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
     return redirect(url_for('settings'))
+'''
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
