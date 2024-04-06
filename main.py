@@ -455,9 +455,8 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/account/<int:account_id>', methods=['GET'])
+@app.route('/account/<int:account_id>', methods=['GET', 'POST'])
 def account(account_id):
-    try:
         if 'user_id' in session and session.get('mfa_completed', False):
             user_id = session['user_id']
             db_session = Session()
@@ -478,10 +477,7 @@ def account(account_id):
                 return redirect(url_for('home'))
         else:
             return redirect(url_for('login'))
-    except Exception as e:
-        app.logger.error("Error occurred: %s", str(e))
-        return "Internal Server Error", 500
-
+        
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
     if 'user_id' in session and session.get('mfa_completed', False):
