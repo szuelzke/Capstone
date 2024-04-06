@@ -272,11 +272,12 @@ def settings():
         account = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
         
-        #if request.method == 'POST':
-        #    if 'profile_picture' in request.files:
-        #        return upload_picture(user_id)
+        if request.method == 'POST':
+            if 'delete_account' in request.form:
+                account_id = int(request.form.get('delete_account'))
+                return redirect(url_for('delete_account', account_id=account_id))
         
-        return render_template('settings.html', user=user, accounts=account)
+        return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
 
