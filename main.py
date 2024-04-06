@@ -204,7 +204,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-@app.route('/settings')
+@app.route('/settings', methods=['GET','POST'])
 def settings():
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
