@@ -344,12 +344,45 @@ def addtransaction():
     else:
         return redirect(url_for('login'))
 
-@app.route('/account/transaction/edit', methods=['POST', 'GET'])
-def edittransaction():
-    if request.method == 'POST':
-        # post editted transaction
-        return redirect(url_for('transactions'))
-    # display transaction info to form
+@app.route('/account/transaction/edit/<int:transaction_id>', methods=['POST', 'GET'])
+def edittransaction(transaction_id):
+    if 'user_id' in session  and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
+        
+        if not transaction:
+            flash('Transaction not found')
+            db_session.close()
+            return redirect(url_for('transactions'))
+            
+        if transaction.account.user_id != user_id:
+            flash('You do not have permission to edit this transaction')
+            db_session.close()
+            return redirect(url_for('transactions'))
+            
+        if request.method == 'POST':
+            new_date = request.form.get('date')
+            if new_date:
+                transaction.date = new_date
+            
+            new_amount = request.form.get('amount')
+            if new_amount:
+                transaction.amount = new_amount
+            
+            new_title = request.form.get('title')
+            if new_title:
+                transaction.title = new_title
+            
+            new_category_id = request.form.get('category_id')
+            if new_category_id:
+                transaction.category_id = new_category_id
+
+            db_session.commit()
+            db_session.close()
+            return redirect(url_for('transactions'))
+        db_session.close()
+        return render_template('edit_transaction.html', transaction=transaction)
     return render_template('forms/edit_transaction.html')
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
