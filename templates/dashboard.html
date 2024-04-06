@@ -10,8 +10,8 @@
 <div class="row">
     <div class="card no-bg view-balance">
         <a href="{{ url_for('account') }}">
-            <h1 class="hide-text">Balance</h1>
-            <h2>Account Title</h2>
+            <h1 class="hide-text">{{ transactions.amount_remaining}}</h1>
+            <h2>{{ account.account_name }}</h2>
         </a>
     </div>
 

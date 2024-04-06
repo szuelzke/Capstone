@@ -287,37 +287,34 @@ def allowed_file(filename):
 
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
-    # Check if user is logged in and MFA completed
-    if 'user_id' not in session or not session.get('mfa_completed', False):
-        return redirect(url_for('login'))
+    if 'user_id' in session and session.get('mfa_completed', False):
+        # Check if the POST request has the file part
+        if 'profile_picture' not in request.files:
+            flash('No file part')
+            return redirect(url_for('settings'))
 
-    # Check if the POST request has the file part
-    if 'profile_picture' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
+        file = request.files['profile_picture']
 
-    file = request.files['profile_picture']
+        # If user does not select file, browser also submits an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(url_for('settings'))
 
-    # If user does not select file, browser also submits an empty part without filename
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
+        # Check if the file is allowed
+        if file and allowed_file(file.filename):
+            # Update the user's image_link in the database
+            user_id = session['user_id']
+            db_session = Session()
+            user = db_session.query(User).filter_by(user_id=user_id).first()
+            user.image_link = file.read()  # Store the file content in the database
+            db_session.commit()
+            db_session.close()
 
-    # Check if the file is allowed
-    if file and allowed_file(file.filename):
-        # Update the user's image_link in the database
-        user_id = session['user_id']
-        db_session = Session()
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-        user.image_link = file.read()  # Store the file content in the database
-        db_session.commit()
-        db_session.close()
-
-        flash('Profile picture uploaded successfully.')
-        return redirect(url_for('settings'))
-    else:
-        flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
-        return redirect(request.url)
+            flash('Profile picture uploaded successfully.')
+            return redirect(url_for('settings'))
+        else:
+            flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
+            return redirect(url_for('settings'))
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
@@ -431,8 +428,6 @@ def edit_account(account_id):
     else:
         return redirect(url_for('login'))
 
-
-
 @app.route('/account')
 def account():
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -446,10 +441,10 @@ def account():
             
             transactions = db_session.query(Transaction).filter(extract('month', Transaction.date) == current_month,Transaction.account_id == account_id).all()
             db_session.close()
-            return render_template('dashboard.html', transactions = transactions)
+            return render_template('dashboard.html', account = account, transactions = transactions)
         else:
             db_session.close()
-            return redirect(url_for('login'))
+            return redirect(url_for('home'))
         
     else:
         return redirect(url_for('login'))
