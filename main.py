@@ -273,11 +273,10 @@ def settings():
         db_session.close()
         
         if request.method == 'POST':
-            if 'delete_account' in request.form:
-                account_id = int(request.form.get('delete_account'))
-                return redirect(url_for('delete_account', account_id=account_id))
+            if 'profile_picture' in request.files:
+                return upload_picture(user_id)
         
-        return render_template('settings.html', user=user, account=account)
+        return render_template('settings.html', user=user, accounts=account)
     else:
         return redirect(url_for('login'))
 
@@ -285,30 +284,21 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/upload_picture', methods=['POST'])
-def upload_picture():
-    if 'user_id' in session and session.get('mfa_completed', False):
-        if 'profile_picture' not in request.files:
-            flash('No file part')
-            return redirect(url_for('settings'))
-        file = request.files['profile_picture']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(url_for('settings'))
-        if file and allowed_file(file.filename):
-            user_id = session['user_id']
-            db_session = Session()
-            user = db_session.query(User).filter_by(user_id=user_id).first()
-            user.image_link = save_file_to_storage(file)  # Save file to storage and get the link
-            db_session.commit()
-            db_session.close()
-            flash('Profile picture uploaded successfully.')
-            return redirect(url_for('settings'))
-        else:
-            flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
-            return redirect(url_for('settings'))
+# Function to handle file uploads
+def upload_picture(user_id):
+    file = request.files['profile_picture']
+    if file.filename == '':
+        flash('No selected file')
+    elif file:
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        user.image_link = file.read()  # Store the file content in the database
+        db_session.commit()
+        db_session.close()
+        flash('Profile picture uploaded successfully.')
     else:
-        return redirect(url_for('login'))
+        flash('Invalid file format. Allowed formats: png, jpg, jpeg, gif')
+    return redirect(url_for('settings'))
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
