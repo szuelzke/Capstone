@@ -42,7 +42,7 @@
         <div class="nav">
             <h2>Personal</h2>
             {% for account in accounts %}
-            <a href="{{ url_for('account', account_id=account.account_id) }}">
+            <a href="{{ url_for('account')}}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 {{ account.account_name }}, {{ account.account_id }}
             </a>

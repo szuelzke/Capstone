@@ -419,7 +419,7 @@ def edit_account(account_id):
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
-'''
+
 @app.route('/account')
 def account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -480,7 +480,7 @@ def account(account_id):
             return redirect(url_for('home'))
     else:
         return redirect(url_for('login'))
-
+'''
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
