@@ -280,6 +280,7 @@ def settings():
         return render_template('settings.html', user=user, account=account)
     else:
         return redirect(url_for('login'))
+    
 '''
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
