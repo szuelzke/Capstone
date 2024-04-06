@@ -284,29 +284,29 @@ def account():
 
 @app.route('/add-account', methods=['POST','GET'])
 def add_account():
-    #if 'user_id' in session and session.get('mfa_completed', False):
-    user_id = session['user_id']
-    db_session = Session()
-    user = db_session.query(User).filter_by(user_id=user_id).first()
-    db_session.close()
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        db_session.close()
 
-    if request.method == 'POST':
-        account_name = request.form['accountname']
-        new_account = Account(
-            account_name=account_name,
-            user_id=session['user_id'],
-            is_active=True
-        )
+        if request.method == 'POST':
+            account_name = request.form['accountname']
+            new_account = Account(
+                account_name=account_name,
+                user_id=session['user_id'],
+                is_active=True
+            )
 
-        session = Session()
-        session.add(new_account)
-        session.commit()
-        session.close()
-        return redirect(url_for('home'))
-        
-    return render_template('add_account.html', user=user)
-    #else:
-        #return redirect(url_for('login'))
+            session = Session()
+            session.add(new_account)
+            session.commit()
+            session.close()
+            return redirect(url_for('home'))
+            
+        return render_template('add_account.html', user=user)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/account/transaction', methods=['GET'])
