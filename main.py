@@ -283,7 +283,7 @@ def allowed_file(filename):
 
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
-    if 'user_id' not in session:
+    if 'user_id' not in session and session.get('mfa_completed', False):
         flash('You need to be logged in to upload a picture.')
         return redirect(url_for('login'))  # Redirect to login page if not logged in
 
