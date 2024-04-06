@@ -27,7 +27,7 @@
 
 <body>
     <div id="sidebar" class="sidebar">
-        <h1><a href="{{ url_for('account') }}">FlashFin</a></h1>
+        <h1><a href="{{ url_for('account', account_id = account.account_id) }}">FlashFin</a></h1>
         <div class='profile-img'>
             <img src="{{ user.image_link }}"></img>
 
@@ -42,7 +42,7 @@
         <div class="nav">
             <h2>Personal</h2>
             {% for account in accounts %}
-            <a href="{{ url_for('account')}}">
+            <a href="{{ url_for('account', account_id = account.account_id)}}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 {{ account.account_name }}, {{ account.account_id }}
             </a>
@@ -79,7 +79,7 @@
 
         {% block content %}
         <div class="card no-bg view-balance">
-            <a href="{{ url_for('account') }}">
+            <a href="{{ url_for('account', account_id = account.account_id) }}">
                 <h1 class="hide-text">Balance</h1>
                 <h2>Account Title</h2>
             </a>

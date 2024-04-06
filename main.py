@@ -283,31 +283,31 @@ def allowed_file(filename):
 
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
-    if 'user_id' not in session and session.get('mfa_completed', False):
-        flash('You need to be logged in to upload a picture.')
+    if 'user_id' in session and session.get('mfa_completed', False):
+        
+        if 'profile_picture' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        file = request.files['profile_picture']
+
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        # Read the file as bytes and store it in the database
+        user.image_link = file.read()
+        db_session.commit()
+        db_session.close()
+
+        flash('Profile picture uploaded successfully.')
+        return redirect(url_for('settings'))
+    else:
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-
-    if 'profile_picture' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-
-    file = request.files['profile_picture']
-
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
-
-    user_id = session['user_id']
-    db_session = Session()
-    user = db_session.query(User).filter_by(user_id=user_id).first()
-
-    # Read the file as bytes and store it in the database
-    user.image_link = file.read()
-    db_session.commit()
-    db_session.close()
-
-    flash('Profile picture uploaded successfully.')
-    return redirect(url_for('settings'))
 
     
 # Function to update password
@@ -419,7 +419,9 @@ def edit_account(account_id):
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
-
+    
+##### Handling Accounts
+'''
 @app.route('/account')
 def account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -454,33 +456,25 @@ def account(account_id):
         user_id = session['user_id']
         db_session = Session()
 
-        # Query the user from the database
-        user = db_session.query(User).filter_by(user_id=user_id).first()
+        # Query the account by both account_id and user_id to ensure the user has access to it
+        account = db_session.query(Account).filter_by(account_id=account_id, user_id=user_id).first()
 
-        if user:
-            # If user exists, query the specific account associated with the user
-            account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        if account:
+            current_month = datetime.now().month
+            # Query transactions for the current month associated with the specific account
+            transactions = db_session.query(Transaction).filter(
+                extract('month', Transaction.date) == current_month,
+                Transaction.account_id == account_id
+            ).all()
 
-            if account:
-                current_month = datetime.now().month
-
-                # Query transactions for the current month associated with the specific account
-                transactions = db_session.query(Transaction).filter(
-                    extract('month', Transaction.date) == current_month,
-                    Transaction.account_id == account_id
-                ).all()
-
-                db_session.close()
-                return render_template('dashboard.html', user=user, account=account, transactions=transactions)
-            else:
-                db_session.close()
-                return render_template('error.html', message="Account not found")
+            db_session.close()
+            return render_template('dashboard.html', account=account, transactions=transactions)
         else:
             db_session.close()
             return redirect(url_for('home'))
     else:
         return redirect(url_for('login'))
-'''
+
 
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
@@ -508,7 +502,7 @@ def add_account():
     else:
         return redirect(url_for('login'))
 
-
+'''
 @app.route('/account/transaction', methods=['GET'])
 def transactions():
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -596,6 +590,7 @@ def sharetransaction():
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
+'''
 
 def generate_reset_token():
     return secrets.token_urlsafe(32)
