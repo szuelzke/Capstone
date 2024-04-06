@@ -288,7 +288,6 @@ def add_account():
     db_session = Session()
     user = db_session.query(User).filter_by(user_id=user_id).first()
     db_session.close()
-    # don't know if this works 
     if request.method == 'POST':
         account_name = request.form['accountname']
         new_account = Account(
@@ -303,7 +302,7 @@ def add_account():
         session.commit()
         session.close()
         return redirect(url_for('home'))
-    return render_template('/forms/add_account.html', user=user)
+    return render_template('add_account.html', user=user)
 
 
 
