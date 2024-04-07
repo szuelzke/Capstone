@@ -80,13 +80,18 @@
         </div>
 
         {% block content %}
+        {% if accounts %}
+        {% for account in accounts %}
         <div class="card no-bg view-balance">
             <a href="{{ url_for('account', account_id=account.account_id) }}">
                 <h1 class="hide-text">Balance</h1>
                 <h2>Account Title</h2>
             </a>
         </div>
+        {% endfor %}
+        {% endif%}
         {% endblock %}
+
     </div>
 
 
