@@ -80,13 +80,13 @@
         </div>
 
         {% block content %}
-        {% if accounts %}
+        {% if balance_list %}
         <div class="row">
 
-        {% for id, obj in balance_list.items() %}
+        {% for id, obj in account_list.items() %}
         <div class="card no-bg view-balance">
-            <h1 class="hide-text">{{ id["balance"]}}</h1>
-            <h2>{{ id["name"] }}</h2>
+            <h1 class="hide-text">{{ obj["balance"]}}</h1>
+            <h2>{{ obj["name"] }}</h2>
         </div>
         {% endfor %}
 

@@ -99,14 +99,14 @@ def home():
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         # get amount remaining
-        balance_list = []
+        account_list = {}
         for account in accounts:
             recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
-            get_account = { account.account_id: { "name": account.account_name, "balance": recent_transaction.amount_remaining }}
-            balance_list.append(get_account)
+            account_list[account.account_id]["name"] = account.account_name
+            account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
 
         db_session.close()
-        return render_template('index.html', user=user, accounts=accounts, balance_list=balance_list)
+        return render_template('index.html', user=user, accounts=accounts, account_list=account_list)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
