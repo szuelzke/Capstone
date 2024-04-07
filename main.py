@@ -566,7 +566,7 @@ def addtransaction(account_id):
                     ) 
                 
                 db_session.add(new_transaction)
-
+                db_session.commit()
                 transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
                 prev_account = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
                 for transaction in transactions:
