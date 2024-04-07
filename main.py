@@ -556,8 +556,8 @@ def addtransaction(account_id):
             user_id = session['user_id']
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-            db_session.close()
             last_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+            db_session.close()
             if account: # add transaction to account
                 if last_transaction:
                     amount_remaining = last_transaction.amount_remaining + request.form.get('amount')
