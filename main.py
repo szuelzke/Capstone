@@ -25,7 +25,7 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'flashfin.alerts@gmail.com'
-app.config['MAIL_PASSWORD'] = 'PSMGB2024!'
+app.config['MAIL_PASSWORD'] = 'x'
 
 mail = Mail(app)
 
