@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}"><li class="page-title">{{ account.account_name }}</li></a>{% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ url_for('static', filename='transactionstable.css') }}">

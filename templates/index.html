@@ -69,7 +69,7 @@
         <div class="row">
             <div class="topbar">
                 <ul>
-                    <a href="/"><li class="page-title">{% block title %}Home{% endblock %}</li></a>
+                    {% block title %}<a href="/"><li class="page-title">Home</li></a>{% endblock %}
                     <form action="{{ url_for('logout') }}" method="post">
                         <button class='fa-solid fa-power-off'></button>
                     </form>
