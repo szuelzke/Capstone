@@ -8,14 +8,14 @@
 
 {% block content %}
 <div class="row">
-    {{% if balance %}}
+    {% if balance %}
     <div class="card no-bg view-balance">
         <a href="{{ url_for('account', account_id = account.account_id) }}">
             <h1 class="hide-text">{{ balance }}</h1>
             <h2>{{ account.account_name }}</h2>
         </a>
     </div>
-    {{% endif %}}
+    {% endif %}
 
 
     <a href="" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>View/Edit Budget</a>
