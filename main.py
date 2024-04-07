@@ -561,6 +561,7 @@ def addtransaction(account_id):
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'),
+                    amount_remaining="",
                     title=request.form.get('title') 
                     #category_id=request.form.get('category_id')
                     ) 
@@ -573,7 +574,7 @@ def addtransaction(account_id):
                     if transaction == prev_account: # first transaction
                         transaction.amount_remaining = prev_account.amount
                     else:
-                        transaction.amount_remaining = prev_account.amount + transaction.amount_remaining
+                        transaction.amount_remaining = prev_account.amount + transaction.amount
                         prev_account = transaction
 
                 db_session.commit()
