@@ -513,7 +513,7 @@ def transactions(account_id):
         transaction= db_session.query(Transaction).filter_by(user_id=user_id)
         db_session.close()
         if not transaction:
-            return render_template('starting_balance.html', user=user, account=account, account_list=get_account_list())
+            return render_template('starting_balance.html', user=user, account=account)
         if account:
             db_session = Session()
             # updates amount remaining for transactions
