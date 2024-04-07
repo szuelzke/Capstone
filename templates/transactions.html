@@ -55,22 +55,27 @@
         <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method='post' class='form-deco'>
             <input
                 type='date'
+                id='date'
                 placeholder='Date'
                 required />
             <input
                 type='text'
+                id='title'
                 placeholder='Title'
                 required />
             <input
                 type='number'
+                id='amount'
                 min='0'
+                step='0.01'
                 placeholder='Amount'
                 required />
-            <select>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
+            <select
+                id='category_id'>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
             </select>
             <input type='submit' />
         </form>
