@@ -53,14 +53,12 @@
                 <i class="fa-solid fa-plus pd-5"></i>
                 Add Account
             </a>
-            {% if account_list %}
-            {% for id, obj in account_list.items() %}
+            {% if user.student_id %}
             <h2>Student</h2>
-            <a href="{{ url_for('flashcash_transaction, account_id =id')}}">
+            <a href="{{ url_for('flashcash_transaction, account_id =account.account_id')}}">
                 <i class="fa-solid fa-id-card pd-5"></i>
                 FlashCash
             </a>
-            {% endfor %}
             {% endif %}
             <!--<a href="/">
                 <i class="fa-solid fa-wallet pd-5"></i>
