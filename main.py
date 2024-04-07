@@ -455,13 +455,13 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/<accountid>', methods=['GET', 'POST'])
-def account(accountid):
+@app.route('/<account_id>', methods=['GET', 'POST'])
+def account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
         
-        account = db_session.query(Account).filter_by(user_id=user_id, account_id=accountid).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
 
         if not account:
             db_session.close()
