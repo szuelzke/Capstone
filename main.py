@@ -91,7 +91,6 @@ except Exception as e:
 
 #### Handling Login System 
 
-@app.route('/', methods=['GET','POST'])
 def get_account_list():
     user_id = session['user_id']
     db_session = Session()
@@ -106,6 +105,7 @@ def get_account_list():
     db_session.close()
     return account_list
 
+@app.route('/', methods=['GET','POST'])
 def home():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
