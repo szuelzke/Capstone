@@ -568,9 +568,13 @@ def addtransaction(account_id):
                 db_session.add(new_transaction)
 
                 transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
-                current_amount = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
+                prev_account = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
                 for transaction in transactions:
-                    transaction.amount_remaining = current_amount + transaction.amount_remaining
+                    if transaction == prev_account: # first transaction
+                        transaction.amount_remaining = prev_account.amount
+                    else:
+                        transaction.amount_remaining = prev_account.amount + transaction.amount_remaining
+                        prev_account = transaction
 
                 db_session.commit()
                 db_session.close()
