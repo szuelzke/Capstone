@@ -540,7 +540,7 @@ def transactions(account_id):
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         if account:
             # get transactions for account
-            transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
+            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions, user=user, account=account)
         else:
@@ -561,7 +561,7 @@ def addtransaction(account_id):
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'),
-                    title=request.form.get('title') 
+                    title=request.form.get('title')
                     #category_id=request.form.get('category_id')
                     ) 
                 
@@ -572,9 +572,11 @@ def addtransaction(account_id):
                 for transaction in transactions:
                     if transaction == prev_account: # first transaction
                         transaction.amount_remaining = prev_account.amount
+                    elif request.form.get('credit_debit') == "credit":
+                        transaction.amount_remaining = prev_account.amount - transaction.amount
                     else:
                         transaction.amount_remaining = prev_account.amount + transaction.amount
-                        prev_account = transaction
+                    prev_account = transaction
 
                 db_session.commit()
                 db_session.close()
