@@ -540,7 +540,7 @@ def transactions(account_id):
         if account:
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions, user=user)
+            return render_template('transactions.html',transactions=transactions, user=user, account=account)
         else:
             return redirect(url_for('login'))
     else:
