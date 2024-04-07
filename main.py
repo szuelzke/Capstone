@@ -89,20 +89,6 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
-# returns dictionary of accounts connected to user
-def get_account_list():
-    user_id = session['user_id']
-    db_session = Session()
-    accounts = db_session.query(Account).filter_by(user_id=user_id).all()
-    account_list = {}
-    for account in accounts:
-        recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
-        account_list[account.account_id] = {}
-        account_list[account.account_id]["name"] = account.account_name
-        account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
-    db_session.close()
-    return account_list
-
 #### Handling Login System 
 @app.route('/', methods=['GET','POST'])
 def home():
@@ -492,37 +478,6 @@ def add_account():
     else:
         return redirect(url_for('login'))
 
-'''
-@app.route('/account')
-def account():
-    if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = session['user_id']
-        db_session = Session()
-
-        # Query the user from the database
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-
-        if user:
-            # If user exists, query the accounts associated with the user
-            accounts = db_session.query(Account).filter_by(user_id=user_id).all()
-            current_month = datetime.now().month
-
-            # Query transactions for the current month associated with the user's accounts
-            transactions = db_session.query(Transaction).filter(
-                extract('month', Transaction.date) == current_month,
-                Transaction.account_id.in_([account.account_id for account in accounts])
-            ).all()
-
-            db_session.close()
-            return render_template('dashboard.html', user=user, accounts=accounts, transactions=transactions)
-        else:
-            db_session.close()
-            return redirect(url_for('home'))
-    else:
-        return redirect(url_for('login'))
-
-'''
-
 # dashboard for account
 @app.route('/<account_id>', methods=['GET', 'POST'])
 def account(account_id):
@@ -555,10 +510,13 @@ def transactions(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        transaction= db_session.query(Transaction).filter_by(user_id=user_id)
         db_session.close()
+        if not transaction:
+            return render_template('starting_balance.html', user=user, account=account, account_list=get_account_list())
         if account:
             db_session = Session()
-            # updates amount renaming so they're in sync
+            # updates amount remaining for transactions
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
             for i, transaction in enumerate(transactions):
                 if i == 0:
@@ -567,10 +525,10 @@ def transactions(account_id):
                     transaction.amount_remaining = current_amount + transaction.amount
                 current_amount = transaction.amount_remaining
             db_session.commit()
-            # get transactions for to display
-            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
+            # get transactions 
+            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions, user=user, account=account, account_list=get_account_list())
+            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list())
         else:
             return redirect(url_for('login'))
     else:
@@ -735,3 +693,17 @@ def reset_password(reset_token):
         else:
             return render_template('reset_password.html', error='Invalid Token')
     return render_template('reset_password.html')
+
+# returns dictionary of accounts connected to user
+def get_account_list():
+    user_id = session['user_id']
+    db_session = Session()
+    accounts = db_session.query(Account).filter_by(user_id=user_id).all()
+    account_list = {}
+    for account in accounts:
+        recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
+        account_list[account.account_id] = {}
+        account_list[account.account_id]["name"] = account.account_name
+        account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
+    db_session.close()
+    return account_list

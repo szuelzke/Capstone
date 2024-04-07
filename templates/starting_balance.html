@@ -1,0 +1,42 @@
+{% extends 'dashboard.html' %}
+
+{% block inner_content %}
+<div class="row">
+    <h2>Enter Starting Balance</h2>
+    <div class="card">
+        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method='post' class='form-deco'>
+            <input
+                type='date'
+                id='date'
+                name='date'
+                value=''
+                placeholder='Date'
+                required />
+            <input
+                type='text'
+                id='title'
+                name='title'
+                value='Current Balance'
+                placeholder='Title'
+                required />
+            <input
+                type='number'
+                id='amount'
+                name='amount'
+                value=''
+                step='0.01'
+                placeholder='Amount'
+                required />
+            <select
+                id='category_id'
+                name='category_id'>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+            </select>
+            <input type='submit' />
+        </form>
+    </div>
+</div>
+{% endblock %}
