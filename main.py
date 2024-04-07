@@ -107,7 +107,7 @@ def home():
             account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
 
         db_session.close()
-        return render_template('index.html', user=user, accounts=accounts, account_list=account_list)
+        return render_template('index.html', user=user, account_list=account_list)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
