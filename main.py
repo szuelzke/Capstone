@@ -102,6 +102,7 @@ def home():
         account_list = {}
         for account in accounts:
             recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
+            account_list[account.account_id] = {}
             account_list[account.account_id]["name"] = account.account_name
             account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
 
