@@ -566,14 +566,15 @@ def addtransaction(account_id):
                 ) 
                 db_session.add(new_transaction)
                 db_session.commit()
+
+                # updates remaining balance as transactions are added
                 transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
                 prev_account = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
                 for transaction in transactions:
                     if transaction == prev_account: # if first transaction
                         transaction.amount_remaining = prev_account.amount
-                    else:
+                    else: 
                         transaction.amount_remaining = prev_account.amount_remaining + transaction.amount
-
                 db_session.commit()
                 db_session.close()
                 return redirect(url_for('transactions', account_id=account_id))
@@ -604,6 +605,17 @@ def edittransaction(account_id, transaction_id):
             #transaction.category_id = new_category
 
             db_session.commit()
+            
+            # updates remaining balance as transactions are added
+            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+            prev_account = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
+            for transaction in transactions:
+                if transaction == prev_account: # if first transaction
+                    transaction.amount_remaining = prev_account.amount
+                else: 
+                    transaction.amount_remaining = prev_account.amount_remaining + transaction.amount
+            db_session.commit()
+            
             db_session.close()
             return redirect(url_for('transactions', account_id=account_id))
         else:
