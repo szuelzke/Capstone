@@ -404,8 +404,13 @@ def delete_account(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(account_id=account_id).first()
+        transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
 
         if account:
+            # deletes transactions in account
+            for transaction in transactions:
+                db_session.delete(transaction)
+            # deletes account
             db_session.delete(account)
             db_session.commit()
             db_session.close()
@@ -608,7 +613,7 @@ def deletetransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
-        transaction = db_session.query(Transaction).filter_by(account_id=account_id, transaction_id=transaction_id)
+        transaction = db_session.query(Transaction).filter_by(account_id=account_id, transaction_id=transaction_id).first()
         if transaction:
             db_session.delete(transaction)
             db_session.commit()
