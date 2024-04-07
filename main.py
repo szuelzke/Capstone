@@ -255,7 +255,6 @@ def forgot_password():
 
         db_session = Session()
         user = db_session.query(User).filter_by(email=email).first()
-        db_session.close()
 
         if user:
             # Generate and store reset token
@@ -263,15 +262,15 @@ def forgot_password():
             user.reset_token = reset_token
             user.reset_token_expiry = calculate_expiry_time()
 
-            session = Session()
-            session.add(user)
-            session.commit()
-            session.close()
+
+            db_session.commit()
+            db_session.close()
             
             send_reset_password_email(user.email, reset_token)
 
             return render_template('password_reset_link_sent.html', email=email)
         else:
+            db_session.close()
             return render_template('forgot_password.html', error='Email not found')
     return render_template('forgot_password.html')
 
@@ -281,7 +280,6 @@ def reset_password(reset_token):
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
 
-        Session = sessionmaker(bind=engine)
         session = Session()
         user = session.query(User).filter_by(reset_token=reset_token).first()
 
@@ -299,10 +297,13 @@ def reset_password(reset_token):
                    
                     return render_template('password_reset_success.html')
                 else:
+                    session.close()
                     return render_template('reset_password.html', error='Passwords Do Not Match')
             else:
+                session.close()
                 return render_template('reset_password.html', error='Expired Code')
         else:
+            session.close()
             return render_template('reset_password.html', error='Invalid Token')
     return render_template('reset_password.html')
 
