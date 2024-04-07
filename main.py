@@ -13,7 +13,6 @@ from datetime import date, datetime
 import logging
 import time
 #from twilio.rest import Client
-import utility
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 
