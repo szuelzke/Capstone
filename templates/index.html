@@ -84,10 +84,8 @@
         <div class="row">
         {% for account in balance_list %}
         <div class="card no-bg view-balance">
-            <a href="{{ url_for('account', account_id=account.account_id) }}">
-                <h1 class="hide-text">{{account.amount_remaining}}</h1>
-                <h2>Account Title</h2>
-            </a>
+            <h1 class="hide-text">{{ account.value }}</h1>
+            <h2>{{ account.key }}</h2>
         </div>
         {% endfor %}
         </div>

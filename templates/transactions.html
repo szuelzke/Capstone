@@ -1,6 +1,6 @@
 {% extends 'dashboard.html' %}
 
-{% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}"><li class="page-title">{{ account.account_name }}</li></a> / Transactions{% endblock %}
+{% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}"><li class="page-title">{{ account.account_name }}</a> / Transactions</li>{% endblock %}
 
 {% block inner_content %}
 <div class="row row-v">
