@@ -51,21 +51,24 @@
 <div id="add-transaction" class='dimmer' style='display:none;'>
     <h2>Add Transaction</h2>
     <div class='row card'>
-        <a class='card-x-button fa-solid fa-x' href="{{ url_for('transactions', account_id=account.account_id)}}"></a>
+        <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
         <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method='post' class='form-deco'>
             <input
                 type='date'
                 id='date'
+                value=''
                 placeholder='Date'
                 required />
             <input
                 type='text'
                 id='title'
+                value=''
                 placeholder='Title'
                 required />
             <input
                 type='number'
                 id='amount'
+                value=''
                 min='0'
                 step='0.01'
                 placeholder='Amount'
