@@ -1,32 +1,4 @@
 {% extends 'transactions.html' %}
 
 {% block popup %}
-<div id="add-transaction" class='dimmer'>
-    <h2>Add Transaction</h2>
-    <div class='row card'>
-        <a class='card-x-button fa-solid fa-x' href="{{ url_for('transactions', account_id=account.account_id)}}"></a>
-        <form class='form-deco'>
-            <input
-                type='date'
-                placeholder='Date'
-                required />
-            <input
-                type='text'
-                placeholder='Title'
-                required />
-            <input
-                type='number'
-                min='0'
-                placeholder='Amount'
-                required />
-            <select>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-            </select>
-            <input type='submit' />
-        </form>
-    </div>
-</div>
 {% endblock %}
