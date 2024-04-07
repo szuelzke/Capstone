@@ -36,14 +36,9 @@
                     <td>{{transaction.category_id}}</td>
                     <td>
                         <!-- buttons for transaction -->
-                        <form action="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
-                            <button type="submit"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
-                        </form>
+                        <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
                         <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
-                        </form>
-                        <form action="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
-                            <button type="submit"><i class="fa-solid fa-share"></i>Share</button>
                         </form>
                     </td>
                 </tr>
