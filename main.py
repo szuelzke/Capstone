@@ -8,7 +8,6 @@ import pyotp
 import qrcode
 import base64
 import secrets
-import datetime
 from datetime import date, datetime
 import logging
 import time
