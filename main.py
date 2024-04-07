@@ -404,12 +404,8 @@ def delete_account(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(account_id=account_id).first()
-        transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
 
         if account:
-            # deletes transactions in account
-            db_session.delete(transactions)
-            # deletes account
             db_session.delete(account)
             db_session.commit()
             db_session.close()
