@@ -617,6 +617,7 @@ def deletetransaction(account_id, transaction_id):
         else:
             db_session.close()
             flash('Transaction not found.')
+        return redirect(url_for('transactions', account_id=account_id))
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():
