@@ -510,7 +510,7 @@ def transactions(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        transaction= db_session.query(Transaction).filter_by(user_id=user_id)
+        transaction= db_session.query(Transaction).filter_by(account_id=account_id)
         db_session.close()
         if not transaction:
             return render_template('starting_balance.html', user=user, account=account)
@@ -704,6 +704,7 @@ def get_account_list():
         recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
         account_list[account.account_id] = {}
         account_list[account.account_id]["name"] = account.account_name
-        account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
+        if recent_transaction:
+            account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
     db_session.close()
     return account_list
