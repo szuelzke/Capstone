@@ -60,6 +60,7 @@
                 id='date'
                 name='date'
                 value=''
+                max='todaysDate'
                 placeholder='Date'
                 required />
             <input
@@ -74,7 +75,6 @@
                 id='amount'
                 name='amount'
                 value=''
-                min='0'
                 step='0.01'
                 placeholder='Amount'
                 required />
@@ -94,7 +94,7 @@
                 type='radio'
                 id='credit'
                 name='credit_debit'
-                value='credit' checked />
+                value='1' checked />
             <label
                 for='debit'>
                 Debit
@@ -103,7 +103,7 @@
                 type='radio'
                 id='debit'
                 name='credit_debit'
-                value='debit' />
+                value='0' />
             <input type='submit' />
         </form>
     </div>

@@ -557,26 +557,25 @@ def addtransaction(account_id):
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
             if account: # add transaction to account
-                new_transaction = Transaction(
-                    account_id=account.account_id, 
-                    date=request.form.get('date'), 
-                    amount=request.form.get('amount'),
-                    title=request.form.get('title')
-                    #category_id=request.form.get('category_id')
-                    ) 
+                if request.form.get('credit_debit') == 'credit':
+                    new_transaction = Transaction(
+                        account_id=account.account_id, 
+                        date=request.form.get('date'), 
+                        amount=request.form.get('amount'),
+                        title=request.form.get('title')
+                        #category_id=request.form.get('category_id')
+                        ) 
+                    
                 
                 db_session.add(new_transaction)
                 db_session.commit()
                 transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
                 prev_account = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
                 for transaction in transactions:
-                    if transaction == prev_account: # first transaction
+                    if transaction == prev_account: # if first transaction
                         transaction.amount_remaining = prev_account.amount
-                    elif request.form.get('credit_debit') == "credit":
-                        transaction.amount_remaining = prev_account.amount - transaction.amount
                     else:
-                        transaction.amount_remaining = prev_account.amount + transaction.amount
-                    prev_account = transaction
+                        transaction.amount_remaining = prev_account.amount_remaining + transaction.amount
 
                 db_session.commit()
                 db_session.close()
