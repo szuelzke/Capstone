@@ -273,10 +273,10 @@ def settings():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id).all()
+        accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
         
-        return render_template('settings.html', user=user, account=account)
+        return render_template('settings.html', user=user, account=accounts)
     else:
         return redirect(url_for('login'))
     
