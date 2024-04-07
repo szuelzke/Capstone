@@ -557,16 +557,13 @@ def addtransaction(account_id):
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
             if account: # add transaction to account
-                if request.form.get('credit_debit') == 'credit':
-                    new_transaction = Transaction(
-                        account_id=account.account_id, 
-                        date=request.form.get('date'), 
-                        amount=request.form.get('amount'),
-                        title=request.form.get('title')
-                        #category_id=request.form.get('category_id')
-                        ) 
-                    
-                
+                new_transaction = Transaction(
+                    account_id=account.account_id, 
+                    date=request.form.get('date'), 
+                    amount=request.form.get('amount'),
+                    title=request.form.get('title')
+                    #category_id=request.form.get('category_id')
+                ) 
                 db_session.add(new_transaction)
                 db_session.commit()
                 transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
