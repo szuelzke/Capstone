@@ -408,8 +408,7 @@ def delete_account(account_id):
 
         if account:
             # deletes transactions in account
-            for transaction in transactions:
-                db_session.delete(transaction)
+            db_session.delete(transactions)
             # deletes account
             db_session.delete(account)
             db_session.commit()
