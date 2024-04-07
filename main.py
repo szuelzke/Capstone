@@ -529,6 +529,7 @@ def account(account_id):
     else:
         return redirect(url_for('login'))
 
+# view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
 def transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -547,6 +548,7 @@ def transactions(account_id):
     else:
         return redirect(url_for('login'))
 
+# add new transaction to account
 @app.route('/<account_id>/transactions/add', methods=['POST'])
 def addtransaction(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -572,6 +574,35 @@ def addtransaction(account_id):
     else:
         return redirect(url_for('login'))
 
+@app.route('/<account_id>/<transaction_id>/edit', methods=['POST', 'GET'])
+def edittransaction(account_id, transaction_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
+
+        if request.method == 'POST':
+            new_date = request.form.get('date')
+            new_title = request.form.get('title')
+            new_amount = request.form.get('amount')
+            new_category = request.form.get('category_id')
+
+            transaction.date = new_date
+            transaction.title = new_title
+            transaction.amount = new_amount
+            transaction.category_id = new_category
+
+            db_session.commit()
+            db_session.close()
+        else:
+            db_session.close()
+            return render_template("edit_transaction.html", user=user, account=account, transaction=transaction)
+
+
+
+'''
 @app.route('/account/transaction/edit/<int:transaction_id>', methods=['POST', 'GET'])
 def edittransaction(transaction_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -612,6 +643,7 @@ def edittransaction(transaction_id):
         db_session.close()
         return render_template('edit_transaction.html', transaction=transaction)
     return render_template('forms/edit_transaction.html')
+'''
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():

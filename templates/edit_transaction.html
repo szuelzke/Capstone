@@ -1,29 +1,36 @@
-{% extends '/account/transactions.html' %}
+{% extends 'dashboard' %}
 
-{% block popup %}
-<div class='dimmer'>
-    <h2>Edit Transaction</h2>
-    <div class='row card'>
-        <a class='card-x-button fa-solid fa-x' href="{{ url_for('transactions')}}"></a>
-        <form class='form-deco'>
+{% block inner_content %}
+<div class="row">
+    <div class="card">
+        <h2>Edit Transaction</h2>
+        <form action="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post" class="form-deco">
             <input
                 type='date'
+                id='date'
                 placeholder='Date'
+                value='{{ transaction.date }}'
                 required />
             <input
                 type='text'
+                id='title'
                 placeholder='Title'
+                value='{{ transaction.title }}'
                 required />
             <input
                 type='number'
+                id='amount'
                 min='0'
+                step='0.01'
                 placeholder='Amount'
+                value='{{ transaction.amount }}'
                 required />
-            <select>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
-                <option name='category'>Category</option>
+            <select
+                id='category_id'>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
+                <option value='category'>Category</option>
             </select>
             <input type='submit' />
         </form>
