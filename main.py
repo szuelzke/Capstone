@@ -515,25 +515,26 @@ def transactions(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        transaction= db_session.query(Transaction).filter_by(account_id=account_id)
+        transaction = db_session.query(Transaction).filter_by(account_id=account_id)
         db_session.close()
-        if not transaction:
-            return render_template('starting_balance.html', user=user, account=account)
         if account:
-            db_session = Session()
-            # updates amount remaining for transactions
-            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
-            for i, transaction in enumerate(transactions):
-                if i == 0:
-                    transaction.amount_remaining = transaction.amount
-                else:
-                    transaction.amount_remaining = current_amount + transaction.amount
-                current_amount = transaction.amount_remaining
-            db_session.commit()
-            # get transactions 
-            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
-            db_session.close()
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list())
+            if not transaction:
+                return render_template('starting_balance.html', user=user, account=account)
+            else: 
+                db_session = Session()
+                # updates amount remaining for transactions
+                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+                for i, transaction in enumerate(transactions):
+                    if i == 0:
+                        transaction.amount_remaining = transaction.amount
+                    else:
+                        transaction.amount_remaining = current_amount + transaction.amount
+                    current_amount = transaction.amount_remaining
+                db_session.commit()
+                # get transactions 
+                transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
+                db_session.close()
+                return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list())
         else:
             return redirect(url_for('login'))
     else:
