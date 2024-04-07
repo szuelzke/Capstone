@@ -276,7 +276,7 @@ def settings():
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
         
-        return render_template('settings.html', user=user, account=accounts)
+        return render_template('settings.html', user=user, accounts=accounts)
     else:
         return redirect(url_for('login'))
     
@@ -455,13 +455,13 @@ def account():
         return redirect(url_for('login'))
 
 '''
-@app.route('/account', methods=['GET', 'POST'])
-def account():
+@app.route('/<accountid>', methods=['GET', 'POST'])
+def account(accountid):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
         
-        account = db_session.query(Account).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=accountid).first()
 
         if not account:
             db_session.close()
