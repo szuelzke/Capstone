@@ -412,7 +412,7 @@ def settings():
     else:
         return redirect(url_for('login'))
     
-'''
+
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -440,7 +440,7 @@ def upload_picture():
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-'''
+
     
 # Function to update password
 @app.route('/update_password', methods=['POST'])
