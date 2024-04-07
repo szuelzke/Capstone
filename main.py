@@ -12,7 +12,7 @@ import datetime
 from datetime import date, datetime
 import logging
 import time
-from twilio.rest import Client
+#from twilio.rest import Client
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 
@@ -24,10 +24,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Configure Twilio client
-account_sid = 'ACb6b19db6ce5ae9c06feb0028767ba653'
-auth_token = '401994a93c35be4c7c3b6e619f012e6b'
-twilio_phone_number = '+18557203186'
-client = Client(account_sid, auth_token)
+#account_sid = 'ACb6b19db6ce5ae9c06feb0028767ba653'
+#auth_token = '401994a93c35be4c7c3b6e619f012e6b'
+#twilio_phone_number = '+18557203186'
+#client = Client(account_sid, auth_token)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
