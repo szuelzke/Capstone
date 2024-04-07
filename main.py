@@ -556,23 +556,22 @@ def addtransaction(account_id):
             user_id = session['user_id']
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-            last_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
-            db_session.close()
             if account: # add transaction to account
-                if last_transaction:
-                    amount_remaining = last_transaction.amount_remaining + request.form.get('amount')
-                else:
-                    amount_remaining = request.form.get('amount')
                 new_transaction = Transaction(
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'),
-                    amount_remaining=amount_remaining,
                     title=request.form.get('title') 
                     #category_id=request.form.get('category_id')
                     ) 
-                db_session = Session() 
+                
                 db_session.add(new_transaction)
+
+                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+                current_amount = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first()
+                for transaction in transactions:
+                    transaction.amount_remaining = current_amount + transaction.amount_remaining
+
                 db_session.commit()
                 db_session.close()
                 return redirect(url_for('transactions', account_id=account_id))
