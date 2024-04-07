@@ -499,7 +499,7 @@ def edit_account(account_id):
 
 # Function to send SMS
 def send_sms(to, body):
-    message = client.messages.create(
+    client.messages.create(
         body=body,
         from_=twilio_phone_number,
         to=to
@@ -602,6 +602,7 @@ def addtransaction(account_id):
             user_id = session['user_id']
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+            user = db_session.query(User).filter_by(user_id=user_id).first()
             if account: # add transaction to account
                 new_transaction = Transaction(
                     account_id=account.account_id, 
@@ -613,8 +614,7 @@ def addtransaction(account_id):
                 db_session.add(new_transaction)
                 db_session.commit()
 
-                user = db_session.query(User).filter_by(user_id=user_id).first()
-                transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
+                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
                 balance = transactions.amount_remaining
                 user_phone = user.phone_number
                 check_balance_and_send_alert(user_phone, balance)
