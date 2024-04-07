@@ -82,12 +82,14 @@
         {% block content %}
         {% if accounts %}
         <div class="row">
-        {% for account in balance_list %}
+
+        {% for id, obj in balance_list.items() %}
         <div class="card no-bg view-balance">
-            <h1 class="hide-text">{{ account.value }}</h1>
-            <h2>{{ account.key }}</h2>
+            <h1 class="hide-text">{{ id["balance"]}}</h1>
+            <h2>{{ id["name"] }}</h2>
         </div>
         {% endfor %}
+
         </div>
         {% endif%}
         {% endblock %}
