@@ -40,11 +40,15 @@
                 <th class='tooltip'><i class="fa-solid fa-money-bill"></i><span class='tooltiptext'>Amount</span>
                 </th>
             </thead>
+            {% if transactions %}
+            {% for transaction in transactions %}
             <tbody>
-                <td>date</td>
-                <td>desc</td>
-                <td>amount</td>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.title }}</td>
+                <td>{{ transaction.amount }}</td>
             </tbody>
+            {% endfor %}
+            {% endif %}
         </table>
     </div>
 </div>
