@@ -1,0 +1,33 @@
+{% extends 'dashboard.html' %}
+
+{% block inner_content %}
+<div class="row row-v">
+    <div class='card'>
+        <h2>FlashCash Transactions</h2>
+
+        <table id="flashcash-tbl">
+            <thead>
+                <tr>
+                    <th class='tooltip'><i class="fa-regular fa-calendar"></i><span class='tooltiptext'>Date</span></th>
+                    <th class='tooltip'><i class="fa-solid fa-building-columns"></i>
+                        <span class='tooltiptext'>Description</span>
+                    </th>
+                    <th class='tooltip'><i class="fa-solid fa-money-bill"></i><span class='tooltiptext'>Amount</span></th>
+                    <th>Remaining Balance</th>
+                    <th>Plan Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction, plan in flashcash_transactions %}
+                <tr>
+                    <td>{{ transaction.transaction_date }}</td>
+                    <td>{{ transaction.transaction_amount }}</td>
+                    <td>{{ transaction.amount_remaining }}</td>
+                    <td>{{ plan.plan_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
