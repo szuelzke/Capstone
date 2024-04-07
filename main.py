@@ -546,9 +546,9 @@ def transactions(account_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/<account_id>/transaction/add', methods=['POST', 'GET'])
+@app.route('/<account_id>/transactions/add', methods=['POST', 'GET'])
 def addtransaction(account_id):
-    if 'user_id' in session  and session.get('mfa_completed', False):
+    if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
             user_id = session['user_id']
             date = request.form['date']
@@ -564,10 +564,11 @@ def addtransaction(account_id):
                 db_session.add(new_transaction)
                 db_session.commit()
                 db_session.close()
-                return redirect(url_for('transactions'))
+                return redirect(url_for('transactions', account_id=account_id))
             else:
                 return "Account not found"
-        return render_template('forms/add_transaction.html')
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        return render_template('add_transaction.html', account=account)
     else:
         return redirect(url_for('login'))
 
