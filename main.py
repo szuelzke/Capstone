@@ -567,7 +567,9 @@ def addtransaction(account_id):
                 return redirect(url_for('transactions', account_id=account_id))
             else:
                 return "Account not found"
+        db_session = Session()  
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        db_session.close()
         return render_template('add_transaction.html', account=account)
     else:
         return redirect(url_for('login'))
