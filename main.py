@@ -704,7 +704,7 @@ def flashcash_transaction(account_id):
         if account:
             db_session = Session()
             # Fetching FlashCash transactions
-            flashcash_transactions = db_session.query(FlashCash_Transaction).filter_by(account_id=account_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
+            flashcash_transactions = db_session.query(FlashCash_Transaction, SvcPlan).join(SvcPlan).filter(FlashCash_Transaction.account_id==account_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
             db_session.close()
             return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user, account=account)
         else:
