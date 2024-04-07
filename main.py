@@ -538,8 +538,9 @@ def transactions(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        db_session.close()
         if account:
-
+            db_session = Session()
             # updates amount renaming so they're in sync
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
             for i, transaction in enumerate(transactions):
@@ -549,7 +550,6 @@ def transactions(account_id):
                     transaction.amount_remaining = current_amount + transaction.amount
                 current_amount = transaction.amount_remaining
             db_session.commit()
-
             # get transactions for account
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
