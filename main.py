@@ -10,9 +10,15 @@ import base64
 import secrets
 import datetime
 from datetime import date, datetime
+import logging
+import time
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -107,14 +113,18 @@ def test():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    start_time = time.time()  # Performance monitoring - start time
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        logger.info(f"Attempting login for email: {email}")
+
         db_session = Session()
         user = db_session.query(User).filter_by(email=email).first()
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             session['user_id'] = user.user_id
             session['email'] = user.email
+            logger.info(f"User {user.user_id} logged in successfully")
 
             if user.mfa_key is None:
                 otp_secret = pyotp.random_base32() # generate secret setup key
@@ -122,10 +132,19 @@ def login():
                 db_session.commit()
 
             db_session.close()  # Close the session after all database operations
+            
+            end_time = time.time()  # Performance monitoring - end time
+            logger.info(f"Login request processed in {end_time - start_time} seconds")
+            
             return redirect(url_for('mfa'))
         else:
            db_session.close()
+           logger.error("Invalid email or password")
            return render_template('login.html', error='Invalid email or password')
+    
+    end_time = time.time()  # Performance monitoring - end time
+    logger.info(f"Login request processed in {end_time - start_time} seconds")
+    
     return render_template('login.html')
 
 @app.route('/mfa', methods=['GET', 'POST'])
@@ -161,6 +180,7 @@ def get_user_id(email):
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
+    start_time = time.time()  # Performance monitoring - start ti
     if request.method == 'POST':
        
         username = request.form['username']
@@ -196,8 +216,12 @@ def signup():
         session.commit()
         session.close()
         
+        end_time = time.time()  # Performance monitoring - end time
+        logger.info(f"Signup request processed in {end_time - start_time} seconds")
         return redirect(url_for('login'))
     
+    end_time = time.time()  # Performance monitoring - end time
+    logger.info(f"Signup request processed in {end_time - start_time} seconds")
     return render_template('signup.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -269,6 +293,7 @@ def settings():
 # Function to render settings page
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
+    start_time = time.time()  # Performance monitoring - start time
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
@@ -276,6 +301,8 @@ def settings():
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
         
+        end_time = time.time()  # Performance monitoring - end time
+        logger.info(f"Settings request processed in {end_time - start_time} seconds")
         return render_template('settings.html', user=user, accounts=accounts)
     else:
         return redirect(url_for('login'))
