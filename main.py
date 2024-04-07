@@ -560,10 +560,10 @@ def addtransaction(account_id):
             if account: # add transaction to account
                 new_transaction = Transaction(
                     account_id=account.account_id, 
-                    date=request.form['date'], 
-                    amount=request.form['amount'],
-                    title=request.form['title'], 
-                    category_id=request.form['category_id'])
+                    date=request.form.get('date'), 
+                    amount=request.form.get('amount'), 
+                    title=request.form.get('title'), 
+                    category_id=request.form.get('category_id')) 
                 db_session = Session() 
                 db_session.add(new_transaction)
                 db_session.commit()
