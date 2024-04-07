@@ -515,6 +515,7 @@ def account():
 
 '''
 
+# dashboard for account
 @app.route('/<account_id>', methods=['GET', 'POST'])
 def account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -529,10 +530,8 @@ def account(account_id):
             return redirect(url_for('home'))
 
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
-        latest_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
-
-        db_session.close()
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, latest_transaction=latest_transaction)
+        
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user)
     else:
         return redirect(url_for('login'))
 
