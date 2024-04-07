@@ -99,7 +99,7 @@ class FlashCash_Transaction(Base):
     __tablename__ = 'flashcash_transaction'
 
     fc_transaction_id = Column(Integer, primary_key=True, autoincrement=True)
-    student_id = Column(Integer, ForeignKey(User.user_id))
+    student_id = Column(Integer, ForeignKey(User.student_id))
     plan_id = Column(Integer, ForeignKey(SvcPlan.plan_id))
     transaction_date = Column(Date)
     transaction_amount = Column(DECIMAL(10,2))
