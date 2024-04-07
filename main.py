@@ -548,6 +548,7 @@ def transactions(account_id):
                 else:
                     transaction.amount_remaining = current_amount + transaction.amount
                 current_amount = transaction.amount_remaining
+            db_session.commit()
 
             # get transactions for account
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
