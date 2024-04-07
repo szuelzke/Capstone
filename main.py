@@ -497,21 +497,6 @@ def edit_account(account_id):
     
 ##### Handling Accounts
 
-# Function to send SMS
-def send_sms(to, body):
-    client.messages.create(
-        body=body,
-        from_=twilio_phone_number,
-        to=to
-    )
-    print("SMS sent to", to)
-
-# Function to check balance and send alert
-def check_balance_and_send_alert(user_phone, balance):
-    if balance < 50.00:
-        message = f"FlashFin: Your balance is ${balance:.2f}. "
-        send_sms(user_phone, message)
-
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -614,10 +599,10 @@ def addtransaction(account_id):
                 db_session.add(new_transaction)
                 db_session.commit()
 
-                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
-                balance = transactions.amount_remaining
-                user_phone = user.phone_number
-                check_balance_and_send_alert(user_phone, balance)
+                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+                #balance = transactions.amount_remaining
+                #user_phone = user.phone_number
+                #check_balance_and_send_alert(user_phone, balance)
         
                 db_session.close()
                 return redirect(url_for('transactions', account_id=account_id))
