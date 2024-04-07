@@ -461,6 +461,7 @@ def account(account_id):
         user_id = session['user_id']
         db_session = Session()
         
+        user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
 
         if not account:
@@ -470,7 +471,7 @@ def account(account_id):
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
 
         db_session.close()
-        return render_template('dashboard.html', account=account, transactions=transactions)
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user)
     else:
         return redirect(url_for('login'))
 
