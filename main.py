@@ -484,7 +484,6 @@ def account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
-        
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
 
@@ -493,11 +492,10 @@ def account(account_id):
             return redirect(url_for('home'))
 
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
-        
         get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
         if get_balance:
             balance = get_balance.amount_remaining
-        else:
+        else: # there are no transactions for account
             balance = "0.00"
 
         db_session.close()
@@ -609,6 +607,15 @@ def deletetransaction(account_id, transaction_id):
         return redirect(url_for('transactions', account_id=account_id))
     else:
         return redirect(url_for('login'))
+    
+@app.route('/<account_id>/budget', methods=['GET'])
+def budget(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        return render_template('budget.html', user=user, account=account, account_list=get_account_list())
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():
