@@ -737,14 +737,14 @@ def sharetransaction():
 
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
 
-@app.route('/<account_id>/flashcash-transactions', methods=['GET','POST'])
-def flashcash_transaction(account_id):
+@app.route('/<student_id>/flashcash-transactions', methods=['GET','POST'])
+def flashcash_transaction(student_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         # Getting user info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=user.account_id).first()
         db_session.close()
         if account:
             db_session = Session()
