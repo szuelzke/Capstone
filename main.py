@@ -549,8 +549,8 @@ def transactions(account_id):
 @app.route('/<account_id>/transactions/add', methods=['POST', 'GET'])
 def addtransaction(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
         if request.method == 'POST':
-            user_id = session['user_id']
             date = request.form['date']
             amount = request.form['amount']
             title = request.form['title']
