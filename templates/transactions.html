@@ -36,7 +36,7 @@
                     <td>{{transaction.category_id}}</td>
                     <td class="sharespend-button">
                         <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                        <button><i class="fa-solid fa-trash"></i> Delete</button>
+                        <a href="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><i class="fa-solid fa-trash"></i> Delete</a>
                         <a href=""><i class="fa-solid fa-share"></i> Share</a>
                     </td>
                 </tr>

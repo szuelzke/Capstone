@@ -574,6 +574,7 @@ def addtransaction(account_id):
     else:
         return redirect(url_for('login'))
 
+# edit existing transaction
 @app.route('/<account_id>/<transaction_id>/edit', methods=['POST', 'GET'])
 def edittransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -601,50 +602,21 @@ def edittransaction(account_id, transaction_id):
             db_session.close()
             return render_template("edit_transaction.html", user=user, account=account, transaction=transaction)
 
-
-
-'''
-@app.route('/account/transaction/edit/<int:transaction_id>', methods=['POST', 'GET'])
-def edittransaction(transaction_id):
-    if 'user_id' in session  and session.get('mfa_completed', False):
+# delete transaction
+@app.route('/<account_id>/<transaction_id>/delete', methods=['POST'])
+def deletetransaction(account_id, transaction_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
-        transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
-        
-        if not transaction:
-            flash('Transaction not found')
-            db_session.close()
-            return redirect(url_for('transactions'))
-            
-        if transaction.account.user_id != user_id:
-            flash('You do not have permission to edit this transaction')
-            db_session.close()
-            return redirect(url_for('transactions'))
-            
-        if request.method == 'POST':
-            new_date = request.form.get('date')
-            if new_date:
-                transaction.date = new_date
-            
-            new_amount = request.form.get('amount')
-            if new_amount:
-                transaction.amount = new_amount
-            
-            new_title = request.form.get('title')
-            if new_title:
-                transaction.title = new_title
-            
-            new_category_id = request.form.get('category_id')
-            if new_category_id:
-                transaction.category_id = new_category_id
-
+        transaction = db_session.query(Transaction).filter_by(account_id=account_id, transaction_id=transaction_id)
+        if transaction:
+            db_session.delete(transaction)
             db_session.commit()
             db_session.close()
-            return redirect(url_for('transactions'))
-        db_session.close()
-        return render_template('edit_transaction.html', transaction=transaction)
-    return render_template('forms/edit_transaction.html')
-'''
+            flash('Transaction deleted successfully.')
+        else:
+            db_session.close()
+            flash('Transaction not found.')
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():
