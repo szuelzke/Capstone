@@ -26,7 +26,7 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'flashfin.alerts@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ymyp tggl znvp kaoy'
+app.config['MAIL_PASSWORD'] = 'x'
 app.config['MAIL_DEFAULT_SENDER'] = 'flashfin.alerts@gmail.com'
 
 mail = Mail(app)
