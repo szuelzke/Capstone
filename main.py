@@ -13,6 +13,8 @@ from datetime import date, datetime
 import logging
 import time
 
+#### ------------------------------- Setup/Classes --------------------------------------------------------
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -89,7 +91,10 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
-#### Handling Login System 
+
+#### ------------------------------- Handling Login System --------------------------------------------------------
+
+
 @app.route('/', methods=['GET','POST'])
 def home():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -223,72 +228,94 @@ def signup():
     logger.info(f"Signup request processed in {end_time - start_time} seconds")
     return render_template('signup.html')
 
+def generate_reset_token():
+    return secrets.token_urlsafe(32)
+
+def calculate_expiry_time():
+    expiry_time = datetime.datetime.now() + datetime.timedelta(hours=1)
+    return expiry_time
+
+def send_reset_password_email(user_email, reset_token):
+    subject = "Reset Your Password"
+    sender = "flashfin.alerts@gmail.com"
+    recipients = [user_email]
+    text_body = f"Hello,\n\nPlease click the following link to reset your password:\n\nReset Password Link: http://capstone1.cs.kent.edu/reset-password/{reset_token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nYour FlashFin Team"
+    html_body = f"<p>Hello,</p><p>Please click the following link to reset your password:</p><p><a href='http://capstone1.cs.kent.edu/reset-password/{reset_token}'>Reset Password Link</a></p><p>If you did not request a password reset, please ignore this email.</p><p>Best regards,<br>Your FlashFin Team</p>"
+
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+
+    mail.send(msg)
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        db_session = Session()
+        user = db_session.query(User).filter_by(email=email).first()
+        db_session.close()
+
+        if user:
+            # Generate and store reset token
+            reset_token = generate_reset_token()
+            user.reset_token = reset_token
+            user.reset_token_expiry = calculate_expiry_time()
+
+            session = Session()
+            session.add(user)
+            session.commit()
+            session.close()
+            
+            send_reset_password_email(user.email, reset_token)
+
+            return render_template('password_reset_link_sent.html', email=email)
+        else:
+            return render_template('forgot_password.html', error='Email not found')
+    return render_template('forgot_password.html')
+
+@app.route('/reset-password/<reset_token>', methods=['GET', 'POST'])
+def reset_password(reset_token):
+    if request.method == 'POST':
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        user = session.query(User).filter_by(reset_token=reset_token).first()
+
+        if user:
+            if user.reset_token_expiry and user.reset_token_expiry > datetime.now():
+                if new_password == confirm_password:
+                    hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+                    user.password = hashed_password
+                    user.reset_token = None
+                    user.reset_token_expiry = None
+                    
+                    session.commit()
+                    session.close()
+                   
+                    return render_template('password_reset_success.html')
+                else:
+                    return render_template('reset_password.html', error='Passwords Do Not Match')
+            else:
+                return render_template('reset_password.html', error='Expired Code')
+        else:
+            return render_template('reset_password.html', error='Invalid Token')
+    return render_template('reset_password.html')
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Clear session data
     session.clear()
     return redirect(url_for('login'))
 
-### Handling Settings
 
-'''
-@app.route('/settings', methods=['GET','POST'])
-def settings():
-    if 'user_id' in session  and session.get('mfa_completed', False):
-        user_id = session['user_id']
-        db_session = Session()
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id).first()
-        
-        if request.method == 'POST':
-            new_email = request.form.get('email')
-            if new_email:
-                user.email = new_email
-            
-            new_account_name = request.form.get('account_name')
-            if new_account_name:
-                account.account_name = new_account_name
-            
-            new_first_name = request.form.get('first_name')
-            if new_first_name:
-                user.first_name = new_first_name
+###------------------------------- Handling Settings --------------------------------------------------------
 
-            new_last_name = request.form.get('last_name')
-            if new_last_name:
-                user.last_name = new_last_name
-            
-            new_student_id = request.form.get('student_id')
-            if new_student_id:
-                user.student_id = new_student_id
 
-            new_phone_number = request.form.get('phone_number')
-            if new_phone_number:
-                user.phone_number = new_phone_number
-            
-            new_image_link = request.form.get('image_link')
-            if new_image_link:
-                user.image_link = new_image_link
-            
-            new_social_name = request.form.get('social_name')
-            if new_social_name:
-                user.social_name = new_social_name
-            
-            new_password = request.form.get('password')
-            confirm_password = request.form.get('confirm_password')
-            if new_password and confirm_password and new_password == confirm_password:
-                hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-                user.password = hashed_password
-            else:
-                flash('Passwords do not match.')
-                db_session.close()
-                return render_template('settings.html', user=user, account=account)
-            
-            db_session.commit()
-            db_session.close()
-        return render_template('settings.html', user=user, account=account)
-    else:
-        return redirect(url_for('login'))
-'''
 # Function to render settings page
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -624,85 +651,6 @@ def sharetransaction():
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
-
-
-def generate_reset_token():
-    return secrets.token_urlsafe(32)
-
-def calculate_expiry_time():
-    expiry_time = datetime.datetime.now() + datetime.timedelta(hours=1)
-    return expiry_time
-
-def send_reset_password_email(user_email, reset_token):
-    subject = "Reset Your Password"
-    sender = "your_email@gmail.com"
-    recipients = [user_email]
-    text_body = f"Hello,\n\nPlease click the following link to reset your password:\n\nReset Password Link: http://your_website.com/reset-password/{reset_token}\n\nIf you did not request a password reset, please ignore this email.\n\nBest regards,\nYour Website Team"
-    html_body = f"<p>Hello,</p><p>Please click the following link to reset your password:</p><p><a href='http://your_website.com/reset-password/{reset_token}'>Reset Password Link</a></p><p>If you did not request a password reset, please ignore this email.</p><p>Best regards,<br>Your Website Team</p>"
-
-    msg = Message(subject, sender=sender, recipients=recipients)
-    msg.body = text_body
-    msg.html = html_body
-
-    mail.send(msg)
-
-@app.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password():
-    if request.method == 'POST':
-        email = request.form['email']
-
-        db_session = Session()
-        user = db_session.query(User).filter_by(email=email).first()
-        db_session.close()
-
-        if user:
-            # Generate and store reset token
-            reset_token = generate_reset_token()
-            user.reset_token = reset_token
-            user.reset_token_expiry = calculate_expiry_time()
-
-            session = Session()
-            session.add(user)
-            session.commit()
-            session.close()
-            
-            send_reset_password_email(user.email, reset_token)
-
-            return render_template('password_reset_link_sent.html', email=email)
-        else:
-            return render_template('forgot_password.html', error='Email not found')
-    return render_template('forgot_password.html')
-
-@app.route('/reset-password/<reset_token>', methods=['GET', 'POST'])
-def reset_password(reset_token):
-    if request.method == 'POST':
-        new_password = request.form['new_password']
-        confirm_password = request.form['confirm_password']
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
-        user = session.query(User).filter_by(reset_token=reset_token).first()
-
-        if user:
-            if user.reset_token_expiry and user.reset_token_expiry > datetime.now():
-                if new_password == confirm_password:
-                    hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-
-                    user.password = hashed_password
-                    user.reset_token = None
-                    user.reset_token_expiry = None
-                    
-                    session.commit()
-                    session.close()
-                   
-                    return render_template('password_reset_success.html')
-                else:
-                    return render_template('reset_password.html', error='Passwords Do Not Match')
-            else:
-                return render_template('reset_password.html', error='Expired Code')
-        else:
-            return render_template('reset_password.html', error='Invalid Token')
-    return render_template('reset_password.html')
 
 # returns dictionary of accounts connected to user
 def get_account_list():
