@@ -452,6 +452,32 @@ def edit_account(account_id):
         return redirect(url_for('login'))
     
 ##### Handling Accounts
+@app.route('/add-account', methods=['GET','POST'])
+def add_account():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        db_session.close()
+
+        if request.method == 'POST':
+            account_name = request.form['accountname']
+            new_account = Account(
+                account_name=account_name,
+                user_id=session['user_id'],
+                is_active=True
+            )
+
+            db_session_add = Session()
+            db_session_add.add(new_account)
+            db_session_add.commit()
+            db_session_add.close()
+            return redirect(url_for('home'))
+            
+        return render_template('add_account.html', user=user)
+    else:
+        return redirect(url_for('login'))
+
 '''
 @app.route('/account')
 def account():
@@ -482,6 +508,7 @@ def account():
         return redirect(url_for('login'))
 
 '''
+
 @app.route('/<account_id>', methods=['GET', 'POST'])
 def account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -502,51 +529,25 @@ def account(account_id):
     else:
         return redirect(url_for('login'))
 
-        
-@app.route('/add-account', methods=['GET','POST'])
-def add_account():
-    if 'user_id' in session and session.get('mfa_completed', False):
+@app.route('/<account_id>/transactions', methods=['GET'])
+def transactions(account_id):
+    if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        db_session.close()
-
-        if request.method == 'POST':
-            account_name = request.form['accountname']
-            new_account = Account(
-                account_name=account_name,
-                user_id=session['user_id'],
-                is_active=True
-            )
-
-            db_session_add = Session()
-            db_session_add.add(new_account)
-            db_session_add.commit()
-            db_session_add.close()
-            return redirect(url_for('home'))
-            
-        return render_template('add_account.html', user=user)
-    else:
-        return redirect(url_for('login'))
-
-
-@app.route('/account/transaction', methods=['GET'])
-def transactions():
-    if 'user_id' in session  and session.get('mfa_completed', False):
-        user_id = session['user_id']
-        account = Account.query.filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
 
         if account:
-            account_id = account.account_id
-            transactions = Transaction.query.filter_by(account_id=account_id).all()
-            return render_template('account/transactions.html',transactions=transactions)
+            transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
+            db_session.close()
+            return render_template('transactions.html',transactions=transactions, user=user)
         else:
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
-@app.route('/account/transaction/add', methods=['POST', 'GET'])
-def addtransaction():
+@app.route('/<account_id>/transaction/add', methods=['POST', 'GET'])
+def addtransaction(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         if request.method == 'POST':
             user_id = session['user_id']

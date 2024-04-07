@@ -1,4 +1,4 @@
-{% extends 'account/dashboard.html' %}
+{% extends 'dashboard.html' %}
 
 {% block title %}Transactions{% endblock %}
 
@@ -25,20 +25,22 @@
 
             <tbody>
                 <tr>
-                    <td colspan="6"><a href="{{ url_for('addtransaction') }}"><i class='fa-solid fa-plus pd-5'></i>Add Transaction</a></td>
+                    <td colspan="6"><a href="{{ url_for('addtransaction', account_id=account.account_id) }}"><i class='fa-solid fa-plus pd-5'></i>Add Transaction</a></td>
                 </tr>
+                {% for transaction in transactions%}
                 <tr>
-                    <td>date</td>
-                    <td>title</td>
-                    <td>amount</td>
-                    <td>amount_remaining</td>
-                    <td>category_id</td>
+                    <td>{{transaction.date}}</td>
+                    <td>{{transaction.title}}</td>
+                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.amount_remaining}}</td>
+                    <td>{{transaction.category_id}}</td>
                     <td class="sharespend-button">
-                        <a href="{{ url_for('edittransaction')}}"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                        <a href=""><i class="fa-solid fa-pen-to-square"></i>Edit</a>
                         <button><i class="fa-solid fa-trash"></i> Delete</button>
-                        <a href="{{ url_for('sharetransaction')}}"><i class="fa-solid fa-share"></i> Share</a>
+                        <a href=""><i class="fa-solid fa-share"></i> Share</a>
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
 
         </table>
