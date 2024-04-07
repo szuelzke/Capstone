@@ -232,7 +232,7 @@ def generate_reset_token():
     return secrets.token_urlsafe(32)
 
 def calculate_expiry_time():
-    expiry_time = datetime.now() + datetime.timedelta(hours=1)
+    expiry_time = datetime.now() + timedelta(hours=1)
     return expiry_time
 
 def send_reset_password_email(user_email, reset_token):
