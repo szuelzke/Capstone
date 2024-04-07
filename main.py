@@ -89,6 +89,22 @@ class Transaction(Base):
     category_id = Column(Integer, ForeignKey(Category.category_id))
     amount_remaining = Column(DECIMAL(10, 2))
 
+class SvcPlan(Base):
+    __tablename__ = 'svc_plan'
+
+    plan_id = Column(Integer, primary_key=True)
+    plan_name = Column(String(100))
+
+class FlashCash_Transaction(Base):
+    __tablename__ = 'flashcash_transaction'
+
+    fc_transaction_id = Column(Integer, primary_key=True, autoincrement=True)
+    student_id = Column(Integer, ForeignKey(User.user_id))
+    plan_id = Column(Integer, ForeignKey(SvcPlan.plan_id))
+    transaction_date = Column(Date)
+    transaction_amount = Column(DECIMAL(10,2))
+    amount_remaining = Column(DECIMAL(10,2))
+
 
 
 
