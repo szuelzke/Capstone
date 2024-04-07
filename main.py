@@ -28,6 +28,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'flashfin.alerts@gmail.com'
 app.config['MAIL_PASSWORD'] = 'PSMGB2024!'
+app.config['MAIL_DEFAULT_SENDER'] = 'flashfin.alerts@gmail.com'
 
 mail = Mail(app)
 
@@ -266,13 +267,20 @@ def forgot_password():
             db_session.commit()
             db_session.close()
             
-            send_reset_password_email(user.email, reset_token)
+            send_reset_password_email(email, reset_token)
 
-            return render_template('password_reset_link_sent.html', email=email)
+            #return render_template('password_reset_link_sent.html', email=email)
+            return redirect(url_for('password_reset_link_sent', email=email))
         else:
             db_session.close()
             return render_template('forgot_password.html', error='Email not found')
     return render_template('forgot_password.html')
+
+# Define the route for showing password reset link sent page
+@app.route('/password_reset_link_sent')
+def password_reset_link_sent():
+    email = request.args.get('email')
+    return render_template('password_reset_link_sent.html', email=email)
 
 @app.route('/reset-password/<reset_token>', methods=['GET', 'POST'])
 def reset_password(reset_token):
