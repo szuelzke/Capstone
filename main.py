@@ -692,6 +692,26 @@ def sharetransaction():
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
 
+@app.route('/<account_id>/flashcash-transactions', methods=['GET','POST'])
+def flashcash_transaction(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        # Getting user info
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        db_session.close()
+        if account:
+            db_session = Session()
+            # Fetching FlashCash transactions
+            flashcash_transactions = db_session.query(FlashCash_Transaction).filter_by(account_id=account_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
+            db_session.close()
+            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user, account=account)
+        else:
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+
 # returns dictionary of accounts connected to user
 def get_account_list():
     user_id = session['user_id']
