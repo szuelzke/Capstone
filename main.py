@@ -562,8 +562,9 @@ def addtransaction(account_id):
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'), 
-                    title=request.form.get('title'), 
-                    category_id=request.form.get('category_id')) 
+                    title=request.form.get('title') 
+                    #category_id=request.form.get('category_id')
+                    ) 
                 db_session = Session() 
                 db_session.add(new_transaction)
                 db_session.commit()
@@ -593,7 +594,7 @@ def edittransaction(account_id, transaction_id):
             transaction.date = new_date
             transaction.title = new_title
             transaction.amount = new_amount
-            transaction.category_id = new_category
+            #transaction.category_id = new_category
 
             db_session.commit()
             db_session.close()
