@@ -81,6 +81,7 @@
 
         {% block content %}
         {% if accounts %}
+        <div class="row">
         {% for account in accounts %}
         <div class="card no-bg view-balance">
             <a href="{{ url_for('account', account_id=account.account_id) }}">
@@ -89,6 +90,7 @@
             </a>
         </div>
         {% endfor %}
+        </div>
         {% endif%}
         {% endblock %}
 
