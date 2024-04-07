@@ -98,8 +98,14 @@ def home():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
+        # get amount remaining
+        balance_list = []
+        for account in accounts:
+            recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
+            balance_list.append(recent_transaction)
+
         db_session.close()
-        return render_template('index.html', user=user, accounts=accounts)
+        return render_template('index.html', user=user, accounts=accounts, balance_list=balance_list)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
@@ -523,9 +529,10 @@ def account(account_id):
             return redirect(url_for('home'))
 
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
+        latest_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
 
         db_session.close()
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user)
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, latest_transaction=latest_transaction)
     else:
         return redirect(url_for('login'))
 
@@ -550,7 +557,7 @@ def transactions(account_id):
                     transaction.amount_remaining = current_amount + transaction.amount
                 current_amount = transaction.amount_remaining
             db_session.commit()
-            # get transactions for account
+            # get transactions for to display
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions, user=user, account=account)
