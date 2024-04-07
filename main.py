@@ -553,17 +553,17 @@ def transactions(account_id):
 def addtransaction(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
-            date = request.form['date']
-            amount = request.form['amount']
-            title = request.form['title']
-            category_id = request.form['category_id']
-
             user_id = session['user_id']
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
             db_session.close()
             if account: # add transaction to account
-                new_transaction = Transaction(account_id=account.account_id, date=date, amount=amount,title=title, category_id=category_id)
+                new_transaction = Transaction(
+                    account_id=account.account_id, 
+                    date=request.form['date'], 
+                    amount=request.form['amount'],
+                    title=request.form['title'], 
+                    category_id=request.form['category_id'])
                 db_session = Session() 
                 db_session.add(new_transaction)
                 db_session.commit()
@@ -584,10 +584,10 @@ def edittransaction(account_id, transaction_id):
         transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
 
         if request.method == 'POST':
-            new_date = request.form['date']
-            new_title = request.form['title']
-            new_amount = request.form['amount']
-            new_category = request.form['category_id']
+            new_date = request.form.get('date')
+            new_title = request.form.get('title')
+            new_amount = request.form.get('amount')
+            new_category = request.form.get('category_id')
 
             transaction.date = new_date
             transaction.title = new_title
