@@ -91,9 +91,9 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id)
+        accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
-        return render_template('index.html', user=user, account=account)
+        return render_template('index.html', user=user, accounts=accounts)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
