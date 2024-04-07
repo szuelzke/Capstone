@@ -533,11 +533,12 @@ def account(account_id):
 def transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
+        # getting info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-
         if account:
+            # get transactions for account
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions, user=user, account=account)
