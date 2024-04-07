@@ -42,7 +42,7 @@
         <div class="nav">
             <h2>Personal</h2>
             {% if account_list %}
-            {% for id, obj in account_list %}
+            {% for id, obj in account_list.items() %}
             <a href="{{ url_for('account', account_id = id )}}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 {{ obj[name] }}, {{ id }}
