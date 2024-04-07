@@ -98,7 +98,7 @@ def home():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
-        # get amount remaining
+        # get user account id, name, and balance remaining
         account_list = {}
         for account in accounts:
             recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
