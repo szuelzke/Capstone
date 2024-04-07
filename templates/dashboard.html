@@ -18,7 +18,7 @@
     {% endif %}
 
 
-    <a href="" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>View/Edit Budget</a>
+    <a href="{{ url_for('budget', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>View/Edit Budget</a>
 
     <a href="{{ url_for('transactions', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
 
