@@ -531,7 +531,10 @@ def account(account_id):
 
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
         
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user)
+        balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first().amount_remaining
+        db_session.close()
+
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance)
     else:
         return redirect(url_for('login'))
 
