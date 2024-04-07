@@ -89,13 +89,11 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
-#### Handling Login System 
-
+# returns dictionary of accounts connected to user
 def get_account_list():
     user_id = session['user_id']
     db_session = Session()
     accounts = db_session.query(Account).filter_by(user_id=user_id).all()
-    # get user account id, name, and balance remaining
     account_list = {}
     for account in accounts:
         recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
@@ -105,6 +103,7 @@ def get_account_list():
     db_session.close()
     return account_list
 
+#### Handling Login System 
 @app.route('/', methods=['GET','POST'])
 def home():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -314,10 +313,11 @@ def settings():
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
+        account_list = get_account_list()
         
         end_time = time.time()  # Performance monitoring - end time
         logger.info(f"Settings request processed in {end_time - start_time} seconds")
-        return render_template('settings.html', user=user, accounts=accounts)
+        return render_template('settings.html', user=user, accounts=accounts, account_list=account_list)
     else:
         return redirect(url_for('login'))
     
@@ -570,7 +570,7 @@ def transactions(account_id):
             # get transactions for to display
             transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions, user=user, account=account)
+            return render_template('transactions.html',transactions=transactions, user=user, account=account, account_list=get_account_list())
         else:
             return redirect(url_for('login'))
     else:
