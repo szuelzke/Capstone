@@ -551,10 +551,10 @@ def transactions(account_id):
 def addtransaction(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
-            date = request.form['date']
-            amount = request.form['amount']
-            title = request.form['title']
-            category_id = request.form['category_id']
+            date = request.form.get('date')
+            amount = request.form.get('amount')
+            title = request.form.get('title')
+            category_id = request.form.get('category_id')
 
             user_id = session['user_id']
             db_session = Session()  
