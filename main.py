@@ -561,7 +561,6 @@ def addtransaction(account_id):
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'),
-                    amount_remaining="",
                     title=request.form.get('title') 
                     #category_id=request.form.get('category_id')
                     ) 
