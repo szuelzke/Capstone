@@ -596,6 +596,7 @@ def edittransaction(account_id, transaction_id):
 
             db_session.commit()
             db_session.close()
+            return redirect(url_for('transactions', transaction_id=transaction_id))
         else:
             db_session.close()
             return render_template("edit_transaction.html", user=user, account=account, transaction=transaction)
