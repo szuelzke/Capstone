@@ -12,7 +12,7 @@ import datetime
 from datetime import date, datetime
 import logging
 import time
-#from twilio.rest import Client
+from twilio.rest import Client
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 
@@ -24,10 +24,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Configure Twilio client
-#account_sid = 'ACb6b19db6ce5ae9c06feb0028767ba653'
-#auth_token = '401994a93c35be4c7c3b6e619f012e6b'
-#twilio_phone_number = '+18557203186'
-#client = Client(account_sid, auth_token)
+account_sid = 'ACb6b19db6ce5ae9c06feb0028767ba653'
+auth_token = '401994a93c35be4c7c3b6e619f012e6b'
+twilio_phone_number = '+18557203186'
+client = Client(account_sid, auth_token)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -170,7 +170,7 @@ def get_account_list():
     return account_list
 
 # Alerts 
-'''
+
 # Function to send SMS
 def send_sms(to, body):
     message = client.messages.create(
@@ -185,7 +185,7 @@ def check_balance_and_send_alert(user_phone, balance):
     if balance < 50.00:
         message = f"FlashFin: Your balance is ${balance:.2f}. "
         send_sms(user_phone, message)
-'''
+
 
 
 #### ------------------------------- Handling Login System --------------------------------------------------------
@@ -657,10 +657,10 @@ def addtransaction(account_id):
                 db_session.add(new_transaction)
                 db_session.commit()
 
-                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
-                #balance = transactions.amount_remaining
-                #user_phone = user.phone_number
-                #check_balance_and_send_alert(user_phone, balance)
+                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+                balance = transactions.amount_remaining
+                user_phone = user.phone_number
+                check_balance_and_send_alert(user_phone, balance)
         
                 db_session.close()
                 return redirect(url_for('transactions', account_id=account_id))
