@@ -892,16 +892,14 @@ def flashcash_transaction(student_id):
         # Getting user info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        #account = db_session.query(Account).filter_by(user_id=user_id, account_id=user.account_id).first()
-        #db_session.close()
+        db_session.close()
         if user:
-            #db_session = Session()
             # Fetching FlashCash transactions
+            db_session = Session()
             flashcash_transactions = db_session.query(FlashCash_Transaction, SvcPlan).join(SvcPlan).filter(FlashCash_Transaction.student_id==student_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
             db_session.close()
-            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user,account_list=get_account_list())
+            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user, account_list=get_account_list())
         else:
-            db_session.close()
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))

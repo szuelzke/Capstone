@@ -1,4 +1,11 @@
-{% extends 'dashboard.html' %}
+{% extends 'index.html' %}
+
+{% block title %}<a>FlashCash</a>{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='transactionstable.css') }}">
+{% endblock %}
+
 
 {% block inner_content %}
 <div class="row row-v">
