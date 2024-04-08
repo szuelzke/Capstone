@@ -58,8 +58,12 @@
 
 <div class="row">
     <div class="card">
-        <h2>Summary</h2>
-        {% set budgets = %}
+        <h2>Summary</h2>s
+        {% if budgets %}
+        {% for budget in budgets %}
+        <li>{{budget.category.category_name}}</li>
+        {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
