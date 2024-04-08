@@ -234,7 +234,9 @@ def home():
 @app.route('/test')
 def test():
     if 'user_id' in session:
-        return render_template('test.html')
+        db_session = Session()
+        categories = db_session.query(Category).count()
+        return render_template('test.html', categories=categories)
     else:
         return redirect(url_for('login'))
 
