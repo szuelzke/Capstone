@@ -163,7 +163,18 @@ def get_account_list():
     return account_list
 
 # Alerts 
+# Function to send email
+def send_email(recipient, subject, body):
+    msg = Message(subject, recipients=[recipient])
+    msg.body = body
+    mail.send(msg)
 
+# Function to check balance and send alert
+def check_balance_and_send_alert(user_email, balance):
+    if balance < 50.00:
+        subject = "Alert: Low Balance"
+        body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
+        send_email(user_email, subject, body)
 
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
@@ -529,6 +540,26 @@ def edit_account(account_id):
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
+
+@app.route('/add-studentid', methods=['GET','POST'])
+def add_studentid():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+
+        if request.method == 'POST':
+            student_id = request.form['studentid']
+
+            user.student_id = student_id
+            db_session.commit()
+            db_session.close()
+            return redirect(url_for('settings'))
+
+        db_session.close()
+        return render_template('settings.html', user=user)
+    else:
+        return redirect(url_for('login'))
     
 #### ---------------------------- Handling Accounts ---------------------------------
 
@@ -633,6 +664,12 @@ def addtransaction(account_id):
                 ) 
                 db_session.add(new_transaction)
                 db_session.commit()
+
+                # Sending alert if balance is low
+                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+                #balance = transactions.amount_remaining
+                #user_email = user.email 
+                #check_balance_and_send_alert(user_email, balance)
         
                 db_session.close()
                 return redirect(url_for('transactions', account_id=account_id))
@@ -728,5 +765,3 @@ def flashcash_transaction(student_id):
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
-
-
