@@ -675,8 +675,8 @@ def addtransaction(account_id):
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
                     amount=request.form.get('amount'),
-                    title=request.form.get('title')
-                    #category_id=request.form.get('category_id')
+                    title=request.form.get('title'),
+                    category_id=request.form.get('category_id')
                 ) 
                 db_session.add(new_transaction)
                 db_session.commit()
@@ -705,6 +705,7 @@ def edittransaction(account_id, transaction_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
+        categories = db_session.query(Budget).filter_by(account_id=account_id).all()
 
         if request.method == 'POST':
             new_date = request.form.get('date')
@@ -724,7 +725,7 @@ def edittransaction(account_id, transaction_id):
             return redirect(url_for('transactions', account_id=account_id))
         else:
             db_session.close()
-            return render_template("edit_transaction.html", user=user, account=account, transaction=transaction)
+            return render_template("edit_transaction.html", user=user, account=account, transaction=transaction, categories=categories)
     else:
         return redirect(url_for('login'))
 

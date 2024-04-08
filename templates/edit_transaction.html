@@ -31,9 +31,9 @@
                 id='category_id'
                 name='category_id'>
                 <option value='category'>Category</option>
-                <option value='category'>Category</option>
-                <option value='category'>Category</option>
-                <option value='category'>Category</option>
+                {% for item in categories %}
+                <option value="{{item.category.category_id}}">{{item.category.category_name}}</option>
+                {% endfor%}
             </select>
             <input type='submit' />
         </form>
