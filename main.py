@@ -754,17 +754,23 @@ def budget(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
+        all_categories = db_session.query(Category).all()
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets, categories=all_categories)
         else:
             new_budget = Budget(
                 account_id=account_id,
                 amount=request.form.get('amount'),
-                start_date = request.form.get('start_date'),
+                start_date=request.form.get('start_date'),
                 end_date=request.form.get('end_date')
             )
+            new_category = Category(
+                category_name=request.form.get('title'),
+                color=request.form.get('color')
+            )
             db_session.add(new_budget)
+            db_session.add(new_category)
             db_session.commit()
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))
