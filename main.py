@@ -771,6 +771,30 @@ def budget(account_id):
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))
 
+@app.route('/<account_id>/<budget_id>/delete', methods=['POST'])
+def deletebudget(account_id, budget_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        ## template variables
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        # get query to delete
+        budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
+        category = db_session.query(Category).filter_by(category_id=budget.category_id).first()
+        
+        if budget:
+            db_session.delete(budget)
+            db_session.delete(category)
+            db_session.commit()
+            db_session.close()
+            flash('budget deleted successfully')
+        else:
+            db_session.close()
+            flash('budget not found')
+        
+        return redirect(url_for('budget', user=user, account_id=account_id))
+    else:
+        return redirect(url_for('login'))
             
 
 

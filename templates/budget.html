@@ -41,7 +41,11 @@
         <h2>All Budgets</h2>
         {% if budgets %}
             {% for budget in budgets %}
-                <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}</li>
+                <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
+                <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
+                    <input type="submit" />
+                </form>
+                </li>
             {% endfor %}
         {% endif %}
     </div>
