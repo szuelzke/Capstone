@@ -812,9 +812,9 @@ def editbudget(account_id, budget_id):
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         # get query to edit
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-        db_session.close()
         
         if request.method == 'GET':
+            db_session.close()
             return render_template('edit_budget.html', user=user, account=account, budget=budget)
         else:
             budget.category_id=request.form.get('category_id')
