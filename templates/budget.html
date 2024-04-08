@@ -16,12 +16,12 @@
             <tbody>
                 {% for budget in budgets %}
                 <tr>
-                    <th>{{ budget.category.category_name }}</th>
-                    <th>{{ budget.amount }}</th>
+                    <td>{{ budget.category.category_name }}</td>
+                    <td>{{ budget.amount }}</td>
                     {% set available = get_category_balance(budget.category_id, budget.budget_id) %}
                     {% set activity = budget.amount - available %}
-                    <th>{{ activity }}</th>
-                    <th>{{ available }}</th>
+                    <td>{{ activity }}</td>
+                    <td>{{ available }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
