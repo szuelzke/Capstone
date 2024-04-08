@@ -548,13 +548,12 @@ def add_studentid():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
-        if user:  # Check if user exists
-            if request.method == 'POST':
-                student_id = request.form['studentid']
-                user.student_id = student_id
-                db_session.commit()
-                db_session.close()
-                return redirect(url_for('settings'))         
+        if request.method == 'POST':
+            student_id = request.form['studentid']
+            user.student_id = student_id
+            db_session.commit()                
+            db_session.close()
+            return redirect(url_for('settings'))         
         else:
             db_session.close()
             return render_template('settings.html', user=user)
