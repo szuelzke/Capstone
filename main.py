@@ -770,6 +770,8 @@ def budget(account_id):
             new_budget.category_id = new_category.category_id
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/<account_id>/<budget_id>/delete', methods=['POST'])
 def deletebudget(account_id, budget_id):
@@ -786,12 +788,10 @@ def deletebudget(account_id, budget_id):
             db_session.delete(budget)
             db_session.delete(category)
             db_session.commit()
-            db_session.close()
             flash('budget deleted successfully')
         else:
-            db_session.close()
             flash('budget not found')
-        
+        db_session.close()
         return redirect(url_for('budget', user=user, account_id=account_id))
     else:
         return redirect(url_for('login'))
