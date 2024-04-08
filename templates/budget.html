@@ -1,7 +1,7 @@
 {% extends 'dashboard.html' %}
 
 {% block inner_content %}
-<div class="row">
+<div class="row row-v">
     <div class="card">
         <h2>Add Budget</h2>
         <form action="{{ url_for('budget', account_id=account.account_id)}}" method="post">
@@ -43,6 +43,9 @@
             {% for budget in budgets %}
                 <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
                 <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
+                    <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
+                </form>
+                <form action="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
                     <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                 </form>
                 </li>

@@ -624,7 +624,8 @@ def account(account_id):
     else:
         return redirect(url_for('login'))
 
-# updates transaction.amount_remaining 
+#### ---------------------------- Handling Transactions ---------------------------------
+## updates transaction.amount_remaining by date
 def update_balance(account_id):
     db_session = Session()
     transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
@@ -743,7 +744,7 @@ def deletetransaction(account_id, transaction_id):
     else:
         return redirect(url_for('login'))
 
-# account budget
+#### ---------------------------- Handling Budget ---------------------------------
 @app.route('/<account_id>/budget', methods=['GET'])
 def budget(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -753,13 +754,13 @@ def budget(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
-        categories = db_session.query(Budget).filter_by(account_id=account_id).distinct(Budget.category_id)
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets, categories=categories)
+            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
     else:
         return redirect(url_for('login'))
 
+# delete budget
 @app.route('/<account_id>/budget/<budget_id>/delete', methods=['POST'])
 def deletebudget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -769,21 +770,32 @@ def deletebudget(account_id, budget_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         # get query to delete
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-        category = db_session.query(Category).filter_by(category_id=budget.category_id).first()
         
         if budget:
             db_session.delete(budget)
         else:
             flash('budget not found')
-        if category:
-            db_session.delete(category)
-        else:
-            flash('category not found')
-            db_session.commit()
         db_session.close()
         return redirect(url_for('budget', user=user, account_id=account_id))
     else:
         return redirect(url_for('login'))
+
+# edit budget
+@app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET', 'POST'])
+def editbudget(account_id, budget_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        ## template variables
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        # get query to edit
+        budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
+        db_session.close()
+        if request.method == 'GET':
+            return render_template('edit_budget.html', user=user, budget=budget)
+    else:
+        return redirect(url_for('login'))
+
             
 
 

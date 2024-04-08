@@ -1,0 +1,38 @@
+{% extends 'dashboard.html' %}
+
+{% block inner_content %}
+<div class="row">
+    <div class="card">
+        <h2>Edit Budget</h2>
+        <form action="{{ url_for('editbudget' )}}" method="post">
+            <input type="number"
+                name="budget_id"
+                id="budget_id"
+                value="{{budget.budget_id}}"
+                readonly />
+            <input type="number"
+                name="account_id"
+                id="account_id"
+                value="{{budget.account_id}}"
+                readonly />
+            <input type="number"
+                name="category_id"
+                id="category_id"
+                value="{{budget.category_id}}" />
+            <input type="number"
+                name="amount"
+                id="amount"
+                value="{{budget.amount}}" />
+            <input type="date"
+                name="start_date"
+                id="start_date"
+                value="{{budget.start_date}}" />
+            <input type="date"
+                name="end_date"
+                id="end_date"
+                value="{{budget.end_date}}" />
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+{% endblock %}
