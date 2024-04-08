@@ -543,7 +543,7 @@ def delete_account(account_id):
             # delete budgets and transactions in budget for account
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
-                deletebudget(account_id, budget.budget_id)
+                delete_budget(account_id, budget.budget_id)
             # delete uncategorized transactions
             db_session.query(Transaction).filter_by(account_id=account_id).delete()
             db_session.delete(account)
@@ -656,21 +656,23 @@ def account(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-
+        # account not found
         if not account:
             db_session.close()
             return redirect(url_for('home'))
-
+        # get most recent transactions
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
+        # balance of account
         get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
         if get_balance:
             balance = get_balance.amount_remaining
         else: # there are no transactions for account
             balance = "0.00"
+        budgets = get_budgets(account_id)
 
         db_session.close()
 
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=get_budgets(account_id))
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets)
     else:
         return redirect(url_for('login'))
 
@@ -798,6 +800,7 @@ def get_budgets(account_id):
             db_session.close()
             return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
         else:
+            db_session.close()
             return budgets
     else:
         return redirect(url_for('login'))
