@@ -177,7 +177,7 @@ def get_account_list():
     return account_list
 
 # get stats for an account
-def get_account_stats(account_id):
+def get_budget_stats(account_id):
     stats = {}
     db_session = Session()
     categories = db_session.query(Budget).filter_by(account_id=account_id)
@@ -185,6 +185,11 @@ def get_account_stats(account_id):
         transactions = db_session.query(Transaction).filter_by(category_id=category.category_id)
         stats[category.category.category_name] = {}
         stats[category.category.category_name]["count"] = transactions.count()
+        stats[category.category.category_name]["amount"] = category.amount
+        
+        available = get_category_balance(category.category_id, category.budget_id)
+        stats[category.category.category_name]["available"] = available
+        stats[category.category.category_name]["activity"] = category.amount - available
     return stats
 
 # Handling Transactions
@@ -685,7 +690,7 @@ def account(account_id):
 
         db_session.close()
 
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets, stats=get_account_stats(account_id))
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets, stats=get_budget_stats(account_id))
     else:
         return redirect(url_for('login'))
 
