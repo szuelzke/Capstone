@@ -540,7 +540,7 @@ def edit_account(account_id):
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
-'''
+
 @app.route('/add-studentid', methods=['GET','POST'])
 def add_studentid():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -560,7 +560,7 @@ def add_studentid():
         return render_template('settings.html', user=user)
     else:
         return redirect(url_for('login'))
-'''
+    
 #### ---------------------------- Handling Accounts ---------------------------------
 
 @app.route('/add-account', methods=['GET','POST'])

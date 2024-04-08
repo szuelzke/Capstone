@@ -61,7 +61,7 @@
 <div class = 'row'>
     <div class='card'>
         <h1>Add Student ID</h1>
-        <form action="" method="post">
+        <form action="{{ url_for('add_studentid') }}" method="post">
             <label for="studentid">Student Id</label>
             <input type="text" id="studentid" name="studentid" />
             <input type="submit" value="Submit" />
