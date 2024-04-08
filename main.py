@@ -823,7 +823,7 @@ def add_budget(account_id):
         new_budget.category_id = new_category.category_id
         db_session.commit()
         db_session.close()
-        return redirect(url_for('budget', account_id=account_id))
+        return redirect(url_for('get_budgets', account_id=account_id))
         
 # delete budget
 @app.route('/<account_id>/budget/<budget_id>/delete', methods=['POST'])
@@ -842,7 +842,7 @@ def delete_budget(account_id, budget_id):
             db_session.delete(budget)
         db_session.commit()
         db_session.close()
-        return redirect(url_for('budget', user=user, account_id=account_id))
+        return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
