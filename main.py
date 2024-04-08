@@ -826,7 +826,7 @@ def deletebudget(account_id, budget_id):
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
         category = db_session.query(Category).filter_by(category_id=budget.category_id).first()
         if category:
-            db_session.query(Transaction).filter_by(category_id=category.category_id)
+            db_session.query(Transaction).filter_by(category_id=category.category_id).delete()
             db_session.delete(category)
             db_session.delete(budget)
         db_session.commit()

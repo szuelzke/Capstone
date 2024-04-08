@@ -10,10 +10,10 @@
     <p>You have successfully signed in.</p>
     <h2>Count of Rows in Tables</h2>
     <ul>
-        <li>{{ accounts }}</li>
-        <li>{{ budgets }}</li>
-        <li>{{ categories }}</li>
-        <li>{{ transactions }}</li>
+        <li>Accounts: {{ accounts }}</li>
+        <li>Budgets: {{ budgets }}</li>
+        <li>Categories: {{ categories }}</li>
+        <li>Transactions: {{ transactions }}</li>
     </ul>
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
