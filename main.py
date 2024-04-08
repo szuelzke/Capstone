@@ -781,7 +781,7 @@ def deletebudget(account_id, budget_id):
         return redirect(url_for('login'))
 
 # edit budget
-@app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET', 'POST'])
+@app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET'])
 def editbudget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
@@ -791,8 +791,8 @@ def editbudget(account_id, budget_id):
         # get query to edit
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
         db_session.close()
-        if request.method == 'GET':
-            return render_template('edit_budget.html', user=user, budget=budget)
+        
+        return render_template('edit_budget.html', user=user, budget=budget)
     else:
         return redirect(url_for('login'))
 

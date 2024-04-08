@@ -46,7 +46,7 @@
                     <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                 </form>
                 <form action="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
-                    <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
+                    <button type="submit"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
                 </form>
                 </li>
             {% endfor %}
