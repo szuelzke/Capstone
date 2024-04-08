@@ -618,7 +618,20 @@ def add_account():
                 is_active=True
             )
 
+            uncategorized = Category(
+                category_name="Uncategorized",
+                color="#a6a6a6"
+            )
+            default_budget = Budget(
+                amount=0
+            )
+
             db_session.add(new_account)
+            db_session.add(uncategorized)
+            db_session.add(default_budget)
+            db_session.commit()
+            default_budget.account_id=new_account.account_id
+            default_budget.category_id = uncategorized.category_id
             db_session.commit()
             db_session.close()
             return redirect(url_for('home'))   
