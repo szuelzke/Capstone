@@ -580,7 +580,6 @@ def add_account():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        db_session.close()
 
         if request.method == 'POST':
             account_name = request.form['accountname']
@@ -590,12 +589,11 @@ def add_account():
                 is_active=True
             )
 
-            db_session_add = Session()
-            db_session_add.add(new_account)
-            db_session_add.commit()
-            db_session_add.close()
-            return redirect(url_for('home'))
-            
+            db_session.add(new_account)
+            db_session.commit()
+            db_session.close()
+            return redirect(url_for('home'))   
+        db_session.close() 
         return render_template('add_account.html', user=user)
     else:
         return redirect(url_for('login'))
@@ -626,6 +624,19 @@ def account(account_id):
     else:
         return redirect(url_for('login'))
 
+# updates transaction.amount_remaining 
+def update_balance(account_id):
+    db_session = Session()
+    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+    for i, transaction in enumerate(transactions):
+        if i == 0: # starting balance
+            transaction.amount_remaining = transaction.amount
+        else:
+            transaction.amount_remaining = current_amount + transaction.amount
+        current_amount = transaction.amount_remaining
+    db_session.commit()
+
+
 # view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
 def transactions(account_id):
@@ -637,17 +648,7 @@ def transactions(account_id):
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         db_session.close()
         if account:
-            db_session = Session()
-            # updates amount remaining for transactions
-            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
-            for i, transaction in enumerate(transactions):
-                if i == 0:
-                    transaction.amount_remaining = transaction.amount
-                else:
-                    transaction.amount_remaining = current_amount + transaction.amount
-                current_amount = transaction.amount_remaining
-            db_session.commit()
-                # get transactions 
+            # get transactions 
             transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list())
@@ -683,6 +684,8 @@ def addtransaction(account_id):
                 #check_balance_and_send_alert(user_email, balance)
         
                 db_session.close()
+                # update transaction.amount_remaining
+                update_balance(account_id) 
                 return redirect(url_for('transactions', account_id=account_id))
             else:
                 return "Account not found"
@@ -712,6 +715,8 @@ def edittransaction(account_id, transaction_id):
 
             db_session.commit()
             db_session.close()
+            # update transaction.amount_remaining
+            update_balance(account_id) 
             return redirect(url_for('transactions', account_id=account_id))
         else:
             db_session.close()
@@ -739,7 +744,7 @@ def deletetransaction(account_id, transaction_id):
         return redirect(url_for('login'))
 
 # account budget
-@app.route('/<account_id>/budget', methods=['GET', 'POST'])
+@app.route('/<account_id>/budget', methods=['GET'])
 def budget(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
@@ -752,24 +757,6 @@ def budget(account_id):
         if request.method == "GET":
             db_session.close()
             return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets, categories=categories)
-        else:
-            new_budget = Budget(
-                account_id=account_id,
-                amount=request.form.get('amount'),
-                start_date=request.form.get('start_date'),
-                end_date=request.form.get('end_date')
-            )
-            new_category = Category(
-                category_name=request.form.get('title'),
-                symbol=request.form.get('symbol'),
-                color=request.form.get('color')
-            )
-            db_session.add(new_budget)
-            db_session.add(new_category)
-            new_budget.category_id = new_category.category_id
-            db_session.commit()
-            db_session.close()
-            return redirect(url_for('budget', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
