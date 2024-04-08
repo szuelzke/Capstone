@@ -18,7 +18,7 @@
     {% endif %}
 
 
-    <a href="{{ url_for('get_budgets', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>View/Edit Budget</a>
+    <a href="{{ url_for('get_budgets', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>Edit Monthly Budget</a>
 
     <a href="{{ url_for('transactions', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
 
@@ -84,5 +84,16 @@
     </div>
 </div>
 {% endif %}
+
+<div class="row">
+    <div class="card">
+        {% for id, obj in stats.items() %}
+        <ul>
+        <li>{{ id }}</li>
+        <li>total transactions = {{ obj["count"]}}</li>
+        </ul>
+        {% endfor%}
+    </div>
+</div>
 {% endblock %}
 {% endblock %}

@@ -176,6 +176,17 @@ def get_account_list():
     db_session.close()
     return account_list
 
+# get stats for an account
+def get_account_stats(account_id):
+    stats = {}
+    db_session = Session()
+    categories = db_session.query(Budget).filter_by(account_id=account_id)
+    for category in categories:
+        transactions = db_session.query(Transaction).filter_by(category_id=category.category_id)
+        stats[category.category.category_name] = {}
+        stats[category.category.category_name]["count"] = transactions.count()
+    return stats
+
 # Handling Transactions
 # math for getting current balance after an add/edit
 # updates transaction.amount_remaining
@@ -193,9 +204,11 @@ def update_balance(account_id):
 # math for all transactions amount remaining 
 @app.template_global()
 def get_category_balance(category_id, budget_id):
+    # get month
+    current_month = date.today().month
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-    transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
+    transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= current_month).filter(Transaction.date >= current_month)
     balance = budget.amount
     for transaction in transactions:
         balance = balance + transaction.amount
@@ -672,7 +685,7 @@ def account(account_id):
 
         db_session.close()
 
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets)
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets, stats=get_account_stats(account_id))
     else:
         return redirect(url_for('login'))
 
