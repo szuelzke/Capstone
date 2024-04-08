@@ -1,13 +1,13 @@
 {% extends 'index.html' %}
 
-{% block title %}<a href="{{ url_for('flashcash_transaction', student_id = user.student_id)}}"><li class="page-title">FlashCash</li></a>{% endblock %}
+{% block title %}<a href=""><li class="page-title">FlashCash</li></a>{% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ url_for('static', filename='transactionstable.css') }}">
 {% endblock %}
 
 
-{% block %}
+{% block content %}
 <div class="row row-v">
     <div class='card'>
         <h2>FlashCash Transactions</h2>
