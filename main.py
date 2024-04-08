@@ -766,8 +766,8 @@ def budget(account_id):
             )
             db_session.add(new_budget)
             db_session.add(new_category)
-            db_session.commit()
             new_budget.category_id = new_category.category_id
+            db_session.commit()
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))
     else:
@@ -786,11 +786,13 @@ def deletebudget(account_id, budget_id):
         
         if budget:
             db_session.delete(budget)
-            db_session.delete(category)
-            db_session.commit()
-            flash('budget deleted successfully')
         else:
             flash('budget not found')
+        if category:
+            db_session.delete(category)
+        else:
+            flash('category not found')
+            db_session.commit()
         db_session.close()
         return redirect(url_for('budget', user=user, account_id=account_id))
     else:
