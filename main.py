@@ -193,7 +193,7 @@ def get_budget_stats(account_id):
         stats[category.category.category_name]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
         stats[category.category.category_name]["amount"] = category.amount
         stats[category.category.category_name]["activity"] = total
-        stats[category.category.category_name]["available"] = category.amount - total
+        stats[category.category.category_name]["available"] = category.amount + total
         db_session.close()
     return stats
 
