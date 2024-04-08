@@ -71,6 +71,16 @@ class Category(Base):
     symbol = Column(String(50))
     color = Column(String(50))
 
+class Budget(Base):
+    __tablename__ = 'budget'
+
+    budget_id = Column(Integer, primary_key=True, autoincrement=True)
+    account_id = Column(Integer, ForeignKey(Account.account_id))
+    category_id = Column(Integer, ForeignKey(Category.category_id))
+    amount = Column(DECIMAL(10, 2))
+    start_date = Column(Date)
+    end_date = Column(Date)
+
 class Transaction(Base):
     __tablename__ = 'transaction'
 
@@ -727,14 +737,40 @@ def deletetransaction(account_id, transaction_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/<account_id>/budget', methods=['GET'])
+# account budget
+@app.route('/<account_id>/budget', methods=['GET', 'POST'])
 def budget(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
         db_session = Session()
+        ## template variables
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        return render_template('budget.html', user=user, account=account, account_list=get_account_list())
+        budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
+        if request.method == "GET":
+            db_session.close()
+            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+        else:
+            new_budget = Budget(
+                account_id=account_id,
+                amount=request.form.get('amount'),
+                start_date=request.form.get('start_date'),
+                end_date=request.form.get('end_date')
+            )
+            new_category = Category(
+                category_name=request.form.get('title'),
+                symbol=request.form.get('symbol'),
+                color=request.form.get('color')
+            )
+            db_session.add(new_budget)
+            db_session.add(new_category)
+            db_session.commit()
+            new_budget.category_id = new_category.category_id
+            db_session.close()
+            return redirect(url_for('budget', account_id=account_id))
+
+            
+
 
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():
