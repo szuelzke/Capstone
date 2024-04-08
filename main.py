@@ -540,8 +540,9 @@ def delete_account(account_id):
         account = db_session.query(Account).filter_by(account_id=account_id).first()
 
         if account:
-            db_session.query(Transaction).filter_by(account_id=account_id).delete()
-            db_session.query(Budget).filter_by(account_id=account_id).delete()
+            budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
+            for budget in budgets:
+                deletebudget(account_id, budget.budget_id)
             db_session.delete(account)
             db_session.commit()
             db_session.close()
