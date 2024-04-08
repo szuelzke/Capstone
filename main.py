@@ -877,7 +877,7 @@ def flashcash_transaction(student_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         #account = db_session.query(Account).filter_by(user_id=user_id).first()
         db_session.close()
-        if account:
+        if user:
             db_session = Session()
             # Fetching FlashCash transactions
             flashcash_transactions = db_session.query(FlashCash_Transaction, SvcPlan).join(SvcPlan).filter(FlashCash_Transaction.student_id==student_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
