@@ -28,12 +28,6 @@
                 value='{{ transaction.amount }}'
                 required />
             <h3>Category</h3>
-            <input 
-                type="radio"
-                id="no_category"
-                name="category_id"    
-                value="0" />
-            <label for="no_category">None</label>
             {% for item in categories %}
             <input 
                 type="radio"
