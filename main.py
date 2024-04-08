@@ -195,12 +195,10 @@ def update_balance(account_id):
 def get_category_balance(category_id, budget_id):
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-    transactions = db_session.query(Transaction)
+    transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
     balance = budget.amount
-    if transactions.filter(Transaction.category_id == category_id):
-        transactions.filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
-        for transaction in transactions:
-            balance = balance + transaction.amount
+    for transaction in transactions:
+        balance = balance + transaction.amount
     return balance
 
 # Alerts 
@@ -625,13 +623,16 @@ def add_account():
                 color="#a6a6a6"
             )
             default_budget = Budget(
-                amount=0
+                amount=0,
+                start_date=0,
+                end_date=0
             )
 
             db_session.add(new_account)
             db_session.add(uncategorized)
             db_session.add(default_budget)
             db_session.commit()
+
             default_budget.account_id=new_account.account_id
             default_budget.category_id = uncategorized.category_id
             db_session.commit()
