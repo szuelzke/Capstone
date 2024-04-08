@@ -624,8 +624,8 @@ def add_account():
             )
             default_budget = Budget(
                 amount=0,
-                start_date=0,
-                end_date=0
+                start_date=datetime.now(),
+                end_date=datetime.now()
             )
 
             db_session.add(new_account)
