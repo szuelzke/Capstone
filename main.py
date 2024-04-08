@@ -535,6 +535,7 @@ def delete_account(account_id):
 
         if account:
             db_session.query(Transaction).filter_by(account_id=account_id).delete()
+            db_session.query(Budget).filter_by(account_id=account_id).delete()
             db_session.delete(account)
             db_session.commit()
             db_session.close()
