@@ -668,7 +668,7 @@ def account(account_id):
             balance = get_balance.amount_remaining
         else: # there are no transactions for account
             balance = "0.00"
-        budgets = get_budgets(account_id)
+        budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
 
         db_session.close()
 
@@ -799,9 +799,6 @@ def get_budgets(account_id):
         if request.method == "GET":
             db_session.close()
             return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
-        else:
-            db_session.close()
-            return budgets
     else:
         return redirect(url_for('login'))
 
