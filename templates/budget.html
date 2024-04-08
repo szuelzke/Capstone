@@ -39,6 +39,13 @@
             <input type="submit"/>
         </form>
     </div>
+    {% if budgets%}
+    {% for budget in budgets %}
+    <div class="card">
+        
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="card">
         <h2>All Budgets</h2>
         {% if budgets %}

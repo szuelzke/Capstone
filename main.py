@@ -94,6 +94,8 @@ class Transaction(Base):
     category_id = Column(Integer, ForeignKey(Category.category_id))
     amount_remaining = Column(DECIMAL(10, 2))
 
+    category = relationship('Category', foreign_keys='Transaction.category_id', lazy='joined')
+
 class SvcPlan(Base):
     __tablename__ = 'svc_plan'
 
@@ -649,11 +651,12 @@ def transactions(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         db_session.close()
+        categories = db_session.query(Budget).filter_by(account_id=account_id).all()
         if account:
             # get transactions 
             transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list())
+            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list(), categories=categories)
         else:
             return redirect(url_for('login'))
     else:
