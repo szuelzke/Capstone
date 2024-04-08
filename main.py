@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 from flask_mail import Mail, Message
 import bcrypt
 import pyotp
@@ -80,6 +80,8 @@ class Budget(Base):
     amount = Column(DECIMAL(10, 2))
     start_date = Column(Date)
     end_date = Column(Date)
+
+    category = relationship('Category', foreign_keys='Budget.category_id', lazy='joined')
 
 class Transaction(Base):
     __tablename__ = 'transaction'
@@ -205,7 +207,7 @@ def home():
 @app.route('/test')
 def test():
     if 'user_id' in session:
-        return render_template('test.html', categories=get_account_categories(10))
+        return render_template('test.html')
     else:
         return redirect(url_for('login'))
 
@@ -636,12 +638,6 @@ def update_balance(account_id):
             transaction.amount_remaining = current_amount + transaction.amount
         current_amount = transaction.amount_remaining
     db_session.commit()
-
-def get_account_categories(account_id):
-    db_session = Session()
-    budgets = db_session.query(Budget.category_id).filter_by(account_id=account_id).distinct()
-    db_session.close()
-    return budgets
 
 # view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
