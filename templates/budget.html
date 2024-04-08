@@ -2,6 +2,9 @@
 
 {% block inner_content %}
 <div class="row row-v">
+    <div class="card">
+        <button onclick="toggleAdd()">Add Budget</button>
+    </div>
     {% if budgets%}
     {% for budget in budgets %}
     <div class="card">
