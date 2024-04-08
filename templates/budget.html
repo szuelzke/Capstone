@@ -41,12 +41,17 @@
         <h2>All Budgets</h2>
         {% if budgets %}
             {% for budget in budgets %}
-                <li>{{ budget }}</li>
+                <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}</li>
             {% endfor %}
         {% endif %}
     </div>
     <div class="card">
         <h2>Categories</h2>
+        {% if categories %}
+            {% for category in categories %}
+                <li>{{ category.category_id }}, {{ category.category_name }}, {{ category.symbol }}, {{ category.color }}</li>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 

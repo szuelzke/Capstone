@@ -748,9 +748,10 @@ def budget(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
+        categories = db_session.query(Budget).filter_by(account_id=account_id).distinct(Budget.category_id)
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets, categories=categories)
         else:
             new_budget = Budget(
                 account_id=account_id,
