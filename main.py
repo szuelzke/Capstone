@@ -793,10 +793,9 @@ def deletebudget(account_id, budget_id):
         
         if budget:
             db_session.delete(budget)
+        if category:
             db_session.delete(category)
-            db_session.commit()
-        else:
-            flash('budget not found')
+        db_session.commit()
         db_session.close()
         return redirect(url_for('budget', user=user, account_id=account_id))
     else:
@@ -815,7 +814,16 @@ def editbudget(account_id, budget_id):
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
         db_session.close()
         
-        return render_template('edit_budget.html', user=user, account=account, budget=budget)
+        if request.method == 'GET':
+            return render_template('edit_budget.html', user=user, account=account, budget=budget)
+        else:
+            budget.category_id=request.form.get('category_id')
+            budget.amount=request.form.get('amount')
+            budget.start_date=request.form.get('start_date')
+            budget.end_date=request.form.get('end_date')
+            db_session.commit()
+            db_session.close()
+            return redirect(url_for('budget', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
