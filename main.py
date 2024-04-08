@@ -182,14 +182,17 @@ def get_budget_stats(account_id):
     db_session = Session()
     categories = db_session.query(Budget).filter_by(account_id=account_id)
     for category in categories:
-        transactions = db_session.query(Transaction).filter_by(category_id=category.category_id)
+        # calculate total in budget
+        transactions = db_session.query(Transaction).filter_by(category_id=category.category_id).all()
+        total = 0
+        for transaction in transactions:
+            total = total + transaction.amount
+
+        # assignment of dict values
         stats[category.category.category_name] = {}
-        stats[category.category.category_name]["count"] = transactions.count()
+        stats[category.category.category_name]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
         stats[category.category.category_name]["amount"] = category.amount
-        
-        available = get_category_balance(category.category_id, category.budget_id)
-        stats[category.category.category_name]["available"] = available
-        stats[category.category.category_name]["activity"] = category.amount - available
+        db_session.close()
     return stats
 
 # Handling Transactions
