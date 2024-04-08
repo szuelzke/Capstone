@@ -176,6 +176,21 @@ def get_account_list():
     db_session.close()
     return account_list
 
+# Handling Transactions
+# math for getting current balance after an add/edit
+# updates transaction.amount_remaining
+def update_balance(account_id):
+    db_session = Session()
+    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+    for i, transaction in enumerate(transactions):
+        if i == 0: # starting balance
+            transaction.amount_remaining = transaction.amount
+        else:
+            transaction.amount_remaining = current_amount + transaction.amount
+        current_amount = transaction.amount_remaining
+    db_session.commit()
+
+
 # Alerts 
 # Function to send email
 def send_email(recipient, subject, body):
@@ -629,18 +644,6 @@ def account(account_id):
         return redirect(url_for('login'))
 
 #### ---------------------------- Handling Transactions ---------------------------------
-## updates transaction.amount_remaining by date
-def update_balance(account_id):
-    db_session = Session()
-    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
-    for i, transaction in enumerate(transactions):
-        if i == 0: # starting balance
-            transaction.amount_remaining = transaction.amount
-        else:
-            transaction.amount_remaining = current_amount + transaction.amount
-        current_amount = transaction.amount_remaining
-    db_session.commit()
-
 # view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
 def transactions(account_id):

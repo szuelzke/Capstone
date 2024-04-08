@@ -1,29 +1,29 @@
-{% extends 'dashboard.html' %}
+{% extends "dashboard.html" %}
 
 {% block inner_content %}
 <div class="row row-v">
-    <div class='card'>
+    <div class="card">
         <h2>All Transactions</h2>
 
         <table id="transactions-tbl">
             <thead>
                 <tr>
-                    <th class='tooltip'><i class="fa-regular fa-calendar"></i><span class='tooltiptext'>Date</span></th>
-                    <th class='tooltip'><i class="fa-solid fa-building-columns"></i>
-                        <span class='tooltiptext'>Description</span>
+                    <th class="tooltip"><i class="fa-regular fa-calendar"></i><span class="tooltiptext">Date</span></th>
+                    <th class="tooltip"><i class="fa-solid fa-building-columns"></i>
+                        <span class="tooltiptext">Description</span>
                     </th>
 
-                    <th class='tooltip'><i class="fa-solid fa-money-bill"></i><span class='tooltiptext'>Amount</span>
+                    <th class="tooltip"><i class="fa-solid fa-money-bill"></i><span class="tooltiptext">Amount</span>
                     </th>
                     <th>Balance</th>
-                    <th class='tooltip'><i class="fa-solid fa-tags"></i><span class='tooltiptext'>Category</span></th>
+                    <th class="tooltip"><i class="fa-solid fa-tags"></i><span class="tooltiptext">Category</span></th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr>
-                    <td colspan="6"><button onclick="toggleAdd()"><i class='fa-solid fa-plus pd-5'></i>Add Transaction</button></td>
+                    <td colspan="6"><button onclick="toggleAdd()"><i class="fa-solid fa-plus pd-5"></i>Add Transaction</button></td>
                 </tr>
                 {% for transaction in transactions %}
                 <tr>
@@ -34,8 +34,8 @@
                     <td>{{transaction.category_id}}</td>
                     <td>
                         <!-- buttons for transaction -->
-                        <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                        <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
+                        <a href="{{ url_for("edittransaction", account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        <form action="{{ url_for("deletetransaction", account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                         </form>
                     </td>
@@ -48,42 +48,44 @@
 </div>
 
 <!-- add transaction popup -->
-<div id="add-transaction" class='dimmer' style='display:none;'>
+<div id="add-transaction" class="dimmer" style="display:none;">
     <h2>Add Transaction</h2>
-    <div class='row card'>
-        <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
-        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method='post' class='form-deco'>
+    <div class="row card">
+        <button class="card-x-button fa-solid fa-x" onclick="toggleAdd()"></button>
+        <form action="{{ url_for("addtransaction", account_id=account.account_id)}}" method="post" class="form-deco">
             <input
-                type='date'
-                id='date'
-                name='date'
-                value=''
-                placeholder='Date'
+                type="date"
+                id="date"
+                name="date"
+                value=""
+                placeholder="Date"
                 required />
             <input
-                type='text'
-                id='title'
-                name='title'
-                value=''
-                placeholder='Title'
+                type="text"
+                id="title"
+                name="title"
+                value=""
+                placeholder="Title"
                 required />
             <input
-                type='number'
-                id='amount'
-                name='amount'
-                value=''
-                step='0.01'
-                placeholder='Amount'
+                type="number"
+                id="amount"
+                name="amount"
+                value=""
+                step="0.01"
+                placeholder="Amount"
                 required />
-            <select
-                id='category_id'
-                name='category_id'>
-                <option value='category'>Category</option>
-                {% for item in categories %}
-                <option value="{{item.category.category_id}}">{{item.category.category_name}}</option>
-                {% endfor%}
+            <h3>Category</h3>
+            {% for item in categories %}
+            <input 
+                type="radio"
+                id="{{item.category.category_id}}"
+                name="category_id"    
+                value="{{item.category.category_id}}" />
+            <label>{{item.category.category_name}}</label>
+            {% endfor%}
             </select>
-            <input type='submit' />
+            <input type="submit" />
         </form>
     </div>
 </div>
@@ -91,11 +93,11 @@
 <script>
     /* toggles add transactions popup */
     function toggleAdd() {
-        let add = document.getElementById('add-transaction');
-        if (add.style.display === 'none') {
-            add.style.display = 'block';
+        let add = document.getElementById("add-transaction");
+        if (add.style.display === "none") {
+            add.style.display = "block";
         } else {
-            add.style.display = 'none';
+            add.style.display = "none";
         }
     }
 </script>
