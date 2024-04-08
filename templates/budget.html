@@ -28,9 +28,9 @@
                     <td>{{ budget.amount }}</td>
                     <td>{{ activity }}</td>
                     <td>{{ available }}</td>
-                    <td><a href="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i
+                    <td><a href="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i
                         class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                    <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}"
+                    <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
                         method="post">
                         <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                     </form></td>
@@ -47,7 +47,7 @@
     <h2>Add Budget</h2>
     <div class="row card">
         <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
-        <form action="{{ url_for('budget', account_id=account.account_id)}}" method="post">
+        <form action="{{ url_for('add_budget', account_id=account.account_id)}}" method="post">
             <label for="title">Budget Title</label>
             <input type="text" id="title" name="title" value="" required />
             <input type="color" id="color" name="color" value="" />

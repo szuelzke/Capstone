@@ -59,6 +59,11 @@
 <div class="row">
     <div class="card">
         Account summary
+        {% if budgets %}
+        {% for budget in budgets %}
+            <li>{{ budget.category.category_name }}</li>
+        {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

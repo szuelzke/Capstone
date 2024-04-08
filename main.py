@@ -544,7 +544,7 @@ def delete_account(account_id):
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
                 deletebudget(account_id, budget.budget_id)
-            # ensures any uncategorized transactions in account are deleted
+            # delete uncategorized transactions
             db_session.query(Transaction).filter_by(account_id=account_id).delete()
             db_session.delete(account)
             db_session.commit()
@@ -670,7 +670,7 @@ def account(account_id):
 
         db_session.close()
 
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list())
+        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=get_budgets(account_id))
     else:
         return redirect(url_for('login'))
 
@@ -784,8 +784,8 @@ def deletetransaction(account_id, transaction_id):
         return redirect(url_for('login'))
 
 #### ---------------------------- Handling Budget ---------------------------------
-@app.route('/<account_id>/budget', methods=['GET', 'POST'])
-def budget(account_id):
+@app.route('/<account_id>/budget', methods=['GET'])
+def get_budgets(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
         db_session = Session()
@@ -797,30 +797,37 @@ def budget(account_id):
         if request.method == "GET":
             db_session.close()
             return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
-        else: # add new budget
-            new_budget = Budget(
-                account_id=account_id,
-                amount=request.form.get('amount'),
-                start_date=request.form.get('start_date'),
-                end_date=request.form.get('end_date')
-            )
-            new_category = Category(
-                category_name=request.form.get('title'),
-                color=request.form.get('color')
-            )
-            db_session.add(new_budget)
-            db_session.add(new_category)
-            db_session.commit()
-            new_budget.category_id = new_category.category_id
-            db_session.commit()
-            db_session.close()
-            return redirect(url_for('budget', account_id=account_id))
+        else:
+            return budgets
     else:
         return redirect(url_for('login'))
 
+# add budget
+@app.route('/<account_id>/budget/add', methods=['POST'])
+def add_budget(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        db_session = Session()
+        new_budget = Budget(
+            account_id=account_id,
+            amount=request.form.get('amount'),
+            start_date=request.form.get('start_date'),
+            end_date=request.form.get('end_date')
+        )
+        new_category = Category(
+            category_name=request.form.get('title'),
+            color=request.form.get('color')
+        )
+        db_session.add(new_budget)
+        db_session.add(new_category)
+        db_session.commit()
+        new_budget.category_id = new_category.category_id
+        db_session.commit()
+        db_session.close()
+        return redirect(url_for('budget', account_id=account_id))
+        
 # delete budget
 @app.route('/<account_id>/budget/<budget_id>/delete', methods=['POST'])
-def deletebudget(account_id, budget_id):
+def delete_budget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
         db_session = Session()
@@ -841,7 +848,7 @@ def deletebudget(account_id, budget_id):
 
 # edit budget
 @app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET', 'POST'])
-def editbudget(account_id, budget_id):
+def edit_budget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
         db_session = Session()
