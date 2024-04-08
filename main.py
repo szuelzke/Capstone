@@ -802,7 +802,7 @@ def deletebudget(account_id, budget_id):
         return redirect(url_for('login'))
 
 # edit budget
-@app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET'])
+@app.route('/<account_id>/budget/<budget_id>/edit', methods=['GET', 'POST'])
 def editbudget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
