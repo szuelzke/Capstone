@@ -4,7 +4,7 @@
 <div class="row">
     <div class="card">
         <h2>Edit Budget</h2>
-        <form action="{{ url_for('editbudget' )}}" method="post">
+        <form action="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id )}}" method="post">
             <input type="number"
                 name="budget_id"
                 id="budget_id"
