@@ -1,6 +1,26 @@
 {% extends 'dashboard.html' %}
 
 {% block inner_content %}
+{% if budgets%}
+{% for budget in budgets %}
+<div class="row">
+    <div class="card no-bg view-balance">
+        <h1 class="hide-text">$Balance / $Goal</h1>
+        <h2>Left In Budget</h2>
+    </div>
+    <div class="card no-bg view-balance">
+        <h1 class="hide-text">#</h1>
+        <h2>Days Left</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="card">
+    {{ budget.category.category_name }}
+    {{ category_balance(budget.category.category_id, budget.budget_id)}}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 <div class="row row-v">
     <div class="card">
         <button onclick="toggleAdd()">Add Budget</button>
@@ -12,24 +32,26 @@
         <h2>Left In Budget</h2>
     </div>
     <div class="card">
-        
+
     </div>
     {% endfor %}
     {% endif %}
     <div class="card">
         <h2>All Budgets</h2>
         {% if budgets %}
-            {% for budget in budgets %}
-            <li>{{budget.category.category_name}}</li>
-            {% endfor %}
-            {% for budget in budgets %}
-                <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
-                <a href="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
-                    <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
-                </form>
-                </li>
-            {% endfor %}
+        {% for budget in budgets %}
+        <li>{{budget.category.category_name}}</li>
+        {% endfor %}
+        {% for budget in budgets %}
+        <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
+            <a href="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i
+                        class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+            <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}"
+                method="post">
+                <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
+            </form>
+        </li>
+        {% endfor %}
         {% endif %}
     </div>
 </div>
@@ -41,40 +63,15 @@
         <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
         <form action="{{ url_for('budget', account_id=account.account_id)}}" method="post">
             <label for="title">Budget Title</label>
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value=""
-                required />
-            <input
-                type="color"
-                id="color"
-                name="color"
-                value="" />
+            <input type="text" id="title" name="title" value="" required />
+            <input type="color" id="color" name="color" value="" />
             <label for="amount">Spending Goal</label>
-            <input
-                type="number"
-                id="amount"
-                name="amount"
-                step="0.01"
-                min="0"
-                placeholder="0"
-                value="" 
-                required />
+            <input type="number" id="amount" name="amount" step="0.01" min="0" placeholder="0" value="" required />
             <label for="start_date">Start Date</label>
-            <input
-                type="date"
-                id="start_date"
-                name="start_date"
-                value="" />
+            <input type="date" id="start_date" name="start_date" value="" />
             <label for="end_date">End Date</label>
-            <input
-                type="date"
-                id="end_date"
-                name="end_date"
-                value="" />
-            <input type="submit"/>
+            <input type="date" id="end_date" name="end_date" value="" />
+            <input type="submit" />
         </form>
     </div>
 </div>
