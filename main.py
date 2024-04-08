@@ -773,6 +773,7 @@ def deletebudget(account_id, budget_id):
         
         if budget:
             db_session.delete(budget)
+            db_session.commit()
         else:
             flash('budget not found')
         db_session.close()
@@ -788,11 +789,12 @@ def editbudget(account_id, budget_id):
         db_session = Session()
         ## template variables
         user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         # get query to edit
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
         db_session.close()
         
-        return render_template('edit_budget.html', user=user, budget=budget)
+        return render_template('edit_budget.html', user=user, account=account, budget=budget)
     else:
         return redirect(url_for('login'))
 
