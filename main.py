@@ -622,7 +622,8 @@ def add_account():
             start_transaction = Transaction(
                 date=datetime.now(),
                 amount=amount,
-                title="Start Balance"
+                title="Start Balance",
+                amount_remaining=amount
             )
             db_session.add(new_account)
             db_session.add(start_transaction)
@@ -766,6 +767,7 @@ def deletetransaction(account_id, transaction_id):
         else:
             db_session.close()
             flash('Transaction not found.')
+        update_balance(account_id)
         return redirect(url_for('transactions', account_id=account_id))
     else:
         return redirect(url_for('login'))
