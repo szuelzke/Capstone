@@ -8,7 +8,13 @@
 <body>
     <h1>Sign In Successful!</h1>
     <p>You have successfully signed in.</p>
-    <p>{{categories}}
+    <h2>Count of Rows in Tables</h2>
+    <ul>
+        <li>{{ accounts }}</li>
+        <li>{{ budgets }}</li>
+        <li>{{ categories }}</li>
+        <li>{{ transactions }}</li>
+    </ul>
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>

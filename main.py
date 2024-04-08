@@ -235,8 +235,12 @@ def home():
 def test():
     if 'user_id' in session:
         db_session = Session()
+        accounts = db_session.query(Account).count()
+        budgets = db_session.query(Budget).count()
         categories = db_session.query(Category).count()
-        return render_template('test.html', categories=categories)
+        transactions = db_session.query(Transaction).count()
+        db_session.close()
+        return render_template('test.html', accounts=accounts, budgets=budgets, categories=categories, transactions=transactions)
     else:
         return redirect(url_for('login'))
 
@@ -821,11 +825,10 @@ def deletebudget(account_id, budget_id):
         # get query to delete
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
         category = db_session.query(Category).filter_by(category_id=budget.category_id).first()
-        
-        if budget:
-            db_session.delete(budget)
         if category:
+            db_session.query(Transaction).filter_by(category_id=category.category_id)
             db_session.delete(category)
+            db_session.delete(budget)
         db_session.commit()
         db_session.close()
         return redirect(url_for('budget', user=user, account_id=account_id))
