@@ -4,19 +4,19 @@
 {% if budgets%}
 {% for budget in budgets %}
 <div class="row">
+    <div class="card no-bg">
+        <h2 style="color:#FFF">{{ budget.category.category_name }}</h2>
+    </div>
+    <!-- how much of budget has been used -->
     <div class="card no-bg view-balance">
-        <h1 class="hide-text">$Balance / $Goal</h1>
+        <h1 class="hide-text">
+            {{ category_balance(budget.category.category_id, budget.budget_id)}} / {{ budget.amount }}</h1>
         <h2>Left In Budget</h2>
     </div>
+    <!-- how many days left in budget -->
     <div class="card no-bg view-balance">
         <h1 class="hide-text">#</h1>
         <h2>Days Left</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="card">
-    {{ budget.category.category_name }}
-    {{ category_balance(budget.category.category_id, budget.budget_id)}}
     </div>
 </div>
 {% endfor %}

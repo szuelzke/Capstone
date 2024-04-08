@@ -31,7 +31,7 @@
                     <td>{{transaction.title}}</td>
                     <td>{{transaction.amount}}</td>
                     <td>{{transaction.amount_remaining}}</td>
-                    <td>{{transaction.category_id}}</td>
+                    <td>{{transaction.category.category_name}}</td>
                     <td>
                         <!-- buttons for transaction -->
                         <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>

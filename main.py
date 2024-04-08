@@ -196,7 +196,7 @@ def category_balance(category_id, budget_id):
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
     transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
-    balance = 0
+    balance = budget.amount
     for transaction in transactions:
         balance = balance + transaction.amount
     return balance
