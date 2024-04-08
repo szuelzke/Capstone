@@ -43,7 +43,7 @@
         <h2>All Budgets</h2>
         {% if budgets %}
             {% for budget in budgets %}
-            <li>{{budget}}</li>
+            <li>{{budget.category.category_name}}</li>
             {% endfor %}
             {% for budget in budgets %}
                 <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
