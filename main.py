@@ -773,7 +773,7 @@ def budget(account_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/<account_id>/<budget_id>/delete', methods=['POST'])
+@app.route('/<account_id>/budget/<budget_id>/delete', methods=['POST'])
 def deletebudget(account_id, budget_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
