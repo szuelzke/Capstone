@@ -868,7 +868,7 @@ def sharetransaction():
 
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
 
-@app.route('/<student_id>', methods=['GET','POST'])
+@app.route('/<student_id>/flashcash_transaction', methods=['GET','POST'])
 def flashcash_transaction(student_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
