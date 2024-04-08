@@ -195,11 +195,7 @@ def update_balance(account_id):
 def get_category_balance(category_id, budget_id):
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-    transactions = db_session.query(Transaction)
-    if budget.end_date != None and budget.start_date != None:
-        transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
-    else:
-        transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id)
+    transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
     balance = budget.amount
     for transaction in transactions:
         balance = balance + transaction.amount
@@ -622,21 +618,16 @@ def add_account():
                 is_active=True
             )
 
-            uncategorized = Category(
-                category_name="Uncategorized",
-                color="#a6a6a6"
+            amount = request.form['startbalance']
+            start_transaction = Transaction(
+                date=datetime.now(),
+                amount=amount,
+                title="Start Balance"
             )
-            default_budget = Budget(
-                amount=0
-            )
-
             db_session.add(new_account)
-            db_session.add(uncategorized)
-            db_session.add(default_budget)
+            db_session.add(start_transaction)
             db_session.commit()
-
-            default_budget.account_id=new_account.account_id
-            default_budget.category_id = uncategorized.category_id
+            start_transaction.account_id=new_account.account_id
             db_session.commit()
             db_session.close()
             return redirect(url_for('home'))   

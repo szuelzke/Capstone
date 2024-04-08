@@ -8,6 +8,8 @@
     <form action="{{ url_for('add_account') }}" method="post">
         <label for="accountname">Account Name</label>
         <input type="text" id="accountname" name="accountname" />
+        <label for="startbalance">Starting Balance</label>
+        <input type="number" id="startbalance" name="startbalance" min="0" required />
         <input type="submit" value="Submit" />
     </form>
 </body>
