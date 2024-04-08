@@ -541,23 +541,28 @@ def edit_account(account_id):
     else:
         return redirect(url_for('login'))
 
-@app.route('/add-studentid', methods=['GET','POST'])
+@app.route('/add-studentid', methods=['GET', 'POST'])
 def add_studentid():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
-        if request.method == 'POST':
-            student_id = request.form['studentid']
-
-            user.student_id = student_id
-            db_session.commit()
-            db_session.close()
-            return redirect(url_for('settings'))
-
-        db_session.close()
-        return render_template('settings.html', user=user)
+        if user:  # Check if user exists
+            if request.method == 'POST':
+                if 'studentid' in request.form:  # Check if 'studentid' exists in form data
+                    student_id = request.form['studentid']
+                    user.student_id = student_id
+                    db_session.commit()
+                    db_session.close()
+                    return redirect(url_for('settings'))
+                else:
+                    return "Error: 'studentid' not found in form data", 400
+            else:
+                db_session.close()
+                return render_template('settings.html', user=user)
+        else:
+            return "Error: User not found", 404
     else:
         return redirect(url_for('login'))
     
