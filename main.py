@@ -868,21 +868,21 @@ def sharetransaction():
 
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
 
-@app.route('/<student_id>/flashcash-transactions', methods=['GET','POST'])
+@app.route('/<student_id>', methods=['GET','POST'])
 def flashcash_transaction(student_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
         # Getting user info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id, account_id=user.account_id).first()
+        #account = db_session.query(Account).filter_by(user_id=user_id).first()
         db_session.close()
         if account:
             db_session = Session()
             # Fetching FlashCash transactions
             flashcash_transactions = db_session.query(FlashCash_Transaction, SvcPlan).join(SvcPlan).filter(FlashCash_Transaction.student_id==student_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
             db_session.close()
-            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user, account=account,account_list=get_account_list())
+            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user,account_list=get_account_list())
         else:
             return redirect(url_for('login'))
     else:
