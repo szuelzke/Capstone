@@ -191,6 +191,7 @@ def update_balance(account_id):
     db_session.commit()
 
 # math for sum of transaction amount in a category
+@app.template_global()
 def category_balance(category_id, budget_id):
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
