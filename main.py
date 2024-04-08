@@ -550,19 +550,14 @@ def add_studentid():
 
         if user:  # Check if user exists
             if request.method == 'POST':
-                if 'studentid' in request.form:  # Check if 'studentid' exists in form data
-                    student_id = request.form['studentid']
-                    user.student_id = student_id
-                    db_session.commit()
-                    db_session.close()
-                    return redirect(url_for('settings'))
-                else:
-                    return "Error: 'studentid' not found in form data", 400
-            else:
+                student_id = request.form['studentid']
+                user.student_id = student_id
+                db_session.commit()
                 db_session.close()
-                return render_template('settings.html', user=user)
+                return redirect(url_for('settings'))         
         else:
-            return "Error: User not found", 404
+            db_session.close()
+            return render_template('settings.html', user=user)
     else:
         return redirect(url_for('login'))
     
