@@ -745,7 +745,7 @@ def deletetransaction(account_id, transaction_id):
         return redirect(url_for('login'))
 
 #### ---------------------------- Handling Budget ---------------------------------
-@app.route('/<account_id>/budget', methods=['GET'])
+@app.route('/<account_id>/budget', methods=['GET', 'POST'])
 def budget(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session["user_id"]
@@ -757,6 +757,17 @@ def budget(account_id):
         if request.method == "GET":
             db_session.close()
             return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+        else:
+            new_budget = Budget(
+                account_id=account_id,
+                amount=request.form.get('amount'),
+                start_date = request.form.get('start_date'),
+                end_date=request.form.get('end_date')
+            )
+            db_session.add(new_budget)
+            db_session.commit()
+            db_session.close()
+            return redirect(url_for('budget', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
