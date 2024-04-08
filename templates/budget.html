@@ -25,25 +25,11 @@
     <div class="card">
         <button onclick="toggleAdd()">Add Budget</button>
     </div>
-    {% if budgets%}
-    {% for budget in budgets %}
-    <div class="card no-bg view-balance">
-        <h1 class="hide-text">$Balance / $Goal</h1>
-        <h2>Left In Budget</h2>
-    </div>
-    <div class="card">
-
-    </div>
-    {% endfor %}
-    {% endif %}
     <div class="card">
         <h2>All Budgets</h2>
         {% if budgets %}
         {% for budget in budgets %}
-        <li>{{budget.category.category_name}}</li>
-        {% endfor %}
-        {% for budget in budgets %}
-        <li>{{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
+        <li>{{budget.category.category_name}}, {{ budget.budget_id }}, {{ budget.category_id }}, {{ budget.amount }}
             <a href="{{ url_for('editbudget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i
                         class="fa-solid fa-pen-to-square"></i>Edit</button></a>
             <form action="{{ url_for('deletebudget', account_id=account.account_id, budget_id=budget.budget_id)}}"
