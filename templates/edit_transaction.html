@@ -27,14 +27,15 @@
                 placeholder='Amount'
                 value='{{ transaction.amount }}'
                 required />
-            <select
-                id='category_id'
-                name='category_id'>
-                <option value='category'>Category</option>
-                {% for item in categories %}
-                <option value="{{item.category.category_id}}">{{item.category.category_name}}</option>
-                {% endfor%}
-            </select>
+            <h3>Category</h3>
+            {% for item in categories %}
+            <input 
+                type="radio"
+                id="{{item.category.category_id}}"
+                name="category_id"    
+                value="{{item.category.category_id}}" />
+            <label>{{item.category.category_name}}</label>
+            {% endfor%}
             <input type='submit' />
         </form>
     </div>
