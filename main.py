@@ -190,6 +190,9 @@ def update_balance(account_id):
         current_amount = transaction.amount_remaining
     db_session.commit()
 
+# math for sum of transaction amount in a category
+def category_balance(category_id):
+    db_session = Session()
 
 # Alerts 
 # Function to send email
@@ -719,7 +722,7 @@ def edittransaction(account_id, transaction_id):
             transaction.date = new_date
             transaction.title = new_title
             transaction.amount = new_amount
-            #transaction.category_id = new_category
+            transaction.category_id = new_category
 
             db_session.commit()
             db_session.close()
@@ -761,11 +764,11 @@ def budget(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
-        all_categories = db_session.query(Category).all()
+        
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets, categories=all_categories)
-        else:
+            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+        else: # add new budget
             new_budget = Budget(
                 account_id=account_id,
                 amount=request.form.get('amount'),

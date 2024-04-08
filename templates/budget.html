@@ -7,6 +7,10 @@
     </div>
     {% if budgets%}
     {% for budget in budgets %}
+    <div class="card no-bg view-balance">
+        <h1 class="hide-text">$Balance / $Goal</h1>
+        <h2>Left In Budget</h2>
+    </div>
     <div class="card">
         
     </div>
@@ -28,14 +32,6 @@
             {% endfor %}
         {% endif %}
     </div>
-    <div class="card">
-        <h2>Categories</h2>
-        {% if categories %}
-            {% for category in categories %}
-                <li>{{ category.category_id }}, {{ category.category_name }}, {{ category.symbol }}, {{ category.color }}</li>
-            {% endfor %}
-        {% endif %}
-    </div>
 </div>
 
 <!-- add budget popup -->
@@ -44,18 +40,19 @@
     <div class="row card">
         <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
         <form action="{{ url_for('budget', account_id=account.account_id)}}" method="post">
+            <label for="title">Budget Title</label>
             <input
                 type="text"
                 id="title"
                 name="title"
                 value=""
-                placeholder="Budget Name"
                 required />
             <input
                 type="color"
                 id="color"
                 name="color"
                 value="" />
+            <label for="amount">Spending Goal</label>
             <input
                 type="number"
                 id="amount"
@@ -65,11 +62,13 @@
                 placeholder="0"
                 value="" 
                 required />
+            <label for="start_date">Start Date</label>
             <input
                 type="date"
                 id="start_date"
                 name="start_date"
                 value="" />
+            <label for="end_date">End Date</label>
             <input
                 type="date"
                 id="end_date"
