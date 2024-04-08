@@ -195,7 +195,10 @@ def update_balance(account_id):
 def get_category_balance(category_id, budget_id):
     db_session = Session()
     budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-    transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
+    if budget.end_date and budget.start_date:
+        transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id).filter(Transaction.date <= budget.end_date).filter(Transaction.date >= budget.start_date)
+    else:
+        transactions = db_session.query(Transaction).filter(Transaction.category_id == category_id)
     balance = budget.amount
     for transaction in transactions:
         balance = balance + transaction.amount
@@ -623,9 +626,7 @@ def add_account():
                 color="#a6a6a6"
             )
             default_budget = Budget(
-                amount=0,
-                start_date=datetime.now(),
-                end_date=datetime.now()
+                amount=0
             )
 
             db_session.add(new_account)
