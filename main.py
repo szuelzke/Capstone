@@ -772,6 +772,8 @@ def budget(account_id):
             db_session.add(new_budget)
             db_session.add(new_category)
             db_session.commit()
+            new_budget.category_id = new_category.category_id
+            db_session.commit()
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))
     else:
