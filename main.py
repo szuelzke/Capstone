@@ -581,26 +581,38 @@ def edit_account(account_id):
         return redirect(url_for('login'))
 
 
-@app.route('/add-studentid', methods=['GET','POST'])
+@app.route('/add-studentid', methods=['GET', 'POST'])
 def add_studentid():
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
+
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
-        if request.method == 'POST':
-            student_id = request.form['studentid']
+        if user is None:
+            # Handle case where user is not found
+            return "User not found", 404
 
-            user.student_id = student_id
-            db_session.commit()
-            db_session.close()
-            return redirect(url_for('settings'))
+        if request.method == 'POST':
+            student_id = request.form.get('studentid')
+
+            if student_id:
+                user.student_id = student_id
+                try:
+                    db_session.commit()
+                except Exception as e:
+                    # Handle database commit error
+                    db_session.rollback()
+                    return f"Error: {e}", 500
+                finally:
+                    db_session.close()
+                return redirect(url_for('settings'))
 
         db_session.close()
         return render_template('settings.html', user=user)
     else:
         return redirect(url_for('login'))
-
+    
 #### ---------------------------- Handling Accounts ---------------------------------
 
 @app.route('/add-account', methods=['GET','POST'])

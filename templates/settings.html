@@ -58,13 +58,14 @@
         </form>
     </div>
 </div>
-<div class = 'row'>
-    <div class='card'>
+<div class="row">
+    <div class="card">
         <h1>Add Student ID</h1>
         <form action="{{ url_for('add_studentid') }}" method="post">
-            <label for="studentid">Student Id</label>
-            <input type="text" id="studentid" name="studentid" />
-            <input type="submit" value="Submit" />
+            <label for="studentid">Student ID</label>
+            <input type="text" id="studentid" name="studentid" required>
+            <small>Enter your student ID.</small>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </div>
