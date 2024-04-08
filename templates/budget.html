@@ -1,7 +1,39 @@
 {% extends 'dashboard.html' %}
 
 {% block inner_content %}
-{% if budgets%}
+{% if budgets %}
+<div class="row">
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Budgeted</th>
+                    <th>Activity</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for budget in budgets %}
+                <tr>
+                    <th>{{ budget.category.category_name }}</th>
+                    <th>{{ budget.amount }}</th>
+                    {% set available = get_category_balance(budget.category_id, budget.budget_id) %}
+                    {% set activity = budget.amount - available %}
+                    <th>{{ activity }}</th>
+                    <th>{{ available }}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+{% if budgets %}
 {% for budget in budgets %}
 <div class="row">
     <div class="card no-bg">
