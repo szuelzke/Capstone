@@ -205,7 +205,7 @@ def home():
 @app.route('/test')
 def test():
     if 'user_id' in session:
-        return render_template('test.html')
+        return render_template('test.html', categories=get_account_categories(10))
     else:
         return redirect(url_for('login'))
 
@@ -637,6 +637,11 @@ def update_balance(account_id):
         current_amount = transaction.amount_remaining
     db_session.commit()
 
+def get_account_categories(account_id):
+    db_session = Session()
+    budgets = db_session.query(Budget.category_id).filter_by(account_id=account_id).distinct()
+    db_session.close()
+    return budgets
 
 # view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
@@ -666,7 +671,6 @@ def addtransaction(account_id):
             user_id = session['user_id']
             db_session = Session()  
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-            user = db_session.query(User).filter_by(user_id=user_id).first()
             if account: # add transaction to account
                 new_transaction = Transaction(
                     account_id=account.account_id, 
