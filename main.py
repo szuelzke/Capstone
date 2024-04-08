@@ -789,7 +789,7 @@ def deletebudget(account_id, budget_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         # get query to delete
         budget = db_session.query(Budget).filter_by(budget_id=budget_id).first()
-        category = db_session.query(Category).filter_by(category_id=budget_id).first()
+        category = db_session.query(Category).filter_by(category_id=budget.category_id).first()
         
         if budget:
             db_session.delete(budget)
