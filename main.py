@@ -13,7 +13,7 @@ from datetime import date, datetime
 import logging
 import time
 from twilio.rest import Client
-import phonenumbers
+#import phonenumbers
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 
@@ -181,10 +181,15 @@ def send_sms(to, body):
     )
     print("SMS sent to", to)
 
-# Function to format phone number to E.164 format for Twilio
 def format_phone_number(user_phone):
-    parsed_phone = phonenumbers.parse(user_phone, "US")  # Assuming the number is from the US
-    return phonenumbers.format_number(parsed_phone, phonenumbers.PhoneNumberFormat.E164)
+    # Remove any non-numeric characters
+    digits = ''.join(filter(str.isdigit, user_phone))
+    
+    # Add country code if missing
+    if not digits.startswith('+'):
+        digits = '+1' + digits  # Assuming US country code
+        
+    return digits
 
 # Function to check balance and send alert
 def check_balance_and_send_alert(user_phone, balance):
