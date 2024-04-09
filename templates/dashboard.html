@@ -85,6 +85,8 @@
             <li>{{ account["name"]}}</li>
             <li>account id = {{ account["id"]}}</li>
             <li>balance = {{ account["balance"]}}</li>
+            <li>credit = {{ account["credit"]}}</li>
+            <li>debit = {{ account["debit"]}}</li>
             <li>total transactions = {{ account["transaction_count"]}}</li>
         </ul>
         {% for id, obj in budget.items() %}
