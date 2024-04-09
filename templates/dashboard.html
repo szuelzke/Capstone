@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 
-{% set budgets = get_budget_stats(account_id) %}
+{% set budgets = get_budget_stats(account.account_id) %}
 
 {% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}"><li class="page-title">{{ account.account_name }}</li></a>{% endblock %}
 
