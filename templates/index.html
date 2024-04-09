@@ -76,11 +76,7 @@
                         <button class='fa-solid fa-power-off'></button>
                     </form>
                     <button class='fa-solid fa-comments'></button>
-                    {% if account_list %}
-                    <a href="{{ url_for('display_notification', account_id=id) }}" class="notification-button">
-                        <button class='fa-solid fa-bell'></button>
-                    </a>
-                    {% endif %}
+                    <button class='fa-solid fa-bell'></button>
                 </ul>
             </div>
         </div>
