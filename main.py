@@ -112,6 +112,18 @@ class FlashCash_Transaction(Base):
     transaction_amount = Column(DECIMAL(10,2))
     amount_remaining = Column(DECIMAL(10,2))
 
+class Notification(Base):
+    __tablename__ = 'notification_system' 
+    notification_id = Column(Integer, primary_key=True, autoincrement=True)
+    account_id = Column(Integer, ForeignKey(Account.account_id))
+    notification_type = Column(String(100))
+    notification_type_id = Column(Integer)
+    is_opt_in = Column(Boolean)
+    timestamp = Column(Date)
+    is_read = Column(Boolean)
+
+
+
 
 
 
@@ -215,7 +227,7 @@ def get_account_stats(account_id):
     stats["id"] = account_id
     stats["balance"] = balance
     stats["transaction_count"] = db_session.query(Transaction).filter_by(account_id=account_id).count()
-    
+    db_session.close()
     return stats
 
 # Handling Transactions
@@ -231,6 +243,7 @@ def update_balance(account_id):
             transaction.amount_remaining = current_amount + transaction.amount
         current_amount = transaction.amount_remaining
     db_session.commit()
+    db_session.close()
 
 # math for all transactions amount remaining 
 @app.template_global()
@@ -243,6 +256,7 @@ def get_category_balance(category_id, budget_id):
     balance = budget.amount
     for transaction in transactions:
         balance = balance + transaction.amount
+    db_session.close()
     return balance
 
 # Alerts 
@@ -259,6 +273,20 @@ def check_balance_and_send_alert(user_email, balance):
         body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
         send_email(user_email, subject, body)
 
+def get_notifications(account_id):
+    db_session = Session()
+    notifications = db_session.query(Notification).filter_by(account_id=account_id).order_by(Notification.timestamp.asc()).all()
+    db_session.close()
+    
+    opted_in_notifications = []
+    for notification in notifications:
+        if notification.is_opt_in:
+            opted_in_notifications.append(notification)
+    
+    if opted_in_notifications:
+        return opted_in_notifications
+    else:
+        return None
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
 
@@ -269,8 +297,9 @@ def home():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account_list = get_account_list()
+        notification_list = get_notifications()
         db_session.close()
-        return render_template('index.html', user=user, account_list=account_list)
+        return render_template('index.html', user=user, account_list=account_list,notification_list=notification_list)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
