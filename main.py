@@ -758,7 +758,7 @@ def account(account_id):
 
         return render_template('dashboard.html', 
         user=user, 
-        account_id=account_id,
+        account=account,
         transactions=transactions)
     else:
         return redirect(url_for('login'))
