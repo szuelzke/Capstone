@@ -178,7 +178,7 @@ def get_account_list():
     accounts = db_session.query(Account).filter_by(user_id=user_id).all()
     account_list = {}
     for account in accounts:
-        recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).first()
+        recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.asc()).first()
         account_list[account.account_id] = {}
         account_list[account.account_id]["name"] = account.account_name
         if recent_transaction:
@@ -216,7 +216,7 @@ def get_account_stats(account_id):
     account = db_session.query(Account).filter_by(account_id=account_id).first()
     
     # balance of account
-    get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+    get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.asc()).first()
     if get_balance:
         balance = get_balance.amount_remaining
     else: # there are no transactions for account
@@ -246,7 +246,7 @@ def get_account_stats(account_id):
 # updates transaction.amount_remaining
 def update_balance(account_id):
     db_session = Session()
-    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).all()
+    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc(), Transaction.transaction_id.desc()).all()
     for i, transaction in enumerate(transactions):
         if i == 0: # starting balance
             transaction.amount_remaining = transaction.amount
@@ -747,7 +747,7 @@ def account(account_id):
             return redirect(url_for('home'))
         
         # get most recent transactions
-        transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
+        transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.asc()).limit(10).all()
         db_session.close()
 
         return render_template('dashboard.html', transactions=transactions, user=user, account_list=get_account_list(), budget=get_budget_stats(account_id), account=get_account_stats(account_id))
@@ -768,7 +768,7 @@ def transactions(account_id):
         categories = db_session.query(Budget).filter_by(account_id=account_id).all()
         if account:
             # get transactions 
-            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).all()
+            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.asc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list(), categories=categories)
         else:
@@ -796,7 +796,7 @@ def addtransaction(account_id):
                 db_session.commit()
 
                 # Sending alert if balance is low
-                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.asc()).first()
                 #balance = transactions.amount_remaining
                 #user_email = user.email 
                 #check_balance_and_send_alert(user_email, balance)
