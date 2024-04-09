@@ -41,10 +41,10 @@
 
         <div class="nav">
             <h2>Personal</h2>
-            {% set accounts = get_account_list() %}
+            {% set accounts_list = get_account_list() %}
             <!-- display accounts connected to user -->
-            {% if accounts != 0 %}
-            {% for id, obj in accounts.items() %}
+            {% if accounts_list != 0 %}
+            {% for id, obj in accounts_list.items() %}
             <a href="{{ url_for('account', account_id = id )}}">
                 <i class="fa-solid fa-credit-card pd-5"></i>
                 {{ obj["name"] }}
