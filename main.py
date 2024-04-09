@@ -172,23 +172,21 @@ def allowed_file(filename):
 # Handling Accounts
 
 # returns dictionary of accounts connected to user
+# used in sidebar nav 
+@app.template_global()
 def get_account_list():
     user_id = session['user_id']
     db_session = Session()
     accounts = db_session.query(Account).filter_by(user_id=user_id).all()
     account_list = {}
     for account in accounts:
-        recent_transaction = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
         account_list[account.account_id] = {}
         account_list[account.account_id]["name"] = account.account_name
-        if recent_transaction:
-            account_list[account.account_id]["balance"] = recent_transaction.amount_remaining
-        else:
-            account_list[account.account_id]["balance"] = "0.00"
     db_session.close()
     return account_list
 
-# get stats for an budget
+# returns dict of stats for all budgets in an account
+@app.template_global()
 def get_budget_stats(account_id):
     stats = {}
     db_session = Session()
@@ -209,7 +207,8 @@ def get_budget_stats(account_id):
         db_session.close()
     return stats
 
-# get stats for account
+# returns dict of stats for all accounts made by user
+@app.template_global()
 def get_account_stats(account_id):
     stats = {} 
     db_session = Session()
@@ -308,10 +307,9 @@ def home():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).first()
-        account_list = get_account_list()
         notification_list = get_notifications(accounts.account_id)
         db_session.close()
-        return render_template('index.html', user=user, account_list=account_list,notification_list=notification_list)
+        return render_template('index.html', user=user,notification_list=notification_list)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
@@ -522,11 +520,10 @@ def settings():
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         db_session.close()
-        account_list = get_account_list()
         
         end_time = time.time()  # Performance monitoring - end time
         logger.info(f"Settings request processed in {end_time - start_time} seconds")
-        return render_template('settings.html', user=user, accounts=accounts, account_list=account_list)
+        return render_template('settings.html', user=user, accounts=accounts)
     else:
         return redirect(url_for('login'))
     
@@ -707,6 +704,12 @@ def add_account():
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
         if request.method == 'POST':
+            ## prevents user from adding more than 5 accounts
+            if (db_session.query(Account).filter_by(user_id=user_id).count() >= 5):
+                db_session.close()
+                return render_template('add_account.html',
+                error="User cannot have more than 5 accounts.")
+
             account_name = request.form['accountname']
             new_account = Account(
                 account_name=account_name,
@@ -750,7 +753,10 @@ def account(account_id):
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(10).all()
         db_session.close()
 
-        return render_template('dashboard.html', transactions=transactions, user=user, account_list=get_account_list(), budget=get_budget_stats(account_id), account=get_account_stats(account_id))
+        return render_template('dashboard.html', 
+        user=user, 
+        account_id=account_id,
+        transactions=transactions)
     else:
         return redirect(url_for('login'))
 
@@ -770,7 +776,7 @@ def transactions(account_id):
             # get transactions 
             transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, account_list=get_account_list(), categories=categories)
+            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:
             return redirect(url_for('login'))
     else:
@@ -876,7 +882,7 @@ def get_budgets(account_id):
         
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, account_list=get_account_list(), budgets=budgets)
+            return render_template('budget.html', user=user, account=account, budgets=budgets)
     else:
         return redirect(url_for('login'))
 
@@ -967,7 +973,7 @@ def display_notifications(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=get_notifications(account.account_id))
+        return render_template('notifications.html', user=user, account=account, notifications=get_notifications(account.account_id))
 
 
 
@@ -986,7 +992,7 @@ def flashcash_transaction(student_id):
             db_session = Session()
             flashcash_transactions = db_session.query(FlashCash_Transaction, SvcPlan).join(SvcPlan).filter(FlashCash_Transaction.student_id==student_id).order_by(FlashCash_Transaction.transaction_date.desc()).all()
             db_session.close()
-            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user, account_list=get_account_list())
+            return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user)
         else:
             return redirect(url_for('login'))
     else:

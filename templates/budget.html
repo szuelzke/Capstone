@@ -5,42 +5,11 @@
     <div class="card">
         <button onclick="toggleAdd()">Add Budget</button>
     </div>
-</div>
-{% if budgets %}
-<div class="row">
+    {% for budget in budgets %}
     <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Budgeted</th>
-                    <th>Activity</th>
-                    <th>Available</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for budget in budgets %}
-                {% set available = get_category_balance(budget.category_id, budget.budget_id) %}
-                {% set activity = budget.amount - available %}
-                <tr>
-                    <td>{{ budget.category.category_name }}</td>
-                    <td>{{ budget.amount }}</td>
-                    <td>{{ activity }}</td>
-                    <td>{{ available }}</td>
-                    <td><a href="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button><i
-                        class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                    <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
-                        method="post">
-                        <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
-                    </form></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
-{% endif %}
+
 
 <!-- add budget popup -->
 <div id="add-category" class="dimmer" style="display:none;">
