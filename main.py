@@ -176,13 +176,13 @@ def get_account_list():
     db_session.close()
     return account_list
 
-# get stats for an account
+# get stats for an budget
 def get_budget_stats(account_id):
     stats = {}
     db_session = Session()
     categories = db_session.query(Budget).filter_by(account_id=account_id)
     for category in categories:
-        # calculate total in budget
+        # calculate transactions in budget
         transactions = db_session.query(Transaction).filter_by(category_id=category.category_id).all()
         total = 0
         for transaction in transactions:
@@ -195,6 +195,27 @@ def get_budget_stats(account_id):
         stats[category.category.category_name]["activity"] = total
         stats[category.category.category_name]["available"] = category.amount + total
         db_session.close()
+    return stats
+
+# get stats for account
+def get_account_stats(account_id):
+    stats = {} 
+    db_session = Session()
+    account = db_session.query(Account).filter_by(account_id=account_id).first()
+    
+    # balance of account
+    get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
+    if get_balance:
+        balance = get_balance.amount_remaining
+    else: # there are no transactions for account
+        balance = "0.00"
+    
+    # assignment of dict values
+    stats["name"] = account.account_name
+    stats["id"] = account_id
+    stats["balance"] = balance
+    stats["transaction_count"] = db_session.query(Transaction).filter_by(account_id=account_id).count()
+    
     return stats
 
 # Handling Transactions
@@ -685,17 +706,10 @@ def account(account_id):
             return redirect(url_for('home'))
         # get most recent transactions
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
-        # balance of account
-        get_balance = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc()).first()
-        if get_balance:
-            balance = get_balance.amount_remaining
-        else: # there are no transactions for account
-            balance = "0.00"
-        budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
 
         db_session.close()
 
-        return render_template('dashboard.html', account=account, transactions=transactions, user=user, balance=balance, account_list=get_account_list(), budgets=budgets, stats=get_budget_stats(account_id))
+        return render_template('dashboard.html', transactions=transactions, user=user, account_list=get_account_list(), budget=get_budget_stats(account_id), account=get_account_stats(account_id))
     else:
         return redirect(url_for('login'))
 
