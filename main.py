@@ -307,7 +307,7 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        accounts = db_session.query(Account).filter_by(user_id=user_id).all()
+        accounts = db_session.query(Account).filter_by(user_id=user_id).first()
         account_list = get_account_list()
         notification_list = get_notifications(accounts.account_id)
         db_session.close()
