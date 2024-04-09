@@ -966,9 +966,7 @@ def display_notifications(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        # Fetch notifications for the specified account_id
-        notifications_list = get_notifications(account_id)
-        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=notifications_list)
+        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=get_notifications(account_id))
 
 
 

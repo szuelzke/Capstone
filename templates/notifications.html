@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    <a href=""><li class="page-title">Notifications</li></a>
+{% endblock %}
+
+{% block content %}
+<div class="row row-v">
+    <div class='card'>
+        <h2>Notifications</h2>
+
+        <div class="notification-list">
+            {% if notifications %}
+                <ul>
+                    {% for notification in notifications %}
+                        <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
+                        <!-- Adjust the above line to display the relevant notification information -->
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No notifications</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
