@@ -221,11 +221,22 @@ def get_account_stats(account_id):
         balance = get_balance.amount_remaining
     else: # there are no transactions for account
         balance = "0.00"
+
+    # calculate debit and credit
+    debit = 0
+    credit = 0
+    for transaction in db_session.query(Transaction).filter_by(account_id=account_id).all():
+        if transaction.amount > 0:
+            debit += transaction.amount
+        else:
+            credit += transaction.amount
     
     # assignment of dict values
     stats["name"] = account.account_name
     stats["id"] = account_id
     stats["balance"] = balance
+    stats["debit"] = debit
+    stats["credit"] = credit
     stats["transaction_count"] = db_session.query(Transaction).filter_by(account_id=account_id).count()
     db_session.close()
     return stats
@@ -722,7 +733,7 @@ def add_account():
         return redirect(url_for('login'))
 
 # dashboard for account
-@app.route('/<account_id>', methods=['GET', 'POST'])
+@app.route('/<account_id>', methods=['GET'])
 def account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
@@ -733,9 +744,9 @@ def account(account_id):
         if not account:
             db_session.close()
             return redirect(url_for('home'))
+        
         # get most recent transactions
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc()).limit(10).all()
-
         db_session.close()
 
         return render_template('dashboard.html', transactions=transactions, user=user, account_list=get_account_list(), budget=get_budget_stats(account_id), account=get_account_stats(account_id))
