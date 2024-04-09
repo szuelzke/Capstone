@@ -949,15 +949,27 @@ def edit_budget(account_id, budget_id):
     else:
         return redirect(url_for('login'))
 
-            
-
-
 @app.route('/account/transaction/share', methods=['POST', 'GET'])
 def sharetransaction():
     if request.method == 'POST':
         # post share request
         return redirect(url_for('transactions'))
     return render_template('forms/share_transaction.html')
+
+# ------------------------ Notification System ---------------------------------------
+
+#Get Notifications
+@app.route('/<account_id>/notifications', methods = ['GET','POST'])
+def display_notifications(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        # Fetch notifications for the specified account_id
+        notifications_list = get_notifications(account_id)
+        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=notifications_list)
+
 
 
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
