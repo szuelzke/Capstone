@@ -92,7 +92,7 @@
             <li>debit = {{ account["debit"]}}</li>
             <li>total transactions = {{ account["transaction_count"]}}</li>
         </ul>
-        {% for id, obj in budget.items() %}
+        {% for id, obj in budgets.items() %}
         <ul>
         <li>{{ id }}</li>
         <li>total transactions = {{ obj["count"]}}</li>
