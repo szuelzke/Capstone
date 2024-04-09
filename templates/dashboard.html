@@ -16,9 +16,9 @@
     </div>
 
 
-    <a href="{{ url_for('get_budgets', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>Edit Monthly Budget</a>
+    <a href="{{ url_for('get_budgets', account_id=account['id'])}}" class="card card-link c-f20"><i class='fa-solid fa-circle-dollar-to-slot'></i>Edit Monthly Budget</a>
 
-    <a href="{{ url_for('transactions', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
+    <a href="{{ url_for('transactions', account_id=account['id'])}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
 
     <!--<a href="" class="card card-link c-f20"><i class='fa-solid fa-share-nodes'></i>Shared Expenses</a>--->
 
@@ -83,9 +83,9 @@
     <div class="card">
         <ul>
             <li>{{ account["name"]}}</li>
-            <li>{{ account["id"]}}</li>
-            <li>{{ account["balance"]}}</li>
-            <li>{{ account["transaction_count"]}}</li>
+            <li>account id = {{ account["id"]}}</li>
+            <li>balance = {{ account["balance"]}}</li>
+            <li>total transactions = {{ account["transaction_count"]}}</li>
         </ul>
         {% for id, obj in budget.items() %}
         <ul>
