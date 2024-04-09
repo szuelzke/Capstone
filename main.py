@@ -211,7 +211,8 @@ def get_account_stats(account_id):
         balance = "0.00"
 
     # calculate debit and credit
-    debit, credit = 0
+    debit = 0
+    credit = 0
     for transaction in db_session.query(Transaction).filter_by(account_id=account_id).all():
         if transaction.amount > 0:
             debit += transaction.amount
