@@ -307,8 +307,9 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
+        accounts = db_session.query(Account).filter_by(user_id=user_id).all()
         account_list = get_account_list()
-        notification_list = get_notifications()
+        notification_list = get_notifications(accounts.account_id)
         db_session.close()
         return render_template('index.html', user=user, account_list=account_list,notification_list=notification_list)
     else:
@@ -966,7 +967,7 @@ def display_notifications(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=get_notifications(account_id))
+        return render_template('notifications.html', user=user, account=account, account_list = get_account_list(), notifications=get_notifications(account.account_id))
 
 
 
