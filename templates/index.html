@@ -20,41 +20,9 @@
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-
-    <style>
-        /* Style the notification dropdown */
-        .dropdown-content {
-            display: none;
-            position: fixed; /* Position relative to the viewport */
-            background-color: white; /* Set background to white */
-            width: 200px; /* Adjust width as needed */
-            z-index: 1000; /* Ensure it's on top of other content */
-            padding: 10px;
-            color: black; /* Set text color to black */
-            top: 50%; /* Position vertically in the middle */
-            left: 50%; /* Position horizontally in the middle */
-        }
-
-        .dropdown-content h2 {
-            margin-top: 0;
-        }
-
-        .dropdown-content ul {
-            margin-top: 0;
-            padding-inline-start: 0;
-        }
-
-        .dropdown-content li {
-            list-style-type: none;
-        }
-
-        .dropdown-content p {
-            margin: 0;
-        }
-
-    </style>
 </head>
 
 <body>
@@ -109,57 +77,35 @@
                     <form action="{{ url_for('logout') }}" method="post">
                         <button class='fa-solid fa-power-off'></button>
                     </form>
-                    <button class='fa-solid fa-comments'></button>
-                    <!--<button id="notificationToggle" class="fa-solid fa-bell"></button>-->
-                    <!--<div class="topbar" style="position: relative; display: inline-block;">-->
-                        <button id="notificationToggle" class="fa-solid fa-bell"></button>
-                        <div id="notificationDropdown" class="dropdown-content">
-                            <h2>Notifications</h2>
-                            <div class="notification-list">
-                                {% if notifications %}
-                                <ul>
-                                    {% for notification in notifications %}
-                                    <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                                    <!-- Adjust the above line to display the relevant notification information -->
-                                    {% endfor %}
-                                </ul>
-                                {% else %}
-                                <p>No notifications</p>
-                                {% endif %}
-                            </div>
+                    <div class="dropdown">
+                        <button class="fa-solid fa-bell">Notifications</button>
+                        <div class="dropdown-content">
+                            {% for notification in notifications %}
+                            <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </ul>
             </div>
         </div>
+    
         {% block content %}
+        {% if account_list != 0 %}
+            <div class="row">
+                
+            {% for id, obj in accounts_list.items() %}
+                <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
+                    <h1 class="hide-text">{{ obj["balance"]}}</h1>
+                    <h2>{{ obj["name"] }}</h2>
+                </a>
+            {% endfor %}
+            </div>
+        {% endif%}
         {% endblock %}
+
     </div>
 
-    <script>
-        // Toggle the notification dropdown
-        document.getElementById("notificationToggle").onclick = function () {
-            var notificationDropdown = document.getElementById("notificationDropdown");
-            if (notificationDropdown.style.display === "none") {
-                notificationDropdown.style.display = "block";
-            } else {
-                notificationDropdown.style.display = "none";
-            }
-        };
-
-        // Close the notification dropdown if the user clicks outside of it
-        window.onclick = function (event) {
-            if (!event.target.matches('#notificationToggle')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.style.display === "block") {
-                        openDropdown.style.display = "none";
-                    }
-                }
-            }
-        };
-    </script>
+    <script src="{{ url_for('static', filename='topbar.js') }}"></script>
 </body>
 
 </html>

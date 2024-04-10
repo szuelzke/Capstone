@@ -51,3 +51,29 @@
     font-weight:bold;
     margin:25px 10px 10px 25px;
 }
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px); /* Position right below the button */
+    right: 0; /* Align right side of the dropdown with the right side of the button */
+    background-color: white; /* White background */
+    color: black; /* Black text */
+    z-index: 1; /* Ensure it's on top of other content */
+    border: 1px solid black; /* Add a border for visibility */
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

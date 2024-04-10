@@ -336,13 +336,15 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        accounts = db_session.query(Account).filter_by(user_id=user_id).first()
-        if accounts:
-            db_session.close()
-            notification_list = get_notifications(accounts.account_id)
-            return render_template('index.html', user=user,notification_list=notification_list)
-        else:
-            return render_template('index.html', user=user)
+ 
+        accounts = get_account_list()  # Fetch all accounts for the user
+        # Fetch notifications for each account and compile them into a single dictionary
+        all_notifications = {}
+        for account_id in accounts:
+            notifications = get_notifications(account_id)
+            all_notifications.update(notifications)
+        db_session.close()
+        return render_template('index.html', user=user, accounts = accounts, notifications=all_notifications)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
