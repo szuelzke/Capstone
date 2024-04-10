@@ -677,7 +677,10 @@ def delete_account(account_id):
 @app.route('/edit_popup/<int:account_id>', methods=['GET'])
 def edit_popup(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
-        return render_template('edit_account.html', account_id=account_id)
+        user_id = session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        return render_template('edit_account.html', account_id=account_id, user=user)
     else:
         return redirect(url_for('login'))
     
@@ -885,7 +888,7 @@ def edittransaction(account_id, transaction_id):
         return redirect(url_for('login'))
 
 # delete transaction
-@app.route('/<account_id>/<transaction_id>/delete', methods=['POST'])
+@app.route('/<account_id>/<transaction_id>/delete', methods=['POST']) 
 def deletetransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = session['user_id']
@@ -980,8 +983,9 @@ def edit_budget(account_id, budget_id):
             db_session.close()
             return render_template('edit_budget.html', user=user, account=account, budget=budget)
         else:
-            budget.category_id=request.form.get('category_id')
+            budget.category.symbol=request.form.get('symbol')
             budget.amount=request.form.get('amount')
+            budget.category.color=request.form.get('color')
             db_session.commit()
             db_session.close()
             return redirect(url_for('edit_budget', account_id=account_id, budget_id=budget_id, success="Budget was changed successfully"))
