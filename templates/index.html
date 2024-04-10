@@ -34,8 +34,9 @@
             z-index: 1000; /* Ensure it's on top of other content */
             padding: 10px;
             color: black; /* Set text color to black */
-            top: calc(100% + 10px); /* Adjust the distance from the button */
-            left: calc(100% - 100px); /* Align to the right of the button */
+            bottom: calc(100% + 10px); /* Position the popup below the button */
+            left: 50%; /* Align to the center of the button */
+            transform: translateX(-50%); /* Center horizontally */
         }
 
         .dropdown-content h2 {
