@@ -20,9 +20,44 @@
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+
+    <style>
+        /* Style the notification dropdown */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white; /* Set background to white */
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it's on top of other content */
+            padding: 10px;
+            color: black; /* Set text color to black */
+        }
+
+        .dropdown-content h2 {
+            margin-top: 0;
+        }
+
+        .dropdown-content ul {
+            margin-top: 0;
+            padding-inline-start: 0;
+        }
+
+        .dropdown-content li {
+            list-style-type: none;
+        }
+
+        .dropdown-content p {
+            margin: 0;
+        }
+
+        /* Style the button in top right corner */
+        .topbar button {
+            margin-left: 10px; /* Adjust spacing between icons */
+        }
+    </style>
 </head>
 
 <body>
@@ -77,15 +112,9 @@
                     <form action="{{ url_for('logout') }}" method="post">
                         <button class='fa-solid fa-power-off'></button>
                     </form>
-                    <button class='fa-solid fa-comments'></button>
-                    <!--<button class='fa-solid fa-bell'></button>
-                    <form action="{{ url_for('display_notifications') }}" method="post">
-                        <button class='fa-solid fa-bell'></button>
-                    </form>-->
                     <div class="dropdown" style="position: relative; display: inline-block;">
                         <button id="notificationToggle" class="fa-solid fa-bell"></button>
-                        <div id="notificationDropdown" class="dropdown-content" style="display: none;">
-                            <!-- Content of the notification dropdown popup -->
+                        <div id="notificationDropdown" class="dropdown-content">
                             <h2>Notifications</h2>
                             <div class="notification-list">
                                 {% if notifications %}
@@ -104,25 +133,12 @@
                 </ul>
             </div>
         </div>
-    
         {% block content %}
-        {% if account_list != 0 %}
-            <div class="row">
-                
-            {% for id, obj in accounts_list.items() %}
-                <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
-                    <h1 class="hide-text">{{ obj["balance"]}}</h1>
-                    <h2>{{ obj["name"] }}</h2>
-                </a>
-            {% endfor %}
-            </div>
-        {% endif%}
         {% endblock %}
-
     </div>
 
     <script>
-        /* Toggle notification dropdown */
+        // Toggle the notification dropdown
         document.getElementById("notificationToggle").onclick = function () {
             var notificationDropdown = document.getElementById("notificationDropdown");
             if (notificationDropdown.style.display === "none") {
@@ -145,7 +161,6 @@
             }
         };
     </script>
-
 </body>
 
 </html>
