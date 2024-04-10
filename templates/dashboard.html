@@ -4,7 +4,8 @@
 {% set account_stats = get_account_stats(account.account_id) %}
 {% set budgets_stats = get_budget_stats(account.account_id) %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}<a href="{{ url_for('account', account=account.account_id)}}">Dashboard</a> > {% block subtitle %}{% endblock%}
+{% endblock %}
 
 
 {% block stylesheet %}
@@ -21,7 +22,7 @@
     </div>
 
 
-    <a href="{{ url_for('get_budgets', account_id=account.account_id)}}" class="card card-link"><i class='fa-solid fa-circle-dollar-to-slot'></i>Edit Monthly Budget</a>
+    <a href="{{ url_for('get_budgets', account_id=account.account_id)}}" class="card card-link"><i class='fa-solid fa-circle-dollar-to-slot'></i>Edit Categories</a>
 
     <a href="{{ url_for('transactions', account_id=account.account_id)}}" class="card card-link c-f20"><i class='fa-solid fa-file-invoice'></i>View All Transactions</a>
 

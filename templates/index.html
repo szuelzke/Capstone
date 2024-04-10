@@ -84,17 +84,15 @@
         </div>
     
         {% block content %}
-        {% if account_list %}
-        <div class="row">
-
-        {% for id, obj in account_list.items() %}
-        <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
-            <h1 class="hide-text">{{ obj["balance"]}}</h1>
-            <h2>{{ obj["name"] }}</h2>
-        </a>
-        {% endfor %}
-
-        </div>
+        {% if account_list != 0 %}
+            <div class="row">
+            {% for id, obj in account_list.items() %}
+                <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
+                    <h1 class="hide-text">{{ obj["balance"]}}</h1>
+                    <h2>{{ obj["name"] }}</h2>
+                </a>
+            {% endfor %}
+            </div>
         {% endif%}
         {% endblock %}
 

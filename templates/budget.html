@@ -4,20 +4,20 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='budget.css') }}">
 {% endblock %}
 
-{% block title %}Edit Budget{% endblock %}
+{% block subtitle %}Categories{% endblock %}
 
 {% block inner_content %}
 <div class="row">
-    <div class="card">
-        <button onclick="toggleAdd()">Add Budget</button>
-    </div>
-
     {% for budget in budgets %}
-    <div class="card hover-link">
+    <div class="card hover-link" style="margin:5px 5px">
+        <i class="fa-solid fa-{{ budget.category.symbol }}"></i>
         <h1>{{ budget.category.category_name }}</h1>
         <a href="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button>Edit</button></a>
     </div>
     {% endfor %}
+
+    <!-- add budget button -->
+    <button class="card card-link" onclick="toggleAdd()"><i class='fa-solid fa-plus'></i>Add Budget</button>
 </div>
 
 
@@ -26,7 +26,7 @@
     <h2>Add Budget</h2>
     <div class="row card">
         <button class='card-x-button fa-solid fa-x' onclick="toggleAdd()"></button>
-        <form action="{{ url_for('add_budget', account_id=account.account_id)}}" method="post">
+        <form action="{{ url_for('add_budget', account_id=account.account_id)}}" method="post" class="form-deco">
             <label for="title">Budget Title</label>
             <input type="text" id="title" name="title" value="" required />
 
@@ -35,8 +35,6 @@
 
             <input type="color" id="color" name="color" value="" />
             <br>
-
-            
 
             {% set symbol_list = category_symbols() %}
             {% for symbol in symbol_list %}
