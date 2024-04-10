@@ -1001,6 +1001,18 @@ def sharetransaction():
 
 # ------------------------ Notification System ---------------------------------------
 
+
+# Get Notifications
+@app.route('/<account_id>/notifications', methods = ['GET','POST'])
+def display_notifications(account_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        return render_template('notifications.html', user=user, account=account, notifications=get_notifications(account.account_id))
+
+'''
 # Get Notifications
 @app.route('/notifications', methods=['GET'])
 def display_notifications():
@@ -1018,7 +1030,7 @@ def display_notifications():
         return render_template('notifications.html', user=user, accounts=accounts, notifications=all_notifications)
     else:
         return redirect(url_for('login'))
-
+'''
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
 
 @app.route('/<student_id>/flashcash-transactions', methods=['GET','POST'])
