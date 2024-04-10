@@ -30,6 +30,8 @@
 
             <input type="submit" />
         </form>
+
+        <a href="{{ url_for('delete_budget', account_id=account_id, budget_id=budget.budget_id)}}"><button>Delete</button></a>
     </div>
 </div>
 {% endblock %}
