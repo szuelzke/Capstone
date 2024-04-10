@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+<!--{% extends 'index.html' %}
 
 {% block title %}
     <a href=""><li class="page-title">Notifications</li></a>
@@ -14,7 +14,6 @@
                 <ul>
                     {% for notification in notifications %}
                         <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                        <!-- Adjust the above line to display the relevant notification information -->
                     {% endfor %}
                 </ul>
             {% else %}
@@ -23,4 +22,28 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %}-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications</title>
+<link rel="stylesheet" href="styles.css"> <!-- Include any CSS stylesheets -->
+</head>
+<body>
+
+<div class="container">
+    <h1>Notifications</h1>
+    <p>Here are your notifications:</p>
+    <ul>
+        {% for notification_id, notification in notifications.items() %}
+            <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
+            <!-- Adjust the above line to display the relevant notification information -->
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>
