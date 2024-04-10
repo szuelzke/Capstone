@@ -313,7 +313,8 @@ def check_balance_and_send_alert(account_id):
     #send_email(user_email, subject, body)
 
 
-
+# Function to get notifications for a specific account
+@app.template_global()
 def get_notifications(account_id):
     db_session = Session()
     notifications = db_session.query(Notification).filter_by(account_id=account_id).order_by(Notification.timestamp.asc()).all()
@@ -324,10 +325,7 @@ def get_notifications(account_id):
         if notification.is_opt_in:
             opted_in_notifications.append(notification)
     
-    if opted_in_notifications:
-        return opted_in_notifications
-    else:
-        return None
+    return opted_in_notifications
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
 
@@ -787,7 +785,7 @@ def account(account_id):
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(10).all()
         db_session.close()
 
-        return render_template('dashboard.html', user=user, account=account,transactions=transactions, notifications = get_notifications(account_id))
+        return render_template('dashboard.html', user=user, account=account,transactions=transactions)
     else:
         return redirect(url_for('login'))
 

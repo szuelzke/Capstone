@@ -34,13 +34,14 @@
 <div class="row">
     <div class="card">
         <h2>Account Notifications</h2>
+        {% set notifications = get_notifications(account_id) %}
+        <!-- display account notifications -->
         {% if notifications %}
             {% for notification in notifications %}
-            <a href="">
-                <i class="fa-solid fa-credit-card pd-5"></i>
-                {{ notifaction.timestamp }}: Alert: Low Account Balance
-            </a>
+                <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a>
             {% endfor %}
+        {% else %}
+            <p>No notifications</p>
         {% endif %}
     </div>
     <div class="card">
