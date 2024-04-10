@@ -296,10 +296,10 @@ def check_balance_and_send_alert(account_id):
                 ) 
         db_session.add(new_notification)
         db_session.commit()
-        db_session.close()
-        #subject = "Alert: Low Account Balance"
-        #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
-        #send_email(user_email, subject, body)
+    db_session.close()
+    #subject = "Alert: Low Account Balance"
+    #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
+    #send_email(user_email, subject, body)
 
 
 def get_notifications(account_id):
