@@ -323,9 +323,10 @@ def get_notifications(account_id):
     opted_in_notifications = {}
     for notification in notifications:
         if notification.is_opt_in:
-            opted_in_notifications.append(notification)
+            opted_in_notifications[notification.notification_id] = notification
     
     return opted_in_notifications
+
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
 
