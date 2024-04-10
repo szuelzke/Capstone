@@ -1,4 +1,4 @@
-<!--{% extends 'index.html' %}
+{% extends 'index.html' %}
 
 {% block title %}
     <a href=""><li class="page-title">Notifications</li></a>
@@ -23,8 +23,10 @@
         </div>
     </div>
 </div>
-{% endblock %}--->
-<!DOCTYPE html>
+{% endblock %}
+
+
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -34,12 +36,10 @@
 </head>
 <body>
 
-<!-- Existing button for notification -->
 <button id="notificationButton" class="notification-button">
   <img src="notification_icon.png" alt="Notification">
 </button>
 
-<!-- Notification pop-up -->
 <div id="notificationPopup" class="notification-popup">
   <span class="close" id="closeButton">&times;</span>
   <h3>Notifications</h3>
@@ -48,8 +48,8 @@
       <ul>
         {% for notification_id, notification in notifications.items() %}
           <li>{{ notification.account_id }} - {{ notification.timestamp }}</li>
-          <!-- Adjust the above line to display the relevant notification information -->
-        {% endfor %}
+
+          {% endfor %}
       </ul>
     {% else %}
       <p>No notifications</p>
@@ -86,4 +86,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
-</html>
+</html>--->
