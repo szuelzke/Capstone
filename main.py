@@ -755,9 +755,7 @@ def account(account_id):
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(10).all()
         db_session.close()
 
-        return render_template('dashboard.html', 
-        user=user, account=account,
-        transactions=transactions)
+        return render_template('dashboard.html', user=user, account=account,transactions=transactions)
     else:
         return redirect(url_for('login'))
 
