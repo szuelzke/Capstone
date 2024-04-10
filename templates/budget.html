@@ -7,6 +7,13 @@
 {% block subtitle %} > Categories{% endblock %}
 
 {% block inner_content %}
+{% if message %}
+<div class="row">
+    <div class="card">
+        <h3>{{ message }}</h3>
+    </div>
+</div>
+{% endif %}
 <div class="row">
     {% for budget in budgets %}
     <div class="card hover-link" style="margin:5px 5px">
