@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from flask_mail import Mail, Message
+import openai
 import bcrypt
 import pyotp
 import qrcode
@@ -14,7 +15,7 @@ import logging
 import time
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
-
+openai.api_key = 'x'
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -346,6 +347,23 @@ def home():
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
+        
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        user_message = request.form['message']
+        
+        response = openai.Completion.create(
+            model="text-davinci-003",  
+            prompt=user_message,
+            temperature=0.9,
+            max_tokens=150
+        )
+        chatbot_response = response.choices[0].text.strip()
+        
+        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+
+    return render_template('chatbot.html')
 
 @app.route('/test')
 def test():
