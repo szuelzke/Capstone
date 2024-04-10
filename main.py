@@ -199,11 +199,16 @@ def get_budget_stats(account_id):
             total = total + transaction.amount
 
         # assignment of dict values
-        stats[category.category.category_name] = {}
-        stats[category.category.category_name]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
-        stats[category.category.category_name]["amount"] = category.amount
-        stats[category.category.category_name]["activity"] = total
-        stats[category.category.category_name]["available"] = category.amount + total
+        obj = ""
+        if category.category.category_name == None:
+            obj = "Uncategorized"
+        else:
+            obj = category.category.category_name
+        stats[obj] = {}
+        stats[obj]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
+        stats[obj]["amount"] = category.amount
+        stats[obj]["activity"] = total
+        stats[obj]["available"] = category.amount + total
         db_session.close()
     return stats
 
