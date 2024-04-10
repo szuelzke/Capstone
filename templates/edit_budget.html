@@ -31,7 +31,9 @@
             <input type="submit" />
         </form>
 
-        <a href="{{ url_for('delete_budget', account_id=account_id, budget_id=budget.budget_id)}}"><button>Delete</button></a>
+        <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
+            <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
+        </form>
     </div>
 </div>
 {% endblock %}

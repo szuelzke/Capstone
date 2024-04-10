@@ -988,7 +988,7 @@ def edit_budget(account_id, budget_id):
             budget.category.color=request.form.get('color')
             db_session.commit()
             db_session.close()
-            return redirect(url_for('get_budgets', account_id=account_id, message="Budget was changed successfully"))
+            return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
