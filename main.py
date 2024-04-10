@@ -200,10 +200,10 @@ def get_budget_stats(account_id):
 
         # assignment of dict values
         obj = ""
-        if category.category.category_name == None:
-            obj = "Uncategorized"
-        else:
+        if category.category.category_name:
             obj = category.category.category_name
+        else:
+            obj = "Uncategorized"
         stats[obj] = {}
         stats[obj]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
         stats[obj]["amount"] = category.amount
