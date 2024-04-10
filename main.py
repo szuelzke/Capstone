@@ -283,7 +283,7 @@ def send_email(recipient, subject, body):
     mail.send(msg)
 
 # Function to check balance and send alert
-def check_balance_and_send_alert(user_email, account_id):
+def check_balance_and_send_alert(account_id):
     db_session = Session()
     transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
     balance = transactions.amount_remaining
@@ -830,7 +830,7 @@ def addtransaction(account_id):
                 # update transaction.amount_remaining
                 update_balance(account_id) 
 
-                check_balance_and_send_alert(user.email, account_id)
+                check_balance_and_send_alert(account_id)
 
                 return redirect(url_for('transactions', account_id=account_id))
             else:
