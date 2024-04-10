@@ -1,5 +1,7 @@
 {% extends "dashboard.html" %}
 
+{% block title %}Transactions{% endblock %}
+
 {% block inner_content %}
 <div class="row row-v">
     <div class="card">
@@ -34,8 +36,8 @@
                     <td>{{transaction.category.category_name}}</td>
                     <td>
                         <!-- buttons for transaction -->
-                        <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                        <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
+                        <a href="{{ url_for('edittransaction', account['id'], transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        <form action="{{ url_for('deletetransaction', account['id'], transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                         </form>
                     </td>
@@ -76,6 +78,7 @@
                 placeholder="Amount"
                 required />
             <h3>Category</h3>
+            {% if categories %}
             {% for item in categories %}
             <input 
                 type="radio"
@@ -84,6 +87,9 @@
                 value="{{item.category.category_id}}" required />
             <label for="{{item.category.category_id}}">{{item.category.category_name}}</label>
             {% endfor%}
+            {% else %}
+            <a href="{{ url_for('get_budgets', account.account_id)}}">Add Category</a>
+            {% endif %}
             <input type="submit" />
         </form>
     </div>

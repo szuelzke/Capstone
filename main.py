@@ -719,7 +719,6 @@ def add_account():
                 user_id=session['user_id'],
                 is_active=True
             )
-
             amount = request.form['startbalance']
             start_transaction = Transaction(
                 date=datetime.now(),
@@ -733,7 +732,7 @@ def add_account():
             start_transaction.account_id=new_account.account_id
             db_session.commit()
             db_session.close()
-            return redirect(url_for('home'))   
+            return redirect(url_for('transactions', new_account.account_id))   
         db_session.close() 
         return render_template('add_account.html', user=user)
     else:
@@ -757,8 +756,7 @@ def account(account_id):
         db_session.close()
 
         return render_template('dashboard.html', 
-        user=user, 
-        account=account,
+        user=user, account=account,
         transactions=transactions)
     else:
         return redirect(url_for('login'))
