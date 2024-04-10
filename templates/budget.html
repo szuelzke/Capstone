@@ -29,12 +29,13 @@
             <input type="number" id="amount" name="amount" step="0.01" min="0" placeholder="0" value="" required />
 
             <input type="color" id="color" name="color" value="" />
+            <br>
 
             
 
             {% set symbol_list = category_symbols() %}
             {% for symbol in symbol_list %}
-                <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for=""><i class="fa-solid fa-hand-holding-dollar">{{ symbol }}</i></label>
+                <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
             {% endfor %}
             
             <input type="submit" />
