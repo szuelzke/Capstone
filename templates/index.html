@@ -27,16 +27,14 @@
         /* Style the notification dropdown */
         .dropdown-content {
             display: none;
-            position: absolute;
+            position: fixed; /* Position relative to the viewport */
             background-color: white; /* Set background to white */
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            width: 200px; /* Adjust width as needed */
             z-index: 1000; /* Ensure it's on top of other content */
             padding: 10px;
             color: black; /* Set text color to black */
-            bottom: calc(100% + 10px); /* Position the popup below the button */
-            left: 50%; /* Align to the center of the button */
-            transform: translateX(-50%); /* Center horizontally */
+            top: 50%; /* Position vertically in the middle */
+            left: 50%; /* Position horizontally in the middle */
         }
 
         .dropdown-content h2 {
