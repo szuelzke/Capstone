@@ -1,15 +1,18 @@
 {% extends 'dashboard.html' %}
 
-{% block title %}Budget{% endblock %}
+{% block title %}Edit Monthly Budget{% endblock %}
 
 {% block inner_content %}
-<div class="row">
+<div class="row row-v">
     <div class="card">
         <button onclick="toggleAdd()">Add Budget</button>
     </div>
-    {% for budget in budgets %}
+
+    {% for id, obj in budgets_stats.items() %}
     <div class="card">
+        <h2>{{ id }}</h2>
     </div>
+    {% endfor %}
 </div>
 
 
@@ -21,9 +24,19 @@
         <form action="{{ url_for('add_budget', account_id=account.account_id)}}" method="post">
             <label for="title">Budget Title</label>
             <input type="text" id="title" name="title" value="" required />
-            <input type="color" id="color" name="color" value="" />
+
             <label for="amount">Spending Goal</label>
             <input type="number" id="amount" name="amount" step="0.01" min="0" placeholder="0" value="" required />
+
+            <input type="color" id="color" name="color" value="" />
+
+            
+
+            {% set symbol_list = category_symbols() %}
+            {% for symbol in symbol_list %}
+                <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for=""><i class="fa-solid fa-hand-holding-dollar">{{ symbol }}</i></label>
+            {% endfor %}
+            
             <input type="submit" />
         </form>
     </div>

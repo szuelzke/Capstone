@@ -207,6 +207,10 @@ def get_budget_stats(account_id):
         db_session.close()
     return stats
 
+@app.template_global()
+def category_symbols():
+    symbol = ["landmark", "cash-register", "utensils", "gas-pump", "star", "house", "paperclip", "car", "heart"]
+
 # returns dict of stats for all accounts made by user
 @app.template_global()
 def get_account_stats(account_id):
@@ -898,7 +902,8 @@ def add_budget(account_id):
         )
         new_category = Category(
             category_name=request.form.get('title'),
-            color=request.form.get('color')
+            color=request.form.get('color'),
+            symbol=request.form.get('symbol')
         )
         db_session.add(new_budget)
         db_session.add(new_category)
