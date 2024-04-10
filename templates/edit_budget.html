@@ -2,6 +2,11 @@
 
 {% block inner_content %}
 <div class="row">
+    {% if success %}
+    <div class="card">
+        <h3>{{ success }}</h3>
+    </div>
+    {% endif %}
     <div class="card">
         <h2>Edit Budget</h2>
         <form action="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id )}}" method="post" class="form-deco">

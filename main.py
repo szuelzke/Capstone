@@ -984,7 +984,7 @@ def edit_budget(account_id, budget_id):
             budget.amount=request.form.get('amount')
             db_session.commit()
             db_session.close()
-            return redirect(url_for('budget', account_id=account_id))
+            return redirect(url_for('edit_budget', account_id=account_id, budget_id=budget_id, success="Budget was changed successfully"))
     else:
         return redirect(url_for('login'))
 

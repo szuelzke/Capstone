@@ -1,11 +1,16 @@
-{% block popup %}
-<div id="edit-account" class='dimmer'>
+{% extends 'index.html' %}
+
+{% block title %}Add Account{% endblock %}
+
+{% block content %}
+<div class='row'>
+    <div class='card'>
     <h2>Edit Account</h2>
-    <div class='row card'>
-        <a class='card-x-button fa-solid fa-x' href="{{ url_for('settings')}}"></a>
         <form class='form-deco' action="{{ url_for('edit_account', account_id=account_id) }}" method="post">
-            <input type="text" name="new_account_name" id="new_account_name" placeholder="New Account Name" required />
-            <input type="password" name="current_password" placeholder="Current Password" required />
+            <label for="new_account_name">New Account Name</label>
+            <input type="text" name="new_account_name" id="new_account_name" required />
+            <label for="password">Verify Password</label>
+            <input id="password" type="password" name="current_password" required />
             <input type="submit" value="Save" />
         </form>
     </div>
