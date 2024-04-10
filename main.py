@@ -808,6 +808,7 @@ def addtransaction(account_id):
             db_session = Session()  
             user = db_session.query(User).filter_by(user_id=user_id).first()
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+            transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
             if account: # add transaction to account
                 new_transaction = Transaction(
                     account_id=account.account_id, 
@@ -818,18 +819,18 @@ def addtransaction(account_id):
                 ) 
                 db_session.add(new_transaction)
                 db_session.commit()
+                db_session.close()
 
                 # Sending alert if balance is low
-                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
-                balance = transactions.amount_remaining
-                user_email = user.email 
-                account_id = account.account_id
-
-                db_session.close()
-                check_balance_and_send_alert(user_email, account_id, balance)
+                #balance = transactions.amount_remaining
+                #user_email = user.email 
+                #account_id = account.account_id
         
                 # update transaction.amount_remaining
                 update_balance(account_id) 
+                
+                check_balance_and_send_alert(user.email, account_id, transactions.amount_remaining)
+
                 return redirect(url_for('transactions', account_id=account_id))
             else:
                 db_session.close()
