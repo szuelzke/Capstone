@@ -71,7 +71,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for id, obj in budgets.items() %}
+                {% for id, obj in budgets_stats.items() %}
                 <tr>
                     <td>{{ id }}</td>
                     <td>{{ obj["amount"] }}</td>
@@ -94,7 +94,7 @@
             <li>debit = {{ account_stats["debit"]}}</li>
             <li>total transactions = {{ account_stats["transaction_count"]}}</li>
         </ul>
-        {% for id, obj in budgets.items() %}
+        {% for id, obj in budgets_stats.items() %}
         <ul>
         <li>{{ id }}</li>
         <li>total transactions = {{ obj["count"]}}</li>
