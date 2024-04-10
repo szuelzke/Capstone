@@ -735,9 +735,10 @@ def add_account():
             db_session.add(start_transaction)
             db_session.commit()
             start_transaction.account_id=new_account.account_id
+            new_id = new_account.account_id
             db_session.commit()
             db_session.close()
-            return redirect(url_for('transactions', new_account.account_id))   
+            return redirect(url_for('transactions', account_id=new_id))   
         db_session.close() 
         return render_template('add_account.html', user=user)
     else:

@@ -10,9 +10,10 @@
                 name="amount"
                 id="amount"
                 value="{{budget.amount}}" />
-            <label>Customization</label>
+            <h3>Customization</h3>
             <label for="color">Color</label>
             <input type="color" id="color" name="color" value="{{ budget.category.color }}" />
+            <label>Symbol</label>
             {% set symbol_list = category_symbols() %}
             {% for symbol in symbol_list %}
                 {% if symbol == budget.category.symbol %}
