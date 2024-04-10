@@ -191,25 +191,21 @@ def get_budget_stats(account_id):
     stats = {}
     db_session = Session()
     categories = db_session.query(Budget).filter_by(account_id=account_id)
-    for category in categories:
-        # calculate transactions in budget
-        transactions = db_session.query(Transaction).filter_by(category_id=category.category_id).all()
-        total = 0
-        for transaction in transactions:
-            total = total + transaction.amount
+    if categories:
+        for category in categories:
+            # calculate transactions in budget
+            transactions = db_session.query(Transaction).filter_by(category_id=category.category_id).all()
+            total = 0
+            for transaction in transactions:
+                total = total + transaction.amount
 
-        # assignment of dict values
-        obj = ""
-        if category.category.category_name:
-            obj = category.category.category_name
-        else:
-            obj = "Uncategorized"
-        stats[obj] = {}
-        stats[obj]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
-        stats[obj]["amount"] = category.amount
-        stats[obj]["activity"] = total
-        stats[obj]["available"] = category.amount + total
-        db_session.close()
+            # assignment of dict values
+            stats[category.category.category_name] = {}
+            stats[category.category.category_name]["count"] = db_session.query(Transaction).filter_by(category_id=category.category_id).count()
+            stats[category.category.category_name]["amount"] = category.amount
+            stats[category.category.category_name]["activity"] = total
+            stats[category.category.category_name]["available"] = category.amount + total
+    db_session.close()
     return stats
 
 @app.template_global()
