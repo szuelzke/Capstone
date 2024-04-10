@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from flask_mail import Mail, Message
@@ -285,21 +285,29 @@ def send_email(recipient, subject, body):
 # Function to check balance and send alert
 def check_balance_and_send_alert(account_id):
     db_session = Session()
-    transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
-    balance = transactions.amount_remaining
-    if balance < 50.00:
-        new_notification = Notification(
+    try:
+        # Query the latest transaction for the account
+        latest_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
+        
+        if latest_transaction:
+            balance = latest_transaction.amount_remaining
+            if balance < 50.00:
+                # Create a new notification for low balance
+                new_notification = Notification(
                     account_id=account_id, 
-                    notification_type = "balance",
-                    notification_type_id = 1,
-                    is_opt_in = True,
-                    timestamp= time.time(),
-                    is_read = False
+                    notification_type="balance",
+                    notification_type_id=1,
+                    is_opt_in=True,
+                    timestamp=time.time(),  # Using current timestamp
+                    is_read=False
                 ) 
-        db_session.add(new_notification)
-        db_session.commit()
+                db_session.add(new_notification)
+                db_session.commit()
+    except Exception as e:
+        print("Error while checking balance and sending alert:", e)
+        db_session.rollback()  # Rollback the changes if an error occurs
+    finally:
         db_session.close()
-    db_session.close()
     #subject = "Alert: Low Account Balance"
     #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
     #send_email(user_email, subject, body)
