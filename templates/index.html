@@ -28,11 +28,7 @@
 <body>
     <div id="sidebar" class="sidebar">
         <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
-        <!--<div class='profile-img'>
-            <img src="{{ user.image_link }}"></img>
-
-        </div>-->
-        <h2>{{user.first_name}} {{user.last_name}}</h2>
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
 
         <div class="nav">
             <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
@@ -41,31 +37,25 @@
 
         <div class="nav">
             <h2>Personal</h2>
-            {% set accounts_list = get_account_list() %}
-            <!-- display accounts connected to user -->
-            {% if accounts_list != 0 %}
-            {% for id, obj in accounts_list.items() %}
-            <a href="{{ url_for('account', account_id = id )}}">
-                <i class="fa-solid fa-credit-card pd-5"></i>
-                {{ obj["name"] }}
-            </a>
-            {% endfor %}
+            {% if accounts %}
+                {% for id, obj in accounts.items() %}
+                    <a href="{{ url_for('account', account_id=id) }}">
+                        <i class="fa-solid fa-credit-card pd-5"></i>
+                        {{ obj["name"] }}
+                    </a>
+                {% endfor %}
             {% endif %}
-            <a href="{{ url_for('add_account')}}">
+            <a href="{{ url_for('add_account') }}">
                 <i class="fa-solid fa-plus pd-5"></i>
                 Add Account
             </a>
             {% if user.student_id %}
-            <h2>Student</h2>
-            <a href="{{ url_for('flashcash_transaction', student_id = user.student_id)}}">
-                <i class="fa-solid fa-id-card pd-5"></i>
-                FlashCash
-            </a>
+                <h2>Student</h2>
+                <a href="{{ url_for('flashcash_transaction', student_id=user.student_id) }}">
+                    <i class="fa-solid fa-id-card pd-5"></i>
+                    FlashCash
+                </a>
             {% endif %}
-            <!--<a href="/">
-                <i class="fa-solid fa-wallet pd-5"></i>
-                Declining Balance
-            </a>--->
         </div>
     </div>
 
@@ -73,43 +63,51 @@
         <div class="row">
             <div class="topbar">
                 <ul>
-                    <li class="page-title">{% block title %}<a href="/">Home</a>{% endblock %}</li>
+                    <li class="page-title"><a href="/">Home</a></li>
                     <form action="{{ url_for('logout') }}" method="post">
-                        <button class='fa-solid fa-power-off'></button>
+                        <button class="fa-solid fa-power-off"></button>
                     </form>
-                    <div class="dropdown">
-                        <button class="fa-solid fa-bell"></button>
-                        <div class="dropdown-content">
-                            {% if notifications %}
-                                {% for notification in notifications %}
-                                <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
-                                {% endfor %}
-                            {% else %}
-                                <p>No notifications</p>
-                            {% endif %}
-                        </div>
-                    </div>
+                    <button class="fa-solid fa-comments"></button>
+                    <button class="fa-solid fa-bell" onclick="toggleDropdown()"></button>
                 </ul>
             </div>
         </div>
-    
+
         {% block content %}
-        {% if account_list != 0 %}
+        {% if accounts %}
             <div class="row">
-                
-            {% for id, obj in accounts_list.items() %}
-                <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
-                    <h1 class="hide-text">{{ obj["balance"]}}</h1>
-                    <h2>{{ obj["name"] }}</h2>
-                </a>
-            {% endfor %}
+                {% for id, obj in accounts.items() %}
+                    <a href="{{ url_for('account', account_id=id) }}" class="card no-bg view-balance">
+                        <h1 class="hide-text">{{ obj["balance"] }}</h1>
+                        <h2>{{ obj["name"] }}</h2>
+                    </a>
+                {% endfor %}
             </div>
-        {% endif%}
+        {% endif %}
         {% endblock %}
 
+        <div class="dropdown-content" id="notification-dropdown" style="display: none;">
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
+                {% endfor %}
+            {% else %}
+                <p>No notifications</p>
+            {% endif %}
+        </div>
     </div>
 
-    <script src="{{ url_for('static', filename='topbar.js') }}"></script>
+    <script>
+        function toggleDropdown() {
+            var dropdownContent = document.getElementById("notification-dropdown");
+            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+                dropdownContent.style.display = "block";
+            } else {
+                dropdownContent.style.display = "none";
+            }
+        }
+    </script>
+
 </body>
 
 </html>
