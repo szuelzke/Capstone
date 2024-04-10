@@ -14,7 +14,7 @@
 
     {% for budget in budgets %}
     <div class="card hover-link">
-        <h1>{{ id }}</h1>
+        <h1>{{ budget.category.category_name }}</h1>
         <a href="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button>Edit</button></a>
     </div>
     {% endfor %}

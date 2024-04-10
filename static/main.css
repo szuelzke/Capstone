@@ -71,11 +71,11 @@ body {
 }
 
 .hover-link:hover > a {
-  display: block;
+  visibility: visible;
 }
 
 .hover-link > a {
-  display: none;
+  visibility: hidden;
 }
 
 
