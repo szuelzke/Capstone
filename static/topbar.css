@@ -52,10 +52,6 @@
     margin:25px 10px 10px 25px;
 }
 
-.dropdown {
-    position: relative;
-}
-
 .dropdown-content {
     display: none;
     position: absolute;
@@ -65,6 +61,8 @@
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    top: calc(100% + 10px); /* Position below the button */
+    right: 0; /* Align with the right side of the button */
 }
 
 .dropdown-content a {
