@@ -88,7 +88,7 @@
             <label for="{{item.category.category_id}}">{{item.category.category_name}}</label>
             {% endfor%}
             {% else %}
-            <a href="{{ url_for('get_budgets', account.account_id)}}">Add Category</a>
+            <a href="{{ url_for('get_budgets', account_id=account.account_id)}}">Add Category</a>
             {% endif %}
             <input type="submit" />
         </form>
