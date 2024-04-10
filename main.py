@@ -190,7 +190,7 @@ def get_account_list():
 def get_budget_stats(account_id):
     stats = {}
     db_session = Session()
-    categories = db_session.query(Budget).filter_by(account_id=account_id)
+    categories = db_session.query(Budget).filter_by(account_id=account_id).all()
     if categories:
         for category in categories:
             # calculate transactions in budget
