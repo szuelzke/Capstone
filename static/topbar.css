@@ -53,26 +53,3 @@
     margin:25px 10px 10px 25px;
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: calc(100% + 5px); /* Position directly below the button */
-    right: 0; /* Align with the right side of the button */
-    background-color: white; /* White background */
-    color: black; /* Black text color */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional: Add a box shadow for visual effect */
-    z-index: 999; /* Ensure dropdown is on top of other content */
-    padding: 10px; /* Add padding for better spacing */
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 8px 16px;
-    text-decoration: none;
-    color: black;
-}
-
-/* Show dropdown content when button is clicked */
-.show {
-    display: block;
-}

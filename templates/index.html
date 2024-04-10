@@ -68,40 +68,31 @@
                         <button class="fa-solid fa-power-off"></button>
                     </form>
                     <button class="fa-solid fa-comments"></button>
-                    <div class="dropdown">
-                        <button class="fa-solid fa-bell" onclick="toggleDropdown()"></button>
-                        <div class="dropdown-content" id="notification-dropdown">
-                            {% if notifications %}
-                                {% for notification in notifications %}
-                                    <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
-                                {% endfor %}
-                            {% else %}
-                                <a href="#">No notifications</a>
-                            {% endif %}
-                        </div>
-                    </div>
+                    <button class="fa-solid fa-bell" onclick="togglePopup()"></button>
                 </ul>
             </div>
         </div>
 
-        {% block content %}
-        {% if accounts %}
-            <div class="row">
-                {% for id, obj in accounts.items() %}
-                    <a href="{{ url_for('account', account_id=id) }}" class="card no-bg view-balance">
-                        <h1 class="hide-text">{{ obj["balance"] }}</h1>
-                        <h2>{{ obj["name"] }}</h2>
-                    </a>
+        <div id="notification-popup" class="popup-content" style="display: none;">
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <p>{{ notification.notification_type }} - {{ notification.timestamp }}</p>
                 {% endfor %}
-            </div>
-        {% endif %}
-        {% endblock %}
+            {% else %}
+                <p>No notifications</p>
+            {% endif %}
+        </div>
+
     </div>
 
     <script>
-        function toggleDropdown() {
-            var dropdownContent = document.getElementById("notification-dropdown");
-            dropdownContent.classList.toggle("show");
+        function togglePopup() {
+            var popup = document.getElementById("notification-popup");
+            if (popup.style.display === "none" || popup.style.display === "") {
+                popup.style.display = "block";
+            } else {
+                popup.style.display = "none";
+            }
         }
     </script>
 
