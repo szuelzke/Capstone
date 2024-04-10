@@ -14,7 +14,7 @@
                 <ul>
                     {% for notification in notifications %}
                         <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                        
+                        <!-- Adjust the above line to display the relevant notification information -->
                     {% endfor %}
                 </ul>
             {% else %}
@@ -24,66 +24,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notifications</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<button id="notificationButton" class="notification-button">
-  <img src="notification_icon.png" alt="Notification">
-</button>
-
-<div id="notificationPopup" class="notification-popup">
-  <span class="close" id="closeButton">&times;</span>
-  <h3>Notifications</h3>
-  <div class="notification-list">
-    {% if notifications %}
-      <ul>
-        {% for notification_id, notification in notifications.items() %}
-          <li>{{ notification.account_id }} - {{ notification.timestamp }}</li>
-
-          {% endfor %}
-      </ul>
-    {% else %}
-      <p>No notifications</p>
-    {% endif %}
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the notification button and popup
-  var notificationButton = document.getElementById('notificationButton');
-  var notificationPopup = document.getElementById('notificationPopup');
-
-  // Get the close button inside the popup
-  var closeButton = document.getElementById('closeButton');
-
-  // Open the popup when the notification button is clicked
-  notificationButton.addEventListener('click', function() {
-    notificationPopup.style.display = 'block';
-  });
-
-  // Close the popup when the close button is clicked
-  closeButton.addEventListener('click', function() {
-    notificationPopup.style.display = 'none';
-  });
-
-  // Close the popup when user clicks anywhere outside of it
-  window.addEventListener('click', function(event) {
-    if (event.target == notificationPopup) {
-      notificationPopup.style.display = 'none';
-    }
-  });
-});
-</script>
-
-</body>
-</html>--->
