@@ -24,7 +24,19 @@
         rel="stylesheet">
 
     <style>
-        /* Style the notification dropdown */
+        /* Add CSS styles for topbar here */
+        .topbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            position: relative;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -56,6 +68,42 @@
         /* Style the button in top right corner */
         .topbar button {
             margin-left: 10px; /* Adjust spacing between icons */
+        }
+
+        /* Add CSS styles for main content here */
+        .main {
+            padding: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            flex: 1 1 300px;
+            min-width: 250px;
+        }
+
+        .no-bg {
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .hide-text {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .view-balance {
+            text-align: center;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -145,8 +193,8 @@
             </a>
         {% endfor %}
         </div>
-    {% endif%}
-    {% endblock %}
+        {% endif%}
+        {% endblock %}
     </div>
 
     <script>
