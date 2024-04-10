@@ -52,34 +52,3 @@
     font-weight:bold;
     margin:25px 10px 10px 25px;
 }
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    color: black;
-    z-index: 999;
-    width: 200px; /* Adjust width as needed */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-}
-
-.dropdown-content a:hover {
-    background-color: #f9f9f9;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
