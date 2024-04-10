@@ -3,6 +3,7 @@
     padding: 0px;
     margin:0px;
     width:100%;
+    position: relative;
 }
 
 .topbar a {
@@ -55,23 +56,23 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: white;
-    color: black;
-    z-index: 999; /* Ensure the dropdown is on top */
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    top: calc(100% + 10px); /* Position below the button */
+    top: calc(100% + 5px); /* Position directly below the button */
     right: 0; /* Align with the right side of the button */
+    background-color: white; /* White background */
+    color: black; /* Black text color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional: Add a box shadow for visual effect */
+    z-index: 999; /* Ensure dropdown is on top of other content */
+    padding: 10px; /* Add padding for better spacing */
 }
 
 .dropdown-content a {
     display: block;
-    padding: 10px;
+    padding: 8px 16px;
     text-decoration: none;
     color: black;
 }
 
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
+/* Show dropdown content when button is clicked */
+.show {
+    display: block;
 }

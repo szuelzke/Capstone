@@ -68,17 +68,19 @@
                         <button class="fa-solid fa-power-off"></button>
                     </form>
                     <button class="fa-solid fa-comments"></button>
-                    <button class="fa-solid fa-bell" onclick="toggleDropdown()"></button>
+                    <div class="dropdown">
+                        <button class="fa-solid fa-bell" onclick="toggleDropdown()"></button>
+                        <div class="dropdown-content" id="notification-dropdown">
+                            {% if notifications %}
+                                {% for notification in notifications %}
+                                    <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
+                                {% endfor %}
+                            {% else %}
+                                <p>No notifications</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </ul>
-                <div class="dropdown-content" id="notification-dropdown">
-                    {% if notifications %}
-                        {% for notification in notifications %}
-                            <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
-                        {% endfor %}
-                    {% else %}
-                        <p>No notifications</p>
-                    {% endif %}
-                </div>
             </div>
         </div>
 
@@ -99,11 +101,7 @@
     <script>
         function toggleDropdown() {
             var dropdownContent = document.getElementById("notification-dropdown");
-            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
-                dropdownContent.style.display = "block";
-            } else {
-                dropdownContent.style.display = "none";
-            }
+            dropdownContent.classList.toggle("show");
         }
     </script>
 
