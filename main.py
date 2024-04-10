@@ -840,7 +840,7 @@ def addtransaction(account_id):
                 # update transaction.amount_remaining
                 update_balance(account_id) 
 
-                #check_balance_and_send_alert(account_id)
+                check_balance_and_send_alert(account_id)
 
                 return redirect(url_for('transactions', account_id=account_id))
             else:
