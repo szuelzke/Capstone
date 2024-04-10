@@ -320,7 +320,7 @@ def get_notifications(account_id):
     notifications = db_session.query(Notification).filter_by(account_id=account_id).order_by(Notification.timestamp.asc()).all()
     db_session.close()
     
-    opted_in_notifications = []
+    opted_in_notifications = {}
     for notification in notifications:
         if notification.is_opt_in:
             opted_in_notifications.append(notification)
