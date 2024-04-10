@@ -210,6 +210,7 @@ def get_budget_stats(account_id):
 @app.template_global()
 def category_symbols():
     symbol = ["landmark", "cash-register", "utensils", "gas-pump", "star", "house", "paperclip", "car", "heart"]
+    return symbol
 
 # returns dict of stats for all accounts made by user
 @app.template_global()
