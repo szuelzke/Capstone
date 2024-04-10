@@ -337,13 +337,16 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-        accounts = db_session.query(Account).filter_by(user_id=user_id).first()
-        if accounts:
-            db_session.close()
-            notification_list = get_notifications(accounts.account_id)
-            return render_template('index.html', user=user,notification_list=notification_list)
-        else:
-            return render_template('index.html', user=user)
+ 
+        accounts = get_account_list()  # Fetch all accounts for the user
+        # Fetch notifications for each account and compile them into a single list
+        all_notifications = []
+        for account_id in accounts:
+            notifications = get_notifications(account_id)
+            if notifications:
+                all_notifications.extend(notifications)
+        db_session.close()
+        return render_template('index.html', user=user, accounts=accounts, notifications=all_notifications)
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
@@ -1006,7 +1009,7 @@ def edit_budget(account_id, budget_id):
             budget.category.color=request.form.get('color')
             db_session.commit()
             db_session.close()
-            return redirect(url_for('edit_budget', account_id=account_id, budget_id=budget_id, success="Budget was changed successfully"))
+            return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
 
@@ -1019,6 +1022,7 @@ def sharetransaction():
 
 # ------------------------ Notification System ---------------------------------------
 
+'''
 # Get Notifications
 @app.route('/<account_id>/notifications', methods = ['GET','POST'])
 def display_notifications(account_id):
@@ -1028,7 +1032,24 @@ def display_notifications(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         return render_template('notifications.html', user=user, account=account, notifications=get_notifications(account.account_id))
-
+'''
+# Get Notifications
+@app.route('/notifications', methods=['GET', 'POST'])
+def display_notifications():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session["user_id"]
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        accounts = get_account_list()  # Fetch all accounts for the user
+        # Fetch notifications for each account and compile them into a single dictionary
+        all_notifications = {}
+        for account_id in accounts:
+            notifications = get_notifications(account_id)
+            all_notifications.update(notifications)
+        db_session.close()
+        return render_template('notifications.html', user=user, accounts=accounts, notifications=all_notifications)
+    else:
+        return redirect(url_for('login'))
 
 
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------

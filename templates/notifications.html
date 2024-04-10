@@ -14,7 +14,6 @@
                 <ul>
                     {% for notification in notifications %}
                         <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                        <!-- Adjust the above line to display the relevant notification information -->
                     {% endfor %}
                 </ul>
             {% else %}
