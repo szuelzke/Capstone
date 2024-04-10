@@ -36,8 +36,8 @@
                     <td>{{transaction.category.category_name}}</td>
                     <td>
                         <!-- buttons for transaction -->
-                        <a href="{{ url_for('edittransaction', account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                        <form action="{{ url_for('deletetransaction', account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
+                        <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                         </form>
                     </td>
