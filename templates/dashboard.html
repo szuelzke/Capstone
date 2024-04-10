@@ -1,8 +1,8 @@
 {% extends 'index.html' %}
 
 <!-- account variables -->
-{% set account = get_account_stats(account.account_id) %}
-{% set budgets = get_budget_stats(account.account_id) %}
+{% set account_stats = get_account_stats(account.account_id) %}
+{% set budgets_stats = get_budget_stats(account.account_id) %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -87,12 +87,12 @@
 <div class="row">
     <div class="card">
         <ul>
-            <li>{{ account["name"]}}</li>
-            <li>account id = {{ account["id"]}}</li>
-            <li>balance = {{ account["balance"]}}</li>
-            <li>credit = {{ account["credit"]}}</li>
-            <li>debit = {{ account["debit"]}}</li>
-            <li>total transactions = {{ account["transaction_count"]}}</li>
+            <li>{{ account_stats["name"]}}</li>
+            <li>account id = {{ account_stats["id"]}}</li>
+            <li>balance = {{ account_stats["balance"]}}</li>
+            <li>credit = {{ account_stats["credit"]}}</li>
+            <li>debit = {{ account_stats["debit"]}}</li>
+            <li>total transactions = {{ account_stats["transaction_count"]}}</li>
         </ul>
         {% for id, obj in budgets.items() %}
         <ul>
