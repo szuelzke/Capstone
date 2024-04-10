@@ -70,6 +70,15 @@
                     <button class="fa-solid fa-comments"></button>
                     <button class="fa-solid fa-bell" onclick="toggleDropdown()"></button>
                 </ul>
+                <div class="dropdown-content" id="notification-dropdown">
+                    {% if notifications %}
+                        {% for notification in notifications %}
+                            <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <p>No notifications</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
@@ -85,16 +94,6 @@
             </div>
         {% endif %}
         {% endblock %}
-
-        <div class="dropdown-content" id="notification-dropdown" style="display: none;">
-            {% if notifications %}
-                {% for notification in notifications %}
-                    <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
-                {% endfor %}
-            {% else %}
-                <p>No notifications</p>
-            {% endif %}
-        </div>
     </div>
 
     <script>
