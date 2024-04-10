@@ -78,11 +78,15 @@
                         <button class='fa-solid fa-power-off'></button>
                     </form>
                     <div class="dropdown">
-                        <button class="fa-solid fa-bell">Notifications</button>
+                        <button class="fa-solid fa-bell"></button>
                         <div class="dropdown-content">
-                            {% for notification in notifications %}
-                            <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
-                            {% endfor %}
+                            {% if notifications %}
+                                {% for notification in notifications %}
+                                <a href="#">{{ notification.notification_type }} - {{ notification.timestamp }}</a>
+                                {% endfor %}
+                            {% else %}
+                                <p>No notifications</p>
+                            {% endif %}
                         </div>
                     </div>
                 </ul>
