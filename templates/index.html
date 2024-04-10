@@ -78,10 +78,29 @@
                         <button class='fa-solid fa-power-off'></button>
                     </form>
                     <button class='fa-solid fa-comments'></button>
-                    <!--<button class='fa-solid fa-bell'></button>-->
+                    <!--<button class='fa-solid fa-bell'></button>
                     <form action="{{ url_for('display_notifications') }}" method="post">
                         <button class='fa-solid fa-bell'></button>
-                    </form>
+                    </form>-->
+                    <div class="dropdown" style="position: relative; display: inline-block;">
+                        <button id="notificationToggle" class="fa-solid fa-bell"></button>
+                        <div id="notificationDropdown" class="dropdown-content" style="display: none;">
+                            <!-- Content of the notification dropdown popup -->
+                            <h2>Notifications</h2>
+                            <div class="notification-list">
+                                {% if notifications %}
+                                <ul>
+                                    {% for notification in notifications %}
+                                    <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
+                                    <!-- Adjust the above line to display the relevant notification information -->
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p>No notifications</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -101,6 +120,31 @@
         {% endblock %}
 
     </div>
+
+    <script>
+        /* Toggle notification dropdown */
+        document.getElementById("notificationToggle").onclick = function () {
+            var notificationDropdown = document.getElementById("notificationDropdown");
+            if (notificationDropdown.style.display === "none") {
+                notificationDropdown.style.display = "block";
+            } else {
+                notificationDropdown.style.display = "none";
+            }
+        };
+
+        // Close the notification dropdown if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('#notificationToggle')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        };
+    </script>
 
 </body>
 
