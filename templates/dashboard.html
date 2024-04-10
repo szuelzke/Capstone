@@ -4,7 +4,7 @@
 {% set account_stats = get_account_stats(account.account_id) %}
 {% set budgets_stats = get_budget_stats(account.account_id) %}
 
-{% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}">Dashboard</a> > {% block subtitle %}{% endblock%}
+{% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}">Dashboard</a><span style="text-decoration: none;">{% block subtitle %}{% endblock%}</span>
 {% endblock %}
 
 

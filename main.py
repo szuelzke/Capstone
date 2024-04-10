@@ -897,9 +897,7 @@ def add_budget(account_id):
         db_session = Session()
         new_budget = Budget(
             account_id=account_id,
-            amount=request.form.get('amount'),
-            start_date=request.form.get('start_date'),
-            end_date=request.form.get('end_date')
+            amount=request.form.get('amount')
         )
         new_category = Category(
             category_name=request.form.get('title'),
@@ -953,8 +951,6 @@ def edit_budget(account_id, budget_id):
         else:
             budget.category_id=request.form.get('category_id')
             budget.amount=request.form.get('amount')
-            budget.start_date=request.form.get('start_date')
-            budget.end_date=request.form.get('end_date')
             db_session.commit()
             db_session.close()
             return redirect(url_for('budget', account_id=account_id))

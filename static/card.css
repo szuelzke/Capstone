@@ -73,6 +73,11 @@
     text-decoration: none;
 }
 
+.card-link.link-blue {
+    background-color: var(--blue);
+    border: 3px solid #011f40;
+}
+
 .card-link:hover {
     cursor: pointer;
     border: 3px solid var(--accentyellow);

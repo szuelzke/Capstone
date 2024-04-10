@@ -5,32 +5,23 @@
     <div class="card">
         <h2>Edit Budget</h2>
         <form action="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id )}}" method="post" class="form-deco">
-            <input type="number"
-                name="budget_id"
-                id="budget_id"
-                value="{{budget.budget_id}}"
-                readonly />
-            <input type="number"
-                name="account_id"
-                id="account_id"
-                value="{{budget.account_id}}"
-                readonly />
-            <input type="number"
-                name="category_id"
-                id="category_id"
-                value="{{budget.category_id}}" />
+            <label for="id">Money Goal</label>
             <input type="number"
                 name="amount"
                 id="amount"
                 value="{{budget.amount}}" />
-            <input type="date"
-                name="start_date"
-                id="start_date"
-                value="{{budget.start_date}}" />
-            <input type="date"
-                name="end_date"
-                id="end_date"
-                value="{{budget.end_date}}" />
+            <label>Customization</label>
+            <label for="color">Color</label>
+            <input type="color" id="color" name="color" value="{{ budget.category.color }}" />
+            {% set symbol_list = category_symbols() %}
+            {% for symbol in symbol_list %}
+                {% if symbol == budget.category.symbol %}
+                    <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" checked /><label for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
+                {% else %}
+                    <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
+                {% endif %}
+            {% endfor %}
+
             <input type="submit" />
         </form>
     </div>

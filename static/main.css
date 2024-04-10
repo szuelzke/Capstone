@@ -40,6 +40,8 @@ body {
 .row {
   display: flex;
   flex-wrap: wrap;
+  gap: 10px 10px;
+  margin: 12px;
 }
 
 .row-v {
@@ -110,16 +112,15 @@ body {
 }
 
 /* styling forms */
-.form-deco * {
+.form-deco input {
   display: block;
-  margin: 20px auto;
-  padding: 5px;
-  width: 50%;
+  margin: 10px auto;
+  padding: 3px 10px;
 }
 
-.form-deco select {
-  margin: 20px 0px;
-  width: 100%;
+.form-deco input[type="radio"] {
+  display: inline;
+  margin: 10px;
 }
 
 .form-deco input[type='submit'] {
