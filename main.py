@@ -283,11 +283,22 @@ def send_email(recipient, subject, body):
     mail.send(msg)
 
 # Function to check balance and send alert
-def check_balance_and_send_alert(user_email, balance):
+def check_balance_and_send_alert(user_email, account_id, balance):
     if balance < 50.00:
-        subject = "Alert: Low Balance"
-        body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
-        send_email(user_email, subject, body)
+        db_session = Session()
+        new_notification = Transaction(
+                    account_id=account_id, 
+                    is_opt_in = True,
+                    timestamp= time.time(),
+                    is_read = False
+                ) 
+        db_session.add(new_notification)
+        db_session.commit()
+        db_session.close()
+        #subject = "Alert: Low Account Balance"
+        #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
+        #send_email(user_email, subject, body)
+
 
 def get_notifications(account_id):
     db_session = Session()
@@ -762,7 +773,7 @@ def account(account_id):
         transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(10).all()
         db_session.close()
 
-        return render_template('dashboard.html', user=user, account=account,transactions=transactions)
+        return render_template('dashboard.html', user=user, account=account,transactions=transactions, notifications = get_notifications(account_id))
     else:
         return redirect(url_for('login'))
 
@@ -795,6 +806,7 @@ def addtransaction(account_id):
         if request.method == 'POST':
             user_id = session['user_id']
             db_session = Session()  
+            user = db_session.query(User).filter_by(user_id=user_id).first()
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
             if account: # add transaction to account
                 new_transaction = Transaction(
@@ -808,16 +820,19 @@ def addtransaction(account_id):
                 db_session.commit()
 
                 # Sending alert if balance is low
-                #transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
-                #balance = transactions.amount_remaining
-                #user_email = user.email 
-                #check_balance_and_send_alert(user_email, balance)
-        
+                transactions = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
+                balance = transactions.amount_remaining
+                user_email = user.email 
+                account_id = account.account_id
+
                 db_session.close()
+                check_balance_and_send_alert(user_email, account_id, balance)
+        
                 # update transaction.amount_remaining
                 update_balance(account_id) 
                 return redirect(url_for('transactions', account_id=account_id))
             else:
+                db_session.close()
                 return "Account not found"
     else:
         return redirect(url_for('login'))
@@ -968,7 +983,7 @@ def sharetransaction():
 
 # ------------------------ Notification System ---------------------------------------
 
-#Get Notifications
+# Get Notifications
 @app.route('/<account_id>/notifications', methods = ['GET','POST'])
 def display_notifications(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
