@@ -39,6 +39,7 @@ body {
 /* to stack card on top of each other, use row-v */
 .row {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .row-v {
@@ -57,7 +58,7 @@ body {
   margin-top: 5%;
 }
 
-/* hides text then reveals it once hovered over */
+/* hides balance then reveals it once hovered over */
 .hide-text {
   color: transparent;
   text-shadow: 0 0 10px #FFFFFF;
@@ -68,6 +69,15 @@ body {
   text-shadow: none;
   color: #FFFFFF;
 }
+
+.hover-link:hover > a {
+  display: block;
+}
+
+.hover-link > a {
+  display: none;
+}
+
 
 /* used to make popups */
 .dimmer {
@@ -185,3 +195,4 @@ a {
 .txt-c {
   text-align: center;
 }
+

@@ -1,16 +1,21 @@
 {% extends 'dashboard.html' %}
 
-{% block title %}Edit Monthly Budget{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='budget.css') }}">
+{% endblock %}
+
+{% block title %}Edit Budget{% endblock %}
 
 {% block inner_content %}
-<div class="row row-v">
+<div class="row">
     <div class="card">
         <button onclick="toggleAdd()">Add Budget</button>
     </div>
 
-    {% for id, obj in budgets_stats.items() %}
-    <div class="card">
-        <h2>{{ id }}</h2>
+    {% for budget in budgets %}
+    <div class="card hover-link">
+        <h1>{{ id }}</h1>
+        <a href="{{ url_for('edit_budget', account_id=account.account_id, budget.budget_id)}}"><button>Edit</button></a>
     </div>
     {% endfor %}
 </div>
