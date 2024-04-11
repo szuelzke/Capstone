@@ -1,4 +1,4 @@
-<!--{% extends 'index.html' %}
+{% extends 'index.html' %}
 
 {% block title %}
     <a href=""><li class="page-title">Notifications</li></a>
@@ -16,32 +16,6 @@
                         <li>{{ notification.timestamp }} : {{ accounts.account_name }} Alert - Low Account Balance</li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>No notifications</p>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endblock %}-->
-
-{% extends 'index.html' %}
-{% block title %}
-    <a href=""><li class="page-title">Notifications</li></a>
-{% endblock %}
-{% block content %}
-<div class="row row-v">
-    <div class='card'>
-        <h2>Notifications</h2>
-        <div class="notification-list">
-            {% if notifications %}
-                {% for account_id, account_notifications in notifications.items() %}
-                    <h3>{{ accounts[account_id].account_name }} Notifications</h3>
-                    <ul>
-                        {% for notification in account_notifications %}
-                            <li>{{ notification.timestamp }} : {{ accounts[account_id].account_name }} Alert - Low Account Balance</li>
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
             {% else %}
                 <p>No notifications</p>
             {% endif %}
