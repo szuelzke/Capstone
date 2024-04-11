@@ -123,7 +123,7 @@
                     <form action="{{ url_for('chatbot')}}" method="get">
                         <button class="fa-solid fa-comments"></button>
                     </form>
-                    <form action="{{ url_for('display_notifications')}}" method="get">
+                    <form action="{{ url_for('display_notifications')}}" method="post">
                         <button class="fa-solid fa-bell"></button>
                     </form>
                     <!--<a href="/chatbot" class='fa-solid fa-comments'></a>-->
@@ -154,8 +154,8 @@
                                 <p>No notifications</p>
                             {% endif %}
                         </div>
-                        -->
-                    </div>
+                        
+                    </div>-->
                 </ul>
             </div>
         </div>
