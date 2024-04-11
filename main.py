@@ -22,7 +22,7 @@ import time
 # api_key = os.getenv('OPENAI_API_KEY')
 # openai.api_key = api_key
 
-with open('.env', 'r') as file:
+with open('/var/www/html/Capstone/.env', 'r') as file:
      openai.api_key = file.read()
      
 client = openai
