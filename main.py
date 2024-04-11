@@ -596,25 +596,6 @@ def upload_picture():
     else:
         return redirect(url_for('login'))  # Redirect to login page if not logged in
 
-    
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
-   if request.method == 'POST':
-       user_message = request.form['message']
-      
-       response = openai.Completion.create(
-           model="text-davinci-003", 
-           prompt=user_message,
-           temperature=0.9,
-           max_tokens=150
-       )
-       chatbot_response = response.choices[0].text.strip()
-      
-       return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-
-
-   return render_template('chatbot.html')
-
 # Function to update password
 @app.route('/update_password', methods=['POST'])
 def update_password():
