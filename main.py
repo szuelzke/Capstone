@@ -858,7 +858,7 @@ def addtransaction(account_id):
                 new_transaction = Transaction(
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
-                    amount=request.form.get('amount')*int(request.form.get("c_or_d")),
+                    amount=request.form.get('amount'),
                     title=request.form.get('title'),
                     category_id=request.form.get('category_id')
                 ) 
