@@ -42,6 +42,9 @@
     </div>--->
     <div class='card'>
         <h2>Social Name</h2>
+        {% if error %}
+        <h3>{{ error }}</h3>
+        {% endif %}
         <form class="form-deco" action="{{ url_for('update_social_name') }}" method="post">
             <input type="text" name="social_name" value="{{ user.social_name }}" placeholder="Social Name" required />
             <input type="password" name="current_password" placeholder="Current Password" required />

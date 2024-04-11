@@ -654,7 +654,7 @@ def update_social_name():
         db_session = Session()
         check_username = db_session.query(User).filter_by(social_name=social_name).first()
         if check_username:
-            return render_template('signup.html', error='Username already taken, try something else')
+            return render_template('settings.html', error='Username already taken, try something else')
 
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
