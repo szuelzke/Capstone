@@ -1084,7 +1084,7 @@ def chatbot():
             )
             chatbot_response = response.choices[0].text.strip()
         
-            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+            return render_template('chatbot.html', user=user, user_message=user_message, chatbot_response=chatbot_response)
 
         return render_template('chatbot.html', user=user)
     else:
