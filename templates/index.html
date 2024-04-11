@@ -123,9 +123,12 @@
                     <form action="{{ url_for('chatbot')}}" method="get">
                         <button class="fa-solid fa-comments"></button>
                     </form>
+                    <form action="{{ url_for('display_notifications')}}" method="get">
+                        <button class="fa-solid fa-bell"></button>
+                    </form>
                     <!--<a href="/chatbot" class='fa-solid fa-comments'></a>-->
                     <!--<button id="notificationToggle" class="fa-solid fa-bell"></button>-->
-                    <!--<div class="topbar" style="position: relative; display: inline-block;">-->
+                    <!--<div class="topbar" style="position: relative; display: inline-block;">
                     <button id="notificationToggle" class="fa-solid fa-bell"></button>
                     <div id="notificationDropdown" class="dropdown-content">
                         <h2>Notifications</h2>
@@ -151,7 +154,7 @@
                                 <p>No notifications</p>
                             {% endif %}
                         </div>
-                        <!--</div> -->
+                        -->
                     </div>
                 </ul>
             </div>

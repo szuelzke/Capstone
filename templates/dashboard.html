@@ -38,7 +38,7 @@
         <!-- display account notifications -->
         {% if notifications %}
             {% for notification_id, notification in notifications.items() %}
-                <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a>
+                <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a></br >
             {% endfor %}
         {% else %}
             <p>No notifications</p>
