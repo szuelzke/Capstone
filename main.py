@@ -21,7 +21,7 @@ import time
 load_dotenv()
 OPENAI_API_KEY2 = os.getenv('OPENAI_API_KEY')
 openai.api_key = OPENAI_API_KEY2
-client = openai.ChatCompletion.create()
+client = OpenAI()
 
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
@@ -1071,16 +1071,15 @@ def chatbot():
         if request.method == 'POST':
             user_message = request.form['message']
 
-            completion = client.create(
+            completion = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
-                    {"role": "user", "content": user_message}  # Use the user's message
+                    {"role": "user", "content": user_message}
                 ]
             )
 
-            # Use the `completion` variable to get the chatbot response
-            chatbot_response = completion.choices[0].text.strip()
+            chatbot_response = completion.choices[0].message  # Use .message to access the response
             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
         return render_template('chatbot.html')
     else:
