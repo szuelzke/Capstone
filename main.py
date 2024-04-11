@@ -1071,7 +1071,7 @@ def chatbot():
         if request.method == 'POST':
             user_message = request.form['message']
         
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-3.5-turbo", 
                 messages=[{"role": "user", "content": user_message}],
                 temperature=0.9,
