@@ -23,7 +23,6 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 openai.api_key = OPENAI_API_KEY
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
-openai.api_key = 'x'
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
