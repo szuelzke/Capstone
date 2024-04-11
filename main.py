@@ -1068,6 +1068,7 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     try:
+        user_message = ' '
         if request.method == 'POST':
             user_message = request.form['message']
         
@@ -1081,6 +1082,6 @@ def chatbot():
         
             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
 
-        return render_template('chatbot.html')
+        return render_template('chatbot.html', user_message=user_message)
     except Exception as e:
         return str(e) 
