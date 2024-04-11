@@ -353,20 +353,23 @@ def home():
         
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
-    if request.method == 'POST':
-        user_message = request.form['message']
+    if 'user_id' in session and session.get('mfa_completed', False):
+        if request.method == 'POST':
+            user_message = request.form['message']
         
-        response = openai.Completion.create(
-            model="text-davinci-003",  
-            prompt=user_message,
-            temperature=0.9,
-            max_tokens=150
-        )
-        chatbot_response = response.choices[0].text.strip()
+            response = openai.Completion.create(
+                model="text-davinci-003",  
+                prompt=user_message,
+                temperature=0.9,
+                max_tokens=150
+            )
+            chatbot_response = response.choices[0].text.strip()
         
-        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
 
-    return render_template('chatbot.html')
+        return render_template('chatbot.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/test')
 def test():
