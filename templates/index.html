@@ -130,15 +130,25 @@
                     <div id="notificationDropdown" class="dropdown-content">
                         <h2>Notifications</h2>
                         <div class="notification-list">
-                            {% if notifications %}
-                            <ul>
-                                {% for notification in notifications %}
-                                <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                            <!--Adjust the above line to display the relevant notification information -->
-                                {% endfor %}
-                            </ul>
+                            {% set all_notifications = [] %}
+                            {% for account in accounts %}
+                                {% set notifications = get_notifications(account.account_id) %}
+                                {% if notifications %}
+                                    {% for notification_id, notification in notifications.items() %}
+                                        {% set _ = all_notifications.append(notification) %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        
+                            {% if all_notifications %}
+                                {% set sorted_notifications = all_notifications | sort(attribute='timestamp') %}
+                                <ul>
+                                    {% for notification in sorted_notifications %}
+                                        <li><a href="#">{{ notification.timestamp }} : {{ notification.account_name }} Alert - Low Account Balance</a></li>
+                                    {% endfor %}
+                                </ul>
                             {% else %}
-                            <p>No notifications</p>
+                                <p>No notifications</p>
                             {% endif %}
                         </div>
                         <!--</div> -->
