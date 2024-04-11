@@ -299,7 +299,7 @@ def check_balance_and_send_alert(account_id):
                     notification_type="balance",
                     notification_type_id=1,
                     is_opt_in=True,
-                    timestamp=time.time(),  # Using current timestamp
+                    timestamp= datetime.now(),  # Using current timestamp
                     is_read=False
                 ) 
                 db_session.add(new_notification)
