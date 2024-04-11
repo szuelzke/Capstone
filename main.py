@@ -1086,15 +1086,16 @@ def flashcash_transaction(student_id):
 '''
 @app.route("/chatbot", methods=['GET','POST'])
 def chatbot():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  # or handle missing user_id appropriately
+
     user_id = session['user_id']
     db_session = Session()
     user = db_session.query(User).filter_by(user_id=user_id).first()
-    db_session.close()
     
     if request.method == 'POST':
-        user_input = request.form["message"]
-        prompt = f"User: {user_input}\nChatbpt: "
-        chat_history = []
+        user_input = request.form.get("message")
+        prompt = f"User: {user_input}\nChatbot: "
         response = openai.Completion.create(
             engine="text-davinci-002",
             prompt=prompt,
@@ -1104,14 +1105,9 @@ def chatbot():
             stop=["\nUser: ", "\nChatbot: "]
         )
         bot_response = response.choices[0].text.strip()
-        chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
-            
-        return render_template(
-            "chatbot.html",
-            user_input=user_input,
-            bot_response=bot_response,
-            user = user
-        )
+        
+        db_session.close()
+        return render_template("chatbot.html", user_input=user_input, bot_response=bot_response, user=user)
     else:
         return render_template('chatbot.html', user = user)
 
