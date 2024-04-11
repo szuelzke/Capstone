@@ -1065,23 +1065,23 @@ def flashcash_transaction(student_id):
 
 #### ------------------------ Chatbot ------------------
 
-# @app.route('/chatbot', methods=['GET', 'POST'])
-# def chatbot():
-#    if request.method == 'POST':
-#        user_message = request.form['message']
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        user_message = request.form['message']
       
-#        response = openai.Completion.create(
-#            model="text-davinci-003", 
-#            prompt=user_message,
-#            temperature=0.9,
-#            max_tokens=150
-#        )
-#        chatbot_response = response.choices[0].text.strip()
+        response = openai.Completion.create(
+            model="text-davinci-003", 
+            prompt=user_message,
+            temperature=0.9,
+            max_tokens=150
+        )
+        chatbot_response = response.choices[0].text.strip()
       
-#        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
 
 
-#    return render_template('chatbot.html')
+    return render_template('chatbot.html')
 
 '''
 @app.route("/chatbot", methods=['GET','POST'])
@@ -1111,7 +1111,7 @@ def chatbot():
     else:
         return render_template('chatbot.html', user = user)
 
-'''
+
 
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
@@ -1132,3 +1132,4 @@ def chatbot():
         return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
+'''
