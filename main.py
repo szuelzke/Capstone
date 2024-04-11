@@ -1064,7 +1064,7 @@ def flashcash_transaction(student_id):
     
 
 #### ------------------------ Chatbot ------------------
-
+"""
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     user_message = None 
@@ -1083,3 +1083,27 @@ def chatbot():
         return str(e)  
     return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
 
+"""
+
+
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    user_input = request.form["message"]
+    prompt = f"User: {user_input}\nChatbpt: "
+    chat_history = []
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        temperature=0.5,
+        max_tokens=150,
+        top_p=1,
+        stop=["\nUser: ", "\nChatbot: "]
+    )
+    bot_response = response.choices[0].text.strip()
+    chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
+    
+    return render_template(
+        "chatbot.html",
+        user_input=user_input,
+        bot_response=bot_response,
+    )

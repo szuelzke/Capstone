@@ -9,7 +9,7 @@
     <title>Chatbot</title>
 </head>
 
-<body>
+<!-- <body>
     <div class='card'>
         <h1>Chatbot Conversation</h1>
         <div id="chat-container">
@@ -23,6 +23,17 @@
             <button type="submit">Send</button>
         </form>
     </div>
+</body> -->
+
+<body>
+    <p>You: {{ user_input }}</p>
+    <p>Chatbot: {{ bot_response }}</p>
+
+    <form action="{{ url_for('chatbot') }}" method="POST">
+        <label for="message">Message:</label>
+        <input type="text" name="message" required placeholder="Type your message here...">
+        <button type="submit">Send</button>
+    </form>
 </body>
 
 </html>
