@@ -18,14 +18,15 @@ import time
 
 
 
-load_dotenv()
-api_key = os.getenv('OPENAI_API_KEY')
-openai.api_key = api_key
+# load_dotenv()
+# api_key = os.getenv('OPENAI_API_KEY')
+# openai.api_key = api_key
 
-# with open('.env', 'r') as file:
-#     openai.api_key = file.read()
+with open('.env', 'r') as file:
+     openai.api_key = file.read()
+     
 client = openai
-print(api_key)
+print(openai.api_key)
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 app = Flask(__name__)
