@@ -1067,53 +1067,6 @@ def flashcash_transaction(student_id):
 
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
-    if request.method == 'POST':
-        user_message = request.form['message']
-        response = openai.Completion.create(
-            model="text-davinci-003", 
-            prompt=user_message,
-            temperature=0.9,
-            max_tokens=150
-        )
-        chatbot_response = response.choices[0].text.strip()
-      
-        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-
-
-    return render_template('chatbot.html')
-
-'''
-@app.route("/chatbot", methods=['GET','POST'])
-def chatbot():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # or handle missing user_id appropriately
-
-    user_id = session['user_id']
-    db_session = Session()
-    user = db_session.query(User).filter_by(user_id=user_id).first()
-    
-    if request.method == 'POST':
-        user_input = request.form.get("message")
-        prompt = f"User: {user_input}\nChatbot: "
-        response = openai.Completion.create(
-            engine="text-davinci-002",
-            prompt=prompt,
-            temperature=0.5,
-            max_tokens=150,
-            top_p=1,
-            stop=["\nUser: ", "\nChatbot: "]
-        )
-        bot_response = response.choices[0].text.strip()
-        
-        db_session.close()
-        return render_template("chatbot.html", user_input=user_input, bot_response=bot_response, user=user)
-    else:
-        return render_template('chatbot.html', user = user)
-
-
-
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
             user_message = request.form['message']
@@ -1131,8 +1084,3 @@ def chatbot():
         return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
-'''
-
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
-    return render_template('chatbot.html')
