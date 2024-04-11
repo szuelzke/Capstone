@@ -1,3 +1,6 @@
+{% extends 'index.html' %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,10 +17,11 @@
         <div class="chatbot-response">{{ chatbot_response }}</div>
         {% endif %}
     </div>
-    <form action="/chatbot" method="POST">
+    <form action="{{ url_for('chatbot') }}" method="POST">
         <input type="text" name="message" placeholder="Type your message here...">
         <button type="submit">Send</button>
     </form>
 </body>
 
 </html>
+{% endblock %}
