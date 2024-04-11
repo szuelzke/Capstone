@@ -1,28 +1,53 @@
-{% extends '/account/transactions.html' %}
+{% extends index.html %}
 
-{% block popup %}
-<div class='dimmer'>
-    <h2>Edit Transaction</h2>
-    <div class="row card">
-        <a class='card-x-button fa-solid fa-x' href="{{ url_for('transactions')}}"></a>
-        <p>Show transaction details
-            <hr></hr>
-        </p>
+{% block title %}Split Transaction With Another User{% endblock %}
+<div class="row row-v">
+    {{% if msg %}}
+    <div class="card">
+        <h3>{{ msg }}</h3>
+    </div>
+    {% endif %}
+    <div class="card">
         <form class="form-deco">
-            <input
+            <!-- displays info about transaction -->
+            <label for="id">Date of Transaction</label>
+            <input 
+                type="date"
+                id="date"  
+                name="date" 
+                value="{{ transaction.date }}" 
+                readonly />
+            <label for="amount">Total</label>
+            <input 
+                type="number"
+                id="amount"  
+                name="amount" 
+                value="{{ transaction.amount }}" 
+                readonly />
+            <label for="title">Title</label>
+            <input 
                 type="text"
-                placeholder="Receiver ID"
-                required />
+                id="title"
+                name="title"
+                value="{{ transaction.title }}"
+                readonly />
+            <br />
+            <label for="split_amount">Share Amount
             <input
                 type="number"
-                min="0"
-                placeholder="Receiver Amount"
-                max=""
-                required />
+                id="split_amount"
+                name="split_amount"
+                value=" {{ transaction.amount }}"
+                min=""
+                max="{{ transaction.amount }}" />
+            <label for="receiver">Share With</label>
             <input
-                type="submit" />
+                type="text"
+                id="receiver"
+                name="receiver" 
+                value="" 
+                required />
         </form>
-
     </div>
 </div>
 {% endblock %}

@@ -132,7 +132,14 @@ class Notification(Base):
     timestamp = Column(Date)
     is_read = Column(Boolean)
 
-
+class ShareSpend(Base):
+    __tablename__ = 'share_spend'
+    share_id= Column(Integer, primary_key=True, autoincrement=True)
+    transaction_id = Column(Integer, ForeignKey(Transaction.transaction_id))
+    sender_id = Column(Integer, ForeignKey(User.user_id))
+    receiver_id = Column(Integer, ForeignKey(User.user_id))
+    amount_split = Column(DECIMAL(10, 2))
+    is_paid = Column(Boolean)
 
 
 
@@ -363,8 +370,9 @@ def test():
         budgets = db_session.query(Budget).count()
         categories = db_session.query(Category).count()
         transactions = db_session.query(Transaction).count()
+        sharespend = db_session.query(ShareSpend).all()
         db_session.close()
-        return render_template('test.html', accounts=accounts, budgets=budgets, categories=categories, transactions=transactions)
+        return render_template('test.html', accounts=accounts, budgets=budgets, categories=categories, transactions=transactions, sharespend=sharespend)
     else:
         return redirect(url_for('login'))
 
@@ -441,6 +449,11 @@ def signup():
         password = request.form['password']
         confirm_password = request.form['password2']
 
+        db_session = Session()
+        check_username = db_session.query(User).filter_by(social_name=username).first()
+        db_session.close()
+        if check_username:
+            return render_template('signup.html', error='Username already taken, try something else')
        
         if password != confirm_password:
             return render_template('signup.html', error='Passwords do not match')
@@ -635,6 +648,10 @@ def update_social_name():
         current_password = request.form.get('current_password')
 
         db_session = Session()
+        check_username = db_session.query(User).filter_by(social_name=social_name).first()
+        if check_username:
+            return render_template('signup.html', error='Username already taken, try something else')
+
         user = db_session.query(User).filter_by(user_id=user_id).first()
 
         # Verify current password
@@ -645,7 +662,8 @@ def update_social_name():
             flash('Social name updated successfully.')
         else:
             flash('Incorrect current password.')
-
+            
+        db_session.close()
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
@@ -836,7 +854,7 @@ def addtransaction(account_id):
                 new_transaction = Transaction(
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
-                    amount=request.form.get('amount'),
+                    amount=request.form.get('amount')*request.form.get("c_or_d"),
                     title=request.form.get('title'),
                     category_id=request.form.get('category_id')
                 ) 
@@ -911,6 +929,49 @@ def deletetransaction(account_id, transaction_id):
             flash('Transaction not found.')
         update_balance(account_id)
         return redirect(url_for('transactions', account_id=account_id))
+    else:
+        return redirect(url_for('login'))
+    
+    # share transaction 
+@app.route('<account_id>/<transaction_id>/share', methods=['POST', 'GET'])
+def sharetransaction(account_id, transaction_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = Session['user_id']
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
+        transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
+
+        if request.method == 'GET':
+            db_session.close()
+            return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
+        else:
+            split_amount = request.form.get("split_amount")
+            receiver_social = request.form.get("receiver")
+
+            # find user in database
+            receiver_user = db_session.query(User).filter_by(social_name=receiver_social).first()
+            # user is found, send request
+            if receiver_user:
+                new_sharespend = ShareSpend(
+                    transaction_id=transaction_id,
+                    sender_id = user.user_id,
+                    receiver_id = receiver_user.user_id,
+                    amount_split = split_amount
+                )
+                db_session.add(new_sharespend)
+                db_session.commit()
+                db_session.close()
+            # receiver user is sender user
+            elif receiver_user.user_id == user_id: 
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg="Can't share transaction with self")
+            # receiver couldn't be found
+            else:
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg="User not found")
+
+            db_session.close()
+            return redirect(url_for('transactions', account_id=account_id))
+
     else:
         return redirect(url_for('login'))
 
@@ -998,13 +1059,6 @@ def edit_budget(account_id, budget_id):
             return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
-
-@app.route('/account/transaction/share', methods=['POST', 'GET'])
-def sharetransaction():
-    if request.method == 'POST':
-        # post share request
-        return redirect(url_for('transactions'))
-    return render_template('forms/share_transaction.html')
 
 # ------------------------ Notification System ---------------------------------------
 
@@ -1113,4 +1167,6 @@ def chatbot():
 
 # print(completion.choices[0].message)
     #hiiii
+
+
     
