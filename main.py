@@ -1096,29 +1096,30 @@ def chatbot():
 
 @app.route("/chatbot", methods=['GET','POST'])
 def chatbot():
-    # if 'user_id' in session and session.get('mfa_completed', False):
-    #     if request.method == 'POST':
-    #         user_input = request.form["message"]
-    #         prompt = f"User: {user_input}\nChatbpt: "
-    #         chat_history = []
-    #         response = openai.Completion.create(
-    #             engine="text-davinci-002",
-    #             prompt=prompt,
-    #             temperature=0.5,
-    #             max_tokens=150,
-    #             top_p=1,
-    #             stop=["\nUser: ", "\nChatbot: "]
-    #         )
-    #         bot_response = response.choices[0].text.strip()
-    #         chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
+    if 'user_id' in session and session.get('mfa_completed', False):
+        return render_template("chatbot.html")
+
+        # if request.method == 'POST':
+        #     user_input = request.form["message"]
+        #     prompt = f"User: {user_input}\nChatbpt: "
+        #     chat_history = []
+        #     response = openai.Completion.create(
+        #         engine="text-davinci-002",
+        #         prompt=prompt,
+        #         temperature=0.5,
+        #         max_tokens=150,
+        #         top_p=1,
+        #         stop=["\nUser: ", "\nChatbot: "]
+        #     )
+        #     bot_response = response.choices[0].text.strip()
+        #     chat_history.append(f"User: {user_input}\nChatbot: {bot_response}")
             
-    #         return render_template(
-    #             "chatbot.html",
-    #             user_input=user_input,
-    #             bot_response=bot_response,
-    #         )
-    #     else:
-    #         return render_template("chatbot.html")
-    # else:
-    return redirect(url_for('login'))
+        #     return render_template(
+        #         "chatbot.html",
+        #         user_input=user_input,
+        #         bot_response=bot_response,
+        #     )
+        # else:
+    else:
+        return redirect(url_for('login'))
         
