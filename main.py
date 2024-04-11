@@ -1018,10 +1018,9 @@ def display_notifications():
         user_id = session["user_id"]
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
-
         db_session.close()
-        return render_template('notifications.html', user=user)
-        
+        accounts_list = get_account_list()
+        return render_template('notifications.html', user=user, accounts_list=accounts_list, get_notifications=get_notifications)
     else:
         return redirect(url_for('login'))
 
