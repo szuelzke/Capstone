@@ -1068,6 +1068,7 @@ def flashcash_transaction(student_id):
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
+            print("Passed post")
             user_message = request.form['message']
         
             response = openai.Completion.create(
@@ -1077,9 +1078,8 @@ def chatbot():
                 max_tokens=150
             )
             chatbot_response = response.choices[0].text.strip()
-        
+            print("return error")
             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-
         return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
