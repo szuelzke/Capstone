@@ -936,7 +936,7 @@ def deletetransaction(account_id, transaction_id):
 @app.route('/<account_id>/<transaction_id>/share', methods=['POST', 'GET'])
 def sharetransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = Session['user_id']
+        user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
