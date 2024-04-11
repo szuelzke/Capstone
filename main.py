@@ -1024,7 +1024,8 @@ def display_notifications():
         for account_id in accounts:
             notifications = get_notifications(account_id)
             if notifications:
-                all_notifications.extend(notifications)
+                for notification in notifications:
+                    all_notifications.append(notification)
         db_session.close()
         return render_template('notifications.html', user=user, accounts=accounts, notifications=all_notifications)
     else:

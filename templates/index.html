@@ -25,45 +25,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
 
-    <style>
-        /* Style the notification dropdown */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            /* Set background to white */
-            min-width: 200px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            /* Ensure it's on top of other content */
-            padding: 10px;
-            color: black;
-            /* Set text color to black */
-        }
-
-        .dropdown-content h2 {
-            margin-top: 0;
-        }
-
-        .dropdown-content ul {
-            margin-top: 0;
-            padding-inline-start: 0;
-        }
-
-        .dropdown-content li {
-            list-style-type: none;
-        }
-
-        .dropdown-content p {
-            margin: 0;
-        }
-
-        /* Style the button in top right corner */
-        .topbar button {
-            margin-left: 10px;
-            /* Adjust spacing between icons */
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -126,36 +88,6 @@
                     <form action="{{ url_for('display_notifications')}}" method="post">
                         <button class="fa-solid fa-bell"></button>
                     </form>
-                    <!--<a href="/chatbot" class='fa-solid fa-comments'></a>-->
-                    <!--<button id="notificationToggle" class="fa-solid fa-bell"></button>-->
-                    <!--<div class="topbar" style="position: relative; display: inline-block;">
-                    <button id="notificationToggle" class="fa-solid fa-bell"></button>
-                    <div id="notificationDropdown" class="dropdown-content">
-                        <h2>Notifications</h2>
-                        <div class="notification-list">
-                            {% set all_notifications = [] %}
-                            {% for account in accounts %}
-                                {% set notifications = get_notifications(account.account_id) %}
-                                {% if notifications %}
-                                    {% for notification_id, notification in notifications.items() %}
-                                        {% set _ = all_notifications.append(notification) %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                        
-                            {% if all_notifications %}
-                                {% set sorted_notifications = all_notifications | sort(attribute='timestamp') %}
-                                <ul>
-                                    {% for notification in sorted_notifications %}
-                                        <li><a href="#">{{ notification.timestamp }} : {{ notification.account_name }} Alert - Low Account Balance</a></li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <p>No notifications</p>
-                            {% endif %}
-                        </div>
-                        
-                    </div>-->
                 </ul>
             </div>
         </div>
@@ -175,30 +107,6 @@
         {% endblock %}
     </div>
 
-    <!--<script>
-        // Toggle the notification dropdown
-        document.getElementById("notificationToggle").onclick = function () {
-            var notificationDropdown = document.getElementById("notificationDropdown");
-            if (notificationDropdown.style.display === "none") {
-                notificationDropdown.style.display = "block";
-            } else {
-                notificationDropdown.style.display = "none";
-            }
-        };
-
-        // Close the notification dropdown if the user clicks outside of it
-        window.onclick = function (event) {
-            if (!event.target.matches('#notificationToggle')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.style.display === "block") {
-                        openDropdown.style.display = "none";
-                    }
-                }
-            }
-        };
-    </script>-->
 </body>
 
 </html>
