@@ -1083,7 +1083,7 @@ def flashcash_transaction(student_id):
 
 #    return render_template('chatbot.html')
 
-
+'''
 @app.route("/chatbot", methods=['GET','POST'])
 def chatbot():
     user_id = session['user_id']
@@ -1115,4 +1115,29 @@ def chatbot():
     else:
         return render_template('chatbot.html', user = user)
 
+'''
 
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    user_id = session['user_id']
+    # Getting user info
+    db_session = Session()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
+    db_session.close()
+    if 'user_id' in session and session.get('mfa_completed', False):
+        if request.method == 'POST':
+            user_message = request.form['message']
+        
+            response = openai.Completion.create(
+                model="text-davinci-003",  
+                prompt=user_message,
+                temperature=0.9,
+                max_tokens=150
+            )
+            chatbot_response = response.choices[0].text.strip()
+        
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+
+        return render_template('chatbot.html', user=user)
+    else:
+        return redirect(url_for('login'))
