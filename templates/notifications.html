@@ -13,7 +13,7 @@
             {% if notifications %}
                 <ul>
                     {% for notification in notifications %}
-                        <li>{{ notification.timestamp }} : {{ accounts.account_name }} Alert - Low Account Balance</li>
+                        <li>{{ notification.timestamp }} : {{ notification.account_id }} Alert - Low Account Balance</li>
                     {% endfor %}
                 </ul>
             {% else %}
