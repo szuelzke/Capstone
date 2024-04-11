@@ -19,8 +19,8 @@ import time
 
 
 load_dotenv()
-OPENAI_API_KEY2 = os.getenv('OPENAI_API_KEY')
-openai.api_key = OPENAI_API_KEY2
+api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = api_key
 client = openai
 
 
