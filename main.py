@@ -1101,7 +1101,7 @@ def chatbot():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         
-        #return render_template('reset_password.html')
+        return render_template('reset_password.html')
         return render_template('chatbot.html', user=user)
 
         # if request.method == 'POST':
