@@ -1069,7 +1069,6 @@ def flashcash_transaction(student_id):
 def chatbot():
     if request.method == 'POST':
         user_message = request.form['message']
-      
         response = openai.Completion.create(
             model="text-davinci-003", 
             prompt=user_message,
@@ -1133,3 +1132,7 @@ def chatbot():
     else:
         return redirect(url_for('login'))
 '''
+
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    return render_template('chatbot.html')
