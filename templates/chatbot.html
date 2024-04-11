@@ -1,4 +1,28 @@
-{% extends 'index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+</head>
+
+<body>
+    <h1>Chatbot Conversation</h1>
+    <div id="chat-container">
+        {% if user_message %}
+        <div class="user-message">{{ user_message }}</div>
+        <div class="chatbot-response">{{ chatbot_response }}</div>
+        {% endif %}
+    </div>
+    <form action="/chatbot" method="POST">
+        <input type="text" name="message" placeholder="Type your message here...">
+        <button type="submit">Send</button>
+    </form>
+</body>
+
+</html>
+
+<!--{% extends 'index.html' %}
 {% block title %}Notifications{% endblock %}
 {% block content %}
 <!DOCTYPE html>
@@ -25,6 +49,7 @@
 
 </html>
 {% endblock %}
+-->
 
 
 <!-- <!DOCTYPE html>
