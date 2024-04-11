@@ -2,15 +2,6 @@
 {% block title %}Chatbot{% endblock %}
 {% block content %}
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Chatbot</title>
-</head>
-
 <body>
     <h1>Chatbot Conversation</h1>
     <form action="{{ url_for('chatbot', _method='POST') }}" method="POST">
@@ -18,10 +9,10 @@
         <input type="text" name="message" placeholder="Type your message here...">
         <button type="submit">Send</button>
     </form>
-    {% endblock %}
 </body>
+{% endblock %}
 
-</html>
+
 
 
 
