@@ -933,7 +933,7 @@ def deletetransaction(account_id, transaction_id):
         return redirect(url_for('login'))
     
     # share transaction 
-@app.route('<account_id>/<transaction_id>/share', methods=['POST', 'GET'])
+@app.route('/<account_id>/<transaction_id>/share', methods=['POST', 'GET'])
 def sharetransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         user_id = Session['user_id']
