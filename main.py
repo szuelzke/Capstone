@@ -653,10 +653,10 @@ def update_social_name():
 
         db_session = Session()
         check_username = db_session.query(User).filter_by(social_name=social_name).first()
-        if check_username:
-            return render_template('settings.html', error='Username already taken, try something else')
-
         user = db_session.query(User).filter_by(user_id=user_id).first()
+        if check_username:
+            db_session.close()
+            return render_template('settings.html', error='Username already taken, try something else', user=user)
 
         # Verify current password
         if bcrypt.checkpw(current_password.encode('utf-8'), user.password.encode('utf-8')):
@@ -858,7 +858,7 @@ def addtransaction(account_id):
                 new_transaction = Transaction(
                     account_id=account.account_id, 
                     date=request.form.get('date'), 
-                    amount=request.form.get('amount')*request.form.get("c_or_d"),
+                    amount=request.form.get('amount')*int(request.form.get("c_or_d")),
                     title=request.form.get('title'),
                     category_id=request.form.get('category_id')
                 ) 
