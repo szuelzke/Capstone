@@ -10,27 +10,16 @@
         <h2>Notifications</h2>
 
         <div class="notification-list">
-            {% set accounts_list = get_account_list() %}
-            <!-- display accounts connected to user -->
-            {% if accounts_list != 0 %}
-            {% for id, obj in accounts_list.items() %}
-                <h2>{{ obj["name"] }}</h2>
-                {% set notifications = get_notifications(id) %}
-                {% if notifications %}
+            {% if notifications %}
+                <ul>
                     {% for notification in notifications %}
-                        <a href="#">{{ notification.timestamp }} : {{ obj["name"] }} Alert - Low Account Balance</a><br>
+                        <li>{{ notification.timestamp }} : {{ accounts.account_name }} Alert - Low Account Balance</li>
                     {% endfor %}
-                {% else %}
-                    <p>No notifications for {{ obj["name"] }}</p><br>
-                {% endif %}
-                <br>
-            {% endfor %}
-        </div>
-
-            </a>
-            {% endfor %}
+                </ul>
+            {% else %}
+                <p>No notifications</p>
             {% endif %}
-        
+        </div>
     </div>
 </div>
 {% endblock %}
