@@ -10,10 +10,10 @@
         <h2>Notifications</h2>
 
         <div class="notification-list">
-            {% if notifications %}
+            {% if all_notifications %}
                 <ul>
-                    {% for notification in notifications %}
-                        <li>{{ notification.timestamp }} : {{ accounts.account_name }} Alert - Low Account Balance</li>
+                    {% for id, obj in all_notifications.items() %}
+                        <li>{{ {{ obj["timestamp"] }} }} : {{ {{ obj["account"] }} }} Alert - Low Account Balance</li>
                     {% endfor %}
                 </ul>
             {% else %}
