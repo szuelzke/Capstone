@@ -21,6 +21,8 @@ import time
 load_dotenv()
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 openai.api_key = OPENAI_API_KEY
+client = openai.ChatCompletion.create()
+
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 app = Flask(__name__)
@@ -1063,24 +1065,54 @@ def flashcash_transaction(student_id):
     
 
 #### ------------------------ Chatbot ------------------
-
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
         if request.method == 'POST':
-            print("Passed post")
             user_message = request.form['message']
-        
-            response = openai.Completion.create(
-                model="text-davinci-003",  
-                prompt=user_message,
-                temperature=0.9,
-                max_tokens=150
+
+            completion = client.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
+                    {"role": "user", "content": user_message}  # Use the user's message
+                ]
             )
-            chatbot_response = response.choices[0].text.strip()
-            print("return error")
+
+            # Use the `completion` variable to get the chatbot response
+            chatbot_response = completion.choices[0].text.strip()
             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
         return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
+
+# @app.route("/chatbot", methods=["POST"])
+# def chatbot():
+#     user_input = request.form["message"]
+#     prompt = f"User: {user_input}\nChatbot "
+#     chat_history = []
+#     response = openai.Completion.create(
+#         engine = "text-davinci-002",
+#         prompt = prompt,
+#         temperature =0.5,
+#         max_tokens = 60,
+#         top_p = 1,
+#         frequency_penalty = 0,
+#         stop = ["\nUser: ", "\nChatbot: "]
+#     )
+#     bot_response = response.choices[0].text.strip()
+#     chat_history.append(f"User: {user_input}")
+
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
+            {"role": "user", "content": "Compose a poem that explains the concept of recursion in programming."}
+        ]
+    )
+
+print(completion.choices[0].message)
     #hiiii
+    
