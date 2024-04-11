@@ -1033,10 +1033,10 @@ def display_notifications():
                 for notification in notifications:
                     all_notifications.append(notification)
         
-        all_notifications_sorted = sorted(all_notifications, key=lambda x: x.notification_id)
+        #all_notifications_sorted = sorted(all_notifications, key=lambda x: x.notification_id)
 
         db_session.close()
-        return render_template('notifications.html', user=user, accounts=accounts, notifications=all_notifications_sorted)
+        return render_template('notifications.html', user=user, accounts=accounts, notifications=all_notifications)
     else:
         return redirect(url_for('login'))
 
