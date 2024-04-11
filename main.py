@@ -1094,9 +1094,9 @@ def chatbot():
 """
 
 
-@app.route("/chatbot", methods=["GET","POST"])
+@app.route("/chatbot", methods=['GET','POST'])
 def chatbot():
-    if request.method == "POST":
+    if request.method == 'POST':
         user_input = request.form["message"]
         prompt = f"User: {user_input}\nChatbpt: "
         chat_history = []

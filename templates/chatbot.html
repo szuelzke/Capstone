@@ -1,6 +1,8 @@
 {% extends 'index.html' %}
 {% block title %}Chatbot{% endblock %}
 {% block content %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +11,35 @@
     <title>Chatbot</title>
 </head>
 
-<!-- <body>
+<body>
+    <h1>Chatbot Conversation</h1>
+    <div id="chat-container">
+        {% if user_input %}
+        <p class="user-message">You: {{ user_input }}</p>
+        <p class="chatbot-response">Chatbot: {{ chatbot_response }}</p>
+        {% endif %}
+    </div>
+    <form action="{{ url_for('chatbot') }}" method="POST">
+        <label for="message">Message:</label>
+        <input type="text" name="message" required placeholder="Type your message here...">
+        <button type="submit">Send</button>
+    </form>
+    {% endblock %}
+</body>
+
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+</head>
+
+<body>
     <div class='card'>
         <h1>Chatbot Conversation</h1>
         <div id="chat-container">
@@ -23,7 +53,7 @@
             <button type="submit">Send</button>
         </form>
     </div>
-</body> -->
+</body>
 
 <body>
     <p>You: {{ user_input }}</p>
@@ -34,7 +64,6 @@
         <input type="text" name="message" required placeholder="Type your message here...">
         <button type="submit">Send</button>
     </form>
-</body>
+{% endblock %} </body>
 
-</html>
-{% endblock %}
+</html> -->
