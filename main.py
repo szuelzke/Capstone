@@ -350,26 +350,6 @@ def home():
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
-        
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
-    if 'user_id' in session and session.get('mfa_completed', False):
-        if request.method == 'POST':
-            user_message = request.form['message']
-        
-            response = openai.Completion.create(
-                model="text-davinci-003",  
-                prompt=user_message,
-                temperature=0.9,
-                max_tokens=150
-            )
-            chatbot_response = response.choices[0].text.strip()
-        
-            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-
-        return render_template('chatbot.html')
-    else:
-        return redirect(url_for('login'))
 
 @app.route('/test')
 def test():
@@ -1073,5 +1053,28 @@ def flashcash_transaction(student_id):
             return render_template('flashcash_transactions.html', flashcash_transactions=flashcash_transactions, user=user)
         else:
             return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+    
+
+#### ------------------------ Chatbot ------------------
+
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        if request.method == 'POST':
+            user_message = request.form['message']
+        
+            response = openai.Completion.create(
+                model="text-davinci-003",  
+                prompt=user_message,
+                temperature=0.9,
+                max_tokens=150
+            )
+            chatbot_response = response.choices[0].text.strip()
+        
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+
+        return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
