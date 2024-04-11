@@ -25,6 +25,7 @@ openai.api_key = api_key
 # with open('.env', 'r') as file:
 #     openai.api_key = file.read()
 client = openai
+print(api_key)
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 app = Flask(__name__)
