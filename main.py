@@ -1071,7 +1071,7 @@ def chatbot():
         if request.method == 'POST':
             user_message = request.form['message']
 
-            completion = client.chat.completions.text(
+            completion = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
@@ -1084,7 +1084,6 @@ def chatbot():
         return render_template('chatbot.html')
     else:
         return redirect(url_for('login'))
-
 # @app.route("/chatbot", methods=["POST"])
 # def chatbot():
 #     user_input = request.form["message"]
