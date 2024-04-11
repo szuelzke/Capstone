@@ -38,6 +38,7 @@
                     <td>
                         <!-- buttons for transaction -->
                         <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        <a href="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-share"></i>Share</button></a>
                         <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                         </form>
@@ -71,6 +72,20 @@
                 value=""
                 required />
             <label for="amount">Sum</label>
+            <input 
+                type="radio"
+                id="credit"
+                name="c_or_d"
+                value="-1"
+                checked />
+            <label for="credit">Credit</label>
+            <input 
+                type="radio"
+                id="debit"
+                name="c_or_d"
+                value="1"
+                checked />
+            <label for="credit">Debit</label>
             <input
                 type="number"
                 id="amount"
