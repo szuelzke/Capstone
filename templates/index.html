@@ -130,16 +130,24 @@
                     <div id="notificationDropdown" class="dropdown-content">
                         <h2>Notifications</h2>
                         <div class="notification-list">
-                            {% if notifications %}
+                            <!--{% if notifications %}
                             <ul>
                                 {% for notification in notifications %}
                                 <li>{{ notification.notification_type }} - {{ notification.timestamp }}</li>
-                                <!-- Adjust the above line to display the relevant notification information -->
+                            Adjust the above line to display the relevant notification information 
                                 {% endfor %}
                             </ul>
                             {% else %}
                             <p>No notifications</p>
+                            {% endif %}-->
+                            {% if notifications %}
+                                {% for notification_id, notification in notifications.items() %}
+                                <a href="#">{{ notification.timestamp }} : {{notification.account_name}} Alert - Low Account Balance</a>
+                                {% endfor %}
+                            {% else %}
+                                <p>No notifications</p>
                             {% endif %}
+
                         </div>
                         <!--</div> -->
                     </div>
