@@ -1,19 +1,16 @@
 {% extends 'index.html' %}
-
 {% block title %}
     <a href=""><li class="page-title">Notifications</li></a>
 {% endblock %}
-
 {% block content %}
 <div class="row row-v">
     <div class='card'>
         <h2>Notifications</h2>
-
         <div class="notification-list">
             {% if all_notifications %}
                 <ul>
                     {% for id, obj in all_notifications.items() %}
-                        <li>{{ {{ obj["timestamp"] }} }} : {{ {{ obj["account"] }} }} Alert - Low Account Balance</li>
+                        <li>{{ obj["timestamp"] }} : {{ obj["account"] }} Alert - Low Account Balance</li>
                     {% endfor %}
                 </ul>
             {% else %}

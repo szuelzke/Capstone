@@ -1019,15 +1019,16 @@ def display_notifications():
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         accounts = db_session.query(Account).filter_by(user_id=user_id).all()
-        # Fetch notifications for each account and compile them into a single list
+        # Fetch notifications for each account and compile them into a single dictionary
         all_notifications = {}
-        for account_id in accounts:
-            notifications = db_session.query(Notification).filter_by(account_id=account_id).all()
+        for account in accounts:
+            notifications = db_session.query(Notification).filter_by(account_id=account.account_id).all()
             if notifications:
                 for notification in notifications:
-                    all_notifications[notification.notification_id] = {}
-                    all_notifications[notification.notification_id]["account"] = account_id
-                    all_notifications[notification.notification_id]["timestamp"] = notification.timestamp
+                    all_notifications[notification.notification_id] = {
+                        "account": account.account_name,
+                        "timestamp": notification.timestamp
+                    }
         db_session.close()
         return render_template('notifications.html', user=user, accounts=accounts, all_notifications=all_notifications)
     else:
