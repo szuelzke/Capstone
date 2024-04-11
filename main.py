@@ -1068,22 +1068,19 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     try:
-        if 'user_id' in session and session.get('mfa_completed', False):
-            if request.method == 'POST':
-                user_message = request.form['message']
-            
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo", 
-                    messages=[{"role": "user", "content": user_message}],
-                    temperature=0.9,
-                    max_tokens=150
-                )
-                chatbot_response = response.choices[0].text.strip()
-            
-                return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+        if request.method == 'POST':
+            user_message = request.form['message']
+        
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo", 
+                messages=[{"role": "user", "content": user_message}],
+                temperature=0.9,
+                max_tokens=150
+            )
+            chatbot_response = response.choices[0].text.strip()
+        
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
 
-            return render_template('chatbot.html')
-        else:
-            return redirect(url_for('login'))
+        return render_template('chatbot.html')
     except Exception as e:
         return str(e) 
