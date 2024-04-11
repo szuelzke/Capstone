@@ -1097,7 +1097,12 @@ def chatbot():
 @app.route("/chatbot", methods=['GET','POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
-        return render_template("chatbot.html")
+        user_id = session["user_id"]
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        
+        #return render_template('reset_password.html')
+        return render_template('chatbot.html', user=user)
 
         # if request.method == 'POST':
         #     user_input = request.form["message"]
