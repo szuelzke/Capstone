@@ -12,7 +12,7 @@
         <div class="notification-list">
             {% set accounts_list = get_account_list() %}
             {% for account in accounts_list %}
-                <h2>{{ account.account_name}}</h2>
+                <h2>{{ account.account_name }}</h2>
                 {% set notifications = get_notifications(account.account_id) %}
                 {% if notifications %}
                     {% for notification_id, notification in notifications.items() %}
