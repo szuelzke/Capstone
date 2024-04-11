@@ -26,7 +26,7 @@ with open('/var/www/html/Capstone/.env', 'r') as file:
      openai.api_key = file.read()
      
 client = openai
-print(openai.api_key)
+#print(openai.api_key)
 
 #### ------------------------------- Setup/Classes --------------------------------------------------------
 app = Flask(__name__)
