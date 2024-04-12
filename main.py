@@ -145,6 +145,7 @@ class ShareSpend(Base):
     amount_split = Column(DECIMAL(10, 2))
     is_paid = Column(Boolean)
     
+    init_transaction = relationship('Transaction', foreign_keys='ShareSpend.transaction_id')
     sender = relationship('User', foreign_keys='ShareSpend.sender_id')
     receiver = relationship('User', foreign_keys='ShareSpend.receiver_id')
 
@@ -1028,7 +1029,21 @@ def sharetransaction(account_id, transaction_id):
 def accept_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         db_session = Session()
+        ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
+
+        account_id = request.form.get("account_id")
+        amount_split = ss_request.amount_split * -1.0
+
+        receiver_transaction = Transaction(
+            account_id = account_id,
+            date = ss_request.init_transaction.date,
+            amount = amount_split,
+            title = ss_request.init_transaction.title
+        )
+        db_session.add(receiver_transaction)
+        db_session.commit()
         db_session.close()
+        update_balance(account_id)
     else:
         return redirect(url_for('login'))
     
