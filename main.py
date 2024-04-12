@@ -1241,29 +1241,21 @@ def flashcash_transaction(student_id):
 
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
-    messages = []  # Initialize messages
     if 'user_id' in session and session.get('mfa_completed', False):
+        if 'messages' not in session:
+            session['messages'] = []
+
         if request.method == 'POST':
             user_message = request.form['message']
-            # Append user message to messages
-            messages.append({'role': 'user', 'content': user_message})
+            session['messages'].append({'role': 'user', 'content': user_message})
 
-            completion = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
-                    {"role": "user", "content": user_message}
-                ]
-            )
-            chatbot_response = completion.choices[0].message
-            # Append bot response to messages
-            messages.append({'role': 'bot', 'content': chatbot_response})
-        
-        # Pass messages to the template regardless of POST or GET
-        return render_template('chatbot.html', messages=messages)
+            # Simulating API response for the example. Replace this with your actual API call and handling.
+            api_response = "Hey there, finance is like the secret sauce that keeps the financial world sizzling! It's all about managing money - be it saving, investing, budgeting, or understanding how money flows in the world. Think of finance as the wizardry behind making smart decisions with your money to help you reach your financial goals. So buckle up, because with the right financial know-how, you can turn your financial dreams into reality!"
+            session['messages'].append({'role': 'assistant', 'content': api_response})
+
+        return render_template('chatbot.html', messages=session['messages'])
     else:
         return redirect(url_for('login'))
-
 
 # @app.route('/chatbot', methods=['GET', 'POST'])
 # def chatbot():

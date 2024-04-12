@@ -3,11 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Chatbot - Flashfin</title>
-    <meta name="description" content="Chatbot page for Flashfin">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
 </head>
 
@@ -17,21 +13,20 @@
         <div class="chat-history">
             {% for message in messages %}
             <div
-                class="{{ 'user-message' if message.role == 'user' else 'chatbot-response' if message.role == 'bot' else 'error-message' }}">
+                class="{{ 'user-message' if message.role == 'user' else 'assistant-response' if message.role == 'assistant' }}">
                 {{ message.content }}
             </div>
             {% endfor %}
         </div>
         <form action="{{ url_for('chatbot') }}" method="post">
-            <input type="text" name="message" placeholder="Type your message here..." required
-                aria-label="Enter your message here">
-            <input type="submit" value="Send" aria-label="Send your message">
-
+            <input type="text" name="message" placeholder="Type your message here..." required>
+            <input type="submit" value="Send">
         </form>
     </div>
 </body>
 
 </html>
+
 
 
 

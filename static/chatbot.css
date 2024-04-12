@@ -1,52 +1,56 @@
+/* Basic resets */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
 /* General styling for the chat container */
 #chat-container {
     width: 80%;
-    margin: auto;
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
 }
 
 /* Styling for chat history section */
 .chat-history {
-    height: 400px;
-    /* Adjust based on your preference */
+    height: 500px;
     overflow-y: auto;
-    /* Enables scrolling */
     margin-bottom: 20px;
+    border: 1px solid #ddd;
     padding: 10px;
     background-color: #f9f9f9;
-    border: 1px solid #ccc;
 }
 
-/* Common message styling */
+/* Common styling for messages */
 .user-message,
-.chatbot-response,
-.error-message {
+.assistant-response {
     margin-bottom: 10px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
+    line-height: 1.5;
 }
 
-/* Specific styling for each message role */
+/* Specific styling for user messages */
 .user-message {
     background-color: #e7f3fe;
-    color: #333;
+    border: 1px solid #bde0fe;
     text-align: left;
 }
 
-.chatbot-response {
+/* Specific styling for assistant responses */
+.assistant-response {
     background-color: #f4f4f4;
-    color: #666;
-    text-align: right;
+    border: 1px solid #e4e4e4;
+    text-align: left;
 }
 
-.error-message {
-    background-color: #ffdcdc;
-    color: #333;
-    text-align: center;
-}
-
-/* Form and input styling */
+/* Form styling for input and send button */
 form {
     display: flex;
     gap: 10px;
@@ -66,22 +70,23 @@ input[type="submit"] {
     color: white;
     cursor: pointer;
     border-radius: 5px;
+    font-weight: bold;
 }
 
-/* Hover and focus states for better interactivity */
+/* Interactive states for better usability */
 input[type="submit"]:hover,
 input[type="submit"]:focus {
     background-color: #0056b3;
 }
 
-/* Responsive design adjustments */
+/* Responsive design for smaller devices */
 @media (max-width: 600px) {
     #chat-container {
-        width: 100%;
+        width: 95%;
+        margin: 10px auto;
     }
 
     .chat-history {
         height: 300px;
-        /* Adjust based on available screen size */
     }
 }
