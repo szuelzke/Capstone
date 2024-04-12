@@ -1,27 +1,24 @@
 {% extends 'index.html' %}
 
-{% block title %}Chatbot Conversation{% endblock %}
+{% block title %}Flashy{% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
 {% endblock %}
 
-{% block content %}
-
 <body>
     <h1>Chatbot Conversation</h1>
-    <div id="chat-container" class="chat-history">
+    <div id="chat-container">
         {% if user_message %}
         <div class="user-message">{{ user_message }}</div>
         <div class="chatbot-response">{{ chatbot_response }}</div>
         {% endif %}
-        {% if error %}
-        <div class="error-message">{{ error }}</div>
+        {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
         {% endif %}
     </div>
-    <form action="{{ url_for('chatbot') }}" method="post" class="chat-input">
-        <input type="text" name="message" placeholder="Type your message here..." required>
-        <input type="submit" value="Send">
+    <form action="{{ url_for('chatbot') }}" method="post">
+        <input type="text" name="message" placeholder="Type your message here...">
+        <input type="submit" value="Send" />
     </form>
 </body>
-{% endblock %}
