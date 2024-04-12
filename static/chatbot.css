@@ -4,6 +4,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     overflow-y: auto;
+    /* Ensures scrolling inside the container if the content exceeds */
 }
 
 h1 {
@@ -13,18 +14,17 @@ h1 {
 
 .chat-history {
     height: 400px;
+    /* Fixed height for the chat area to enforce a scrolling behavior */
     overflow-y: scroll;
+    /* Keeps older messages accessible via scroll */
+    display: flex;
+    flex-direction: column-reverse;
+    /* New messages appear at the bottom and move up */
 }
 
-.user-message {
-    background-color: #daf1da;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    text-align: right;
-}
-
-.chatbot-response {
+.user-message,
+.chatbot-response,
+.error-message {
     background-color: #f1f1da;
     padding: 10px;
     margin: 5px;
@@ -32,10 +32,16 @@ h1 {
     text-align: left;
 }
 
+.user-message {
+    background-color: #daf1da;
+    /* Light green for user messages */
+    text-align: right;
+    /* User messages aligned to the right */
+}
+
 .error-message {
     color: red;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
+    /* Red text for error messages */
     text-align: center;
+    /* Error messages centered */
 }
