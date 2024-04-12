@@ -1,32 +1,83 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    /* Similar to OpenAI's font style */
+}
+
 .chat-history {
-    height: calc(100vh - 100px);
-    /* Adjusted to account for header and form height */
+    position: fixed;
+    top: 0;
+    bottom: 100px;
+    /* Height of the chat input area */
+    left: 0;
+    right: 0;
     overflow-y: auto;
+    background-color: #fafafa;
+    /* Light grey background */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.user-message,
+.chatbot-response {
+    margin-bottom: 20px;
     padding: 10px;
-    background-color: #f0f0f0;
-    /* Example background color */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+    background-color: #fff;
+    /* White background for user messages */
+    align-self: flex-end;
+    margin-right: 20px;
+    text-align: right;
+}
+
+.chatbot-response {
+    background-color: #0052cc;
+    /* Dark blue background for chatbot messages */
+    color: #fff;
+    /* White text for readability */
+    align-self: flex-start;
+    margin-left: 20px;
+    text-align: left;
 }
 
 .chat-input {
     position: fixed;
     bottom: 0;
-    width: 100%;
-    background-color: white;
-    padding: 10px;
-    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding: 20px;
+    background-color: #fff;
+    /* White background for the input area */
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
 }
 
 input[type="text"] {
-    width: calc(100% - 90px);
-    /* Adjust based on your button width */
-    padding: 8px;
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    /* Light grey border */
+    border-radius: 5px;
+    outline: none;
+    /* Removes default focus outline */
 }
 
 input[type="submit"] {
-    padding: 8px 15px;
-    background-color: #4CAF50;
-    /* Example button color */
-    color: white;
+    padding: 10px 20px;
+    background-color: #007bff;
+    /* Bootstrap primary blue */
+    color: #fff;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
