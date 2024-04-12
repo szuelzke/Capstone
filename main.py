@@ -999,7 +999,7 @@ def accept_ss_request(sharespend_id):
     else:
         return redirect(url_for('login'))
     
-@app.route('/<sharespend_id>/accept', methods=['POST'])
+@app.route('/<sharespend_id>/deny', methods=['POST'])
 def deny_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         db_session = Session()
