@@ -43,6 +43,20 @@
         {% else %}
             <p>No notifications</p>
         {% endif %}
+        <!-- display share spend requests -->
+        {% set ss_list = get_sharespend_requests(account.account_id) %}
+        {% if ss_list != "No requests" %}
+            <h2>Share Spend Requests</h2>
+            {% for ss_id, ss_info in ss_list %}
+                {{ ss_info['sender_id']}} requests ${{ ss_info['amount_split']}} from you.
+                <form action="{{ url_for('accept_ss_request', sharespend_id=ss_id)}}" method="post">
+                    <input type="submit" value="Accept">
+                </form>
+            {% endfor %}
+        {% else %}
+                <h2>No Share Spend Requests</h2>
+        {% endif %}
+
     </div>
     <div class="card">
         <h2>Recent Transactions</h2>

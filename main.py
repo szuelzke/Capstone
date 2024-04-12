@@ -347,6 +347,20 @@ def get_notifications(account_id):
     
     return opted_in_notifications
 
+@app.template_global()
+def get_sharespend_requests(account_id):
+    db_session = Session()
+    ss_requests = db_session.query(ShareSpend).filter_by(account_id=account_id).all()
+    ss_list = {}
+    if ss_requests:
+        for request in ss_requests:
+            ss_list[request.share_id]['sender_id'] = request.sender_id
+            ss_list[request.share_id]['amount_split'] = request.amount_split
+        return ss_list
+    else:
+        return "No requests"
+
+
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
 
@@ -974,6 +988,15 @@ def sharetransaction(account_id, transaction_id):
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='User not found')
     else:
         return redirect(url_for('login'))
+    
+@app.route('/<sharespend_id>/accept', methods=['POST'])
+def accept_ss_request(sharespend_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        db_session = Session()
+        db_session.close()
+    else:
+        return redirect(url_for('login'))
+
 
 #### ---------------------------- Handling Budget ---------------------------------
 @app.route('/<account_id>/budget', methods=['GET'])
