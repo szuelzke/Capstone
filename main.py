@@ -1250,6 +1250,11 @@ def chatbot():
 
     return render_template('chatbot.html', messages=session['messages'])
 
+@app.route('/clear_chat', methods=['POST'])
+def clear_chat():
+    session.pop('messages', None)  # Removes messages from session
+    return '', 204  # No content to send back
+
 
 
 # @app.route('/chatbot', methods=['GET', 'POST'])
