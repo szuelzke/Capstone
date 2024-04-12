@@ -1,4 +1,38 @@
-<body>
+{% extends 'index.html' %}
+
+{% block title %}Chatbot Conversation{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id="main-content" class="main">
+    <h1>Chatbot Conversation</h1>
+    <div id="chat-container" class="chat-history">
+        {% if user_message %}
+        <div class="user-message">{{ user_message }}</div>
+        <div class="chatbot-response">{{ chatbot_response }}</div>
+        {% endif %}
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+    <form action="{{ url_for('chatbot') }}" method="post" class="chat-input">
+        <input type="text" name="message" placeholder="Type your message here..." required>
+        <input type="submit" value="Send">
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+<!-- <body>
     <h1>Chatbot Conversation</h1>
     <div id="chat-container">
         {% if user_message %}
@@ -13,4 +47,4 @@
         <input type="text" name="message" placeholder="Type your message here...">
         <input type="submit" value="Send" />
     </form>
-</body>
+</body> -->
