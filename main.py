@@ -1238,11 +1238,11 @@ def chatbot():
                 ]
             )
 
-#             chatbot_response = completion.choices[0].message  # Use .message to access the response
-#             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-#         return render_template('chatbot.html')
-#     else:
-#         return redirect(url_for('login'))
+            chatbot_response = completion.choices[0].message  # Use .message to access the response
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+        return render_template('chatbot.html')
+    else:
+        return redirect(url_for('login'))
 # @app.route("/chatbot", methods=["POST"])
 # def chatbot():
 #     user_input = request.form["message"]
