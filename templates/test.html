@@ -14,16 +14,8 @@
         <li>Budgets: {{ budgets }}</li>
         <li>Categories: {{ categories }}</li>
         <li>Transactions: {{ transactions }}</li>
+        <li>Sharespend: {{ sharespend }}
     </ul>
-
-    {% for obj in sharespend %}
-    <ul>
-        <li>t_id: {{sharespend.transaction_id}}</li>
-        <li>s_id: {{sharespend.sender_id}}</li>
-        <li>r_id: {{sharespend.receiver_id}}</li>
-        <li>amount: {{sharespend.amount_split}}</li>
-    </ul>
-    {% endfor %}
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>

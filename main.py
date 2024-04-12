@@ -373,7 +373,7 @@ def test():
         budgets = db_session.query(Budget).count()
         categories = db_session.query(Category).count()
         transactions = db_session.query(Transaction).count()
-        sharespend = db_session.query(ShareSpend).all()
+        sharespend = db_session.query(ShareSpend).count()
         db_session.close()
         return render_template('test.html', accounts=accounts, budgets=budgets, categories=categories, transactions=transactions, sharespend=sharespend)
     else:
