@@ -114,10 +114,21 @@
             {% if ss_list != "No requests" %}
                 <h2>Share Spend Requests</h2>
                 {% for ss_id, ss_info in ss_list.items() %}
-                    {{ ss_info['sender_id']}} requests ${{ ss_info['amount_split']}} from you.
-                    <form action="{{ url_for('accept_ss_request', sharespend_id=ss_id)}}" method="post">
-                        <input type="submit" value="Accept">
-                    </form>
+                    <li>{{ ss_info['sender_id']}} requests ${{ ss_info['amount_split']}} from you.</li>
+                    <li><select name="account_id" id="account_selector" form="accept-ss-request">>
+                            {% for id, obj in accounts_list.items() %}
+                            <option value="{{ id }}">{{ obj["name"] }}</option>
+                            {% endfor %}
+                          </select></li>
+                        <li>
+                            <form id="accept-ss-request">
+                                <input type="submit" value="Accept" />
+                            </form>
+                            <form action="{{ url_for('deny_ss_request', sharespend_id=ss_id)}}" method="post">
+                                <input type="submit" value="Deny" />
+                            </form>
+                        </li>
+                          
                 {% endfor %}
             {% else %}
                     <h2>No Share Spend Requests</h2>
@@ -128,5 +139,8 @@
     </div>
 
 </body>
+
+<script>
+</script>
 
 </html>

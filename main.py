@@ -998,6 +998,17 @@ def accept_ss_request(sharespend_id):
         db_session.close()
     else:
         return redirect(url_for('login'))
+    
+@app.route('/<sharespend_id>/accept', methods=['POST'])
+def deny_ss_request(sharespend_id):
+    if 'user_id' in session and session.get('mfa_completed', False):
+        db_session = Session()
+        ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
+        db_session.delete(ss_request)
+        db_session.close()
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('login'))
 
 
 #### ---------------------------- Handling Budget ---------------------------------
