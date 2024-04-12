@@ -20,12 +20,17 @@
 <body>
     <div id="chat-container" style="padding: 20px;">
         <h1>Chatbot Conversation</h1>
-        {% if user_message %}
-        <div class="user-message">{{ user_message }}</div>
-        {% endif %}
-        {% if error %}
-        <div class="error-message">{{ error }}</div>
-        {% endif %}
+        <div class="chat-history">
+            {% if user_message %}
+            <div class="user-message"><strong>You:</strong> {{ user_message }}</div>
+            {% endif %}
+            {% if chatbot_response %}
+            <div class="chatbot-response"><strong>Chatbot:</strong> {{ chatbot_response }}</div>
+            {% endif %}
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+        </div>
         <form action="{{ url_for('chatbot') }}" method="post">
             <input type="text" name="message" placeholder="Type your message here..." required>
             <input type="submit" value="Send">

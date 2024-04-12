@@ -1223,25 +1223,52 @@ def flashcash_transaction(student_id):
     
 
 #### ------------------------ Chatbot ------------------
+
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
+        user_message = None
+        chatbot_response = None
+        error = None
+        
         if request.method == 'POST':
-            user_message = request.form['message']
-
-            completion = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
-                    {"role": "user", "content": user_message}
-                ]
-            )
-
-            chatbot_response = completion.choices[0].message  # Use .message to access the response
-            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-        return render_template('chatbot.html')
+            user_message = request.form.get('message')
+            if user_message:
+                try:
+                    completion = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
+                            {"role": "user", "content": user_message}
+                        ]
+                    )
+                    chatbot_response = completion.choices[0].message
+                except Exception as e:
+                    error = "An error occurred while processing your request."
+        
+        return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response, error=error)
+    
     else:
         return redirect(url_for('login'))
+# @app.route('/chatbot', methods=['GET', 'POST'])
+# def chatbot():
+#     if 'user_id' in session and session.get('mfa_completed', False):
+#         if request.method == 'POST':
+#             user_message = request.form['message']
+
+#             completion = client.chat.completions.create(
+#                 model="gpt-3.5-turbo",
+#                 messages=[
+#                     {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
+#                     {"role": "user", "content": user_message}
+#                 ]
+#             )
+
+#             chatbot_response = completion.choices[0].message  # Use .message to access the response
+#             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+#         return render_template('chatbot.html')
+#     else:
+#         return redirect(url_for('login'))
 # @app.route("/chatbot", methods=["POST"])
 # def chatbot():
 #     user_input = request.form["message"]
