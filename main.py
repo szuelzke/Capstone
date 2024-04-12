@@ -570,7 +570,7 @@ def reset_password(reset_token):
                 return render_template('reset_password.html', error='Expired Code')
         else:
             session.close()
-            return render_template('reset_password.html', error='Invalid Token')
+            return render_template('reset_password.html', error='Invalid Token. Please go back to Reset Password.')
     return render_template('reset_password.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
