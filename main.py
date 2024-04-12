@@ -372,11 +372,11 @@ def home():
         user_id = session['user_id']
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
- 
-        accounts = get_account_list() 
-
-        db_session.close()
-        return render_template('index.html', user=user, accounts=accounts)
+        if db_session.query(Account).filter_by(user_id=user_id).all(): 
+            db_session.close()
+            return render_template('index.html', user=user)
+        else:
+            return redirect(url_for('add_account'))
     else:
         msg = ''
         return render_template('landing.html', msg=msg)
