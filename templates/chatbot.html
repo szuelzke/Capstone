@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 
 <head>
@@ -12,20 +12,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
 
-</head>
-
+</head>-->
+{% extends 'index.html' %}
+{% block title %}Chatbot{% endblock %}
+{% block content %}
 <body>
-    <div id="sidebar" class="sidebar">
-        <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
-        <div class="nav">
-            <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
-            <a href="{{ url_for('settings') }}"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
-            <a href="{{ url_for('chatbot')}}" class="btn btn-primary">Talk to Chatbot</a>
-
-        </div>
-
-
-    </div>
 
     <div id="chat-container" class="chatbot-container">
         <h1>Chatbot Conversation</h1>
@@ -50,8 +41,8 @@
 
 </body>
 
-</html>
-
+<!--</html>-->
+{% endblock %}
 
 
 
