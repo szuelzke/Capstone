@@ -699,6 +699,7 @@ def delete_account(account_id):
         account = db_session.query(Account).filter_by(account_id=account_id).first()
 
         if account:
+            db_session.query(Notification).filter_by(account_id=account_id).delete()
             # delete budgets and transactions in budget for account
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
