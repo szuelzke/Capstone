@@ -871,7 +871,7 @@ def addtransaction(account_id):
             account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
             if account: # add transaction to account
                 amount = 0
-                if request.get.form('c_or_d') == "credit":
+                if request.form.get('c_or_d') == "credit":
                     amount = request.form.get('amount') * -1
                 else:
                     amount = request.form.get('amount')
