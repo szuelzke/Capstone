@@ -1231,7 +1231,7 @@ def chatbot():
 
     if 'messages' not in session:
         session['messages'] = []
-    
+
     if request.method == 'POST':
         user_message = request.form.get('message')
         if user_message:
@@ -1243,11 +1243,11 @@ def chatbot():
                         {"role": "user", "content": user_message}
                     ]
                 )
-                chatbot_response = response['choices'][0]['message']['content']
+                chatbot_response = response.choices[0].message['content']
                 session['messages'].append({"user": user_message, "bot": chatbot_response})
                 session.modified = True
             except Exception as e:
-                print(f"Failed to fetch response: {str(e)}")  # Or use logging
+                print(f"Failed to fetch response: {str(e)}")  # Consider using logging instead of print
                 session['messages'].append({"error": "Failed to fetch response."})
                 session.modified = True
 
