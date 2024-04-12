@@ -1,47 +1,87 @@
+/* General styling for the chat container */
 #chat-container {
-    max-width: 800px;
+    width: 80%;
     margin: auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    overflow-y: auto;
-    /* Ensures scrolling inside the container if the content exceeds */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    color: black;
-    text-align: center;
-}
-
+/* Styling for chat history section */
 .chat-history {
     height: 400px;
-    /* Fixed height for the chat area to enforce a scrolling behavior */
-    overflow-y: scroll;
-    /* Keeps older messages accessible via scroll */
-    display: flex;
-    flex-direction: column-reverse;
-    /* New messages appear at the bottom and move up */
+    /* Adjust based on your preference */
+    overflow-y: auto;
+    /* Enables scrolling */
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
 }
 
+/* Common message styling */
 .user-message,
 .chatbot-response,
 .error-message {
-    background-color: #f1f1da;
+    margin-bottom: 10px;
     padding: 10px;
-    margin: 5px;
     border-radius: 5px;
+}
+
+/* Specific styling for each message role */
+.user-message {
+    background-color: #e7f3fe;
+    color: #333;
     text-align: left;
 }
 
-.user-message {
-    background-color: #daf1da;
-    /* Light green for user messages */
+.chatbot-response {
+    background-color: #f4f4f4;
+    color: #666;
     text-align: right;
-    /* User messages aligned to the right */
 }
 
 .error-message {
-    color: red;
-    /* Red text for error messages */
+    background-color: #ffdcdc;
+    color: #333;
     text-align: center;
-    /* Error messages centered */
+}
+
+/* Form and input styling */
+form {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Hover and focus states for better interactivity */
+input[type="submit"]:hover,
+input[type="submit"]:focus {
+    background-color: #0056b3;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 600px) {
+    #chat-container {
+        width: 100%;
+    }
+
+    .chat-history {
+        height: 300px;
+        /* Adjust based on available screen size */
+    }
 }

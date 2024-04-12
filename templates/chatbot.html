@@ -23,8 +23,10 @@
             {% endfor %}
         </div>
         <form action="{{ url_for('chatbot') }}" method="post">
-            <input type="text" name="message" placeholder="Type your message here..." required>
-            <input type="submit" value="Send">
+            <input type="text" name="message" placeholder="Type your message here..." required
+                aria-label="Enter your message here">
+            <input type="submit" value="Send" aria-label="Send your message">
+
         </form>
     </div>
 </body>
