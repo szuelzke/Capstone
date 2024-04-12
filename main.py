@@ -350,7 +350,7 @@ def get_notifications(account_id):
 @app.template_global()
 def get_sharespend_requests(account_id):
     db_session = Session()
-    ss_requests = db_session.query(ShareSpend).filter_by(account_id=account_id).all()
+    ss_requests = db_session.query(ShareSpend).filter_by(receiver_id=account_id).all()
     ss_list = {}
     if ss_requests:
         for request in ss_requests:
