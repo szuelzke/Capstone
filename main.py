@@ -950,10 +950,10 @@ def sharetransaction(account_id, transaction_id):
             return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
             split_amount = request.form.get("split_amount")
-            receiver_social = request.form.get("receiver")
+            receiver_id = request.form.get("receiver")
 
             # find user in database
-            receiver_user = db_session.query(User).filter_by(social_name=receiver_social).first()
+            receiver_user = db_session.query(User).filter_by(user_id=receiver_id).first()
             # user is found, send request
             if receiver_user:
                 new_sharespend = ShareSpend(
@@ -967,10 +967,10 @@ def sharetransaction(account_id, transaction_id):
                 db_session.close()
             # receiver user is sender user
             elif receiver_user.user_id == user_id: 
-                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg="Can't share transaction with self")
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='Cant share transaction with self')
             # receiver couldn't be found
             else:
-                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg="User not found")
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='User not found')
 
             db_session.close()
             return redirect(url_for('transactions', account_id=account_id))
