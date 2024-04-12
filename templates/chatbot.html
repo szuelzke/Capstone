@@ -5,11 +5,12 @@
     <meta charset="utf-8">
     <title>Chatbot - Flashfin</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 
 <body>
     <div id="chat-container">
-        <h1>Chatbot Conversation</h1>
+        <h1>Flashy</h1>
         <div class="chat-history">
             {% for message in messages %}
             <div class="{{ 'user-message' if message.role == 'user' else 'assistant-response' }}">
