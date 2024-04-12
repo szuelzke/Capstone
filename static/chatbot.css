@@ -1,83 +1,52 @@
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    /* Similar to OpenAI's font style */
+#chat-container {
+    max-width: 800px;
+    /* Limit the width of the chat container */
+    margin: auto;
+    /* Center align the chat container */
+    padding: 20px;
+    /* Ensure there is padding around the contents */
+    border: 1px solid #ccc;
+    /* Add a border for visibility */
+    height: auto;
+    /* Allow the container to grow with content */
+    overflow-y: auto;
+    /* Enable scrolling if content is too long */
+}
+
+h1 {
+    color: black;
+    /* Ensure the title is visible */
+    text-align: center;
+    /* Center the title */
 }
 
 .chat-history {
-    position: fixed;
-    top: 0;
-    bottom: 100px;
-    /* Height of the chat input area */
-    left: 0;
-    right: 0;
-    overflow-y: auto;
-    background-color: #fafafa;
-    /* Light grey background */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.user-message,
-.chatbot-response {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.user-message {
-    background-color: #fff;
-    /* White background for user messages */
-    align-self: flex-end;
-    margin-right: 20px;
-    text-align: right;
-}
-
-.chatbot-response {
-    background-color: #0052cc;
-    /* Dark blue background for chatbot messages */
-    color: #fff;
-    /* White text for readability */
-    align-self: flex-start;
-    margin-left: 20px;
-    text-align: left;
-}
-
-.chat-input {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    padding: 20px;
-    background-color: #fff;
-    /* White background for the input area */
-    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
+    height: 400px;
+    /* Limit the height of the chat history */
+    overflow-y: scroll;
+    /* Enable scrolling inside the chat history */
 }
 
 input[type="text"] {
-    flex-grow: 1;
-    margin-right: 10px;
+    display: block;
+    /* Ensure the input box is visible */
+    width: calc(100% - 20px);
+    /* Take full width minus padding */
+    margin: 10px auto;
+    /* Center the input box and add margin */
     padding: 10px;
-    border: 2px solid #ccc;
-    /* Light grey border */
-    border-radius: 5px;
-    outline: none;
-    /* Removes default focus outline */
+    /* Add padding inside the input box */
 }
 
 input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    /* Bootstrap primary blue */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+    display: block;
+    /* Ensure the submit button is visible */
+    width: 100px;
+    /* Set a fixed width for the button */
+    margin: 10px auto;
+    /* Center the button and add margin */
+    padding: 10px;
+    /* Add padding for better clickability */
     cursor: pointer;
+    /* Change cursor to pointer on hover */
 }
