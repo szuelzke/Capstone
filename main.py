@@ -1237,9 +1237,15 @@ def chatbot():
         user_message = request.form.get('message')
         if user_message:
             try:
-                # Simulating a chatbot response for demonstration.
-                # Replace this part with your actual API call.
-                chatbot_response = "Echo: " + user_message
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "Your System Description Here."},
+                        {"role": "user", "content": user_message}
+                    ],
+                    max_tokens=75
+                )
+                chatbot_response = response['choices'][0]['message']['content']
                 session['messages'].append({"role": "user", "content": user_message})
                 session['messages'].append({"role": "bot", "content": chatbot_response})
             except Exception as e:
