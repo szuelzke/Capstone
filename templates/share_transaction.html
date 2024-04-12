@@ -39,9 +39,9 @@
                 type="number"
                 id="split_amount"
                 name="split_amount"
-                value=" {{ transaction.amount }}"
+                value=" {{ transaction.amount }} * -1"
                 min=""
-                max="{{ transaction.amount }}" />
+                max="{{ transaction.amount }} * -1" />
             <label for="receiver">Share With</label>
             <input
                 type="text"

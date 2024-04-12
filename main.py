@@ -139,6 +139,7 @@ class ShareSpend(Base):
     __tablename__ = 'share_spend'
     share_id= Column(Integer, primary_key=True, autoincrement=True)
     transaction_id = Column(Integer, ForeignKey(Transaction.transaction_id))
+    receiver_transaction_id = Column(Integer, ForeignKey(Transaction.transaction_id))
     sender_id = Column(Integer, ForeignKey(User.user_id))
     receiver_id = Column(Integer, ForeignKey(User.user_id))
     amount_split = Column(DECIMAL(10, 2))
@@ -995,10 +996,10 @@ def sharetransaction(account_id, transaction_id):
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
             split_amount = request.form.get("split_amount")
-            receiver_id = request.form.get("receiver")
+            receiver_name = request.form.get("receiver")
 
             # find user in database
-            receiver_user = db_session.query(User).filter_by(user_id=receiver_id).first()
+            receiver_user = db_session.query(User).filter_by(social_name=receiver_name).first()
             # user is found, send request
             if receiver_user:
                 if receiver_user.user_id == user_id: # receiver user is sender user
