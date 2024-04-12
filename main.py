@@ -1051,6 +1051,7 @@ def accept_ss_request(sharespend_id):
             title = ss_request.init_transaction.title
         )
         db_session.add(receiver_transaction)
+        db_session.commit()
         ss_request.is_paid = True
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
         db_session.commit()
