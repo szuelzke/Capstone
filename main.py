@@ -1005,6 +1005,7 @@ def deny_ss_request(sharespend_id):
         db_session = Session()
         ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
         db_session.delete(ss_request)
+        db_session.commit()
         db_session.close()
         return redirect(url_for('home'))
     else:
