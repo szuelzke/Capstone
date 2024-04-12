@@ -1259,7 +1259,7 @@ def chatbot():
                     ]
                 )
                 # Accessing the message content correctly
-                chatbot_response = completion['choices'][0]['message']['content']
+                chatbot_response = completion.choices[0].message['content']
                 session['messages'].append({'role': 'assistant', 'content': chatbot_response})
             except Exception as e:
                 session['messages'].append({'role': 'error', 'content': str(e)})
