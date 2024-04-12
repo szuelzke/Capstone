@@ -854,10 +854,12 @@ def transactions(account_id):
             # get transactions 
             if request.method == 'post':
                 transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).filter(Transaction.date >= request.form.get('start_date')).filter(Transaction.date <= request.form.get('end_date'))
+                db_session.close()
+                return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
             else:
                 transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
-            db_session.close()
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
+                db_session.close()
+                return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:
             return redirect(url_for('login'))
     else:
