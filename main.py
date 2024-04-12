@@ -984,7 +984,7 @@ def sharetransaction(account_id, transaction_id):
                     db_session.add(new_sharespend)
                     db_session.commit()
                     db_session.close()
-                    return render_template('transactions.html', account_id=account_id)
+                    return redirect(url_for('transactions', account_id=account_id), msg="Request sent")
             
             else: # receiver couldn't be found
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='User not found')

@@ -4,6 +4,11 @@
 
 {% block inner_content %}
 <div class="row row-v">
+    {% if msg %}
+    <div class="card">
+        <h3>{{ msg }}</h3>
+    </div>
+    {% end if %}
     <div class="card">
         <h2>All Transactions</h2>
 
