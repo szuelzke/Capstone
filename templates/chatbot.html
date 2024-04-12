@@ -1,21 +1,39 @@
-<div id="main-content" class="main">
-    <h1>Chatbot Conversation</h1>
-    <div id="chat-container">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Chatbot - Flashfin</title>
+    <meta name="description" content="Chatbot page for Flashfin">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+    <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="chat-container" style="padding: 20px;">
+        <h1>Chatbot Conversation</h1>
         {% if user_message %}
         <div class="user-message">{{ user_message }}</div>
         {% endif %}
         {% if error %}
         <div class="error-message">{{ error }}</div>
         {% endif %}
+        <form action="{{ url_for('chatbot') }}" method="post">
+            <input type="text" name="message" placeholder="Type your message here..." required>
+            <input type="submit" value="Send">
+        </form>
     </div>
-    <form action="{{ url_for('chatbot') }}" method="post">
-        <input type="text" name="message" placeholder="Type your message here..." required>
-        <input type="submit" value="Send">
-    </form>
-</div>
+</body>
 
-
-
+</html>
 
 
 
