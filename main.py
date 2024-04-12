@@ -841,7 +841,7 @@ def account(account_id):
 
 #### ---------------------------- Handling Transactions ---------------------------------
 # view all transactions in account
-@app.route('/<account_id>/transactions', methods=['GET'])
+@app.route('/<account_id>/transactions', methods=['GET', 'POST'])
 def transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
@@ -849,11 +849,13 @@ def transactions(account_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        db_session.close()
         categories = db_session.query(Budget).filter_by(account_id=account_id).all()
         if account:
             # get transactions 
-            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
+            if request.method == 'post':
+                transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).filter(Transaction.date >= request.form.get('start_date')).filter(Transaction.date <= request.form.get('end_date'))
+            else:
+                transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:

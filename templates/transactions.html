@@ -11,6 +11,18 @@
     {% endif %}
     <div class="card">
         <h2>All Transactions</h2>
+        View from:
+        <form action="{{ url_for('transactions', account_id=account.account_id)}}", method="post">
+            <input type="date"
+                id="start_date"
+                for="start_date"
+                value="" />
+            <input type="date"
+                id="end_date"
+                for="end_date"
+                value="" />
+            <input type="submit" value="Search" />
+        </form>
 
         <table id="transactions-tbl">
             <thead>
