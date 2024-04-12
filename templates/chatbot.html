@@ -4,18 +4,17 @@
 <head>
     <meta charset="utf-8">
     <title>Chatbot - Flashfin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
 
-    <!-- Optional: Add your chatbot-specific CSS here -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
 </head>
 
 <body>
-    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
         <h2>{{ user.first_name }} {{ user.last_name }}</h2>
@@ -26,32 +25,26 @@
         </div>
         <!-- Additional links and options from index.html can be added here -->
     </div>
-
-    <!-- Main Content Area -->
-    <div id="main-content" class="main">
-        <div class="topbar">
-            <ul>
-                <li class="page-title"><a href="/">Home</a></li>
-                <!-- Additional topbar options from index.html can be added here -->
-            </ul>
-        </div>
-        <!-- Chatbot specific content starts here -->
-        <div id="chat-container">
-            <h1>Chatbot Conversation</h1>
-            <div class="chat-history">
-                {% for message in messages %}
-                <div
-                    class="{{ 'user-message' if message.role == 'user' else 'assistant-response' if message.role == 'assistant' }}">
-                    {{ message.content }}
-                </div>
-                {% endfor %}
+    <div id="chat-container">
+        <h1>Flashy</h1>
+        <div class="chat-history">
+            {% for message in messages %}
+            <div class="{{ 'user-message' if message.role == 'user' else 'assistant-response' }}">
+                {{ message.content }}
             </div>
-            <form action="{{ url_for('chatbot') }}" method="post">
-                <input type="text" name="message" placeholder="Type your message here..." required>
-                <input type="submit" value="Send">
-            </form>
+            {% endfor %}
         </div>
+        <form action="{{ url_for('chatbot') }}" method="post">
+            <input type="text" name="message" placeholder="Type your message here..." required>
+            <input type="submit" value="Send">
+        </form>
     </div>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            fetch('/clear_chat', { method: 'GET' });  // Send a request to clear the session
+        });
+    </script>
+
 </body>
 
 </html>
