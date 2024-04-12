@@ -281,6 +281,7 @@ def update_balance(account_id):
         if i == 0: # starting balance
             transaction.amount_remaining = transaction.amount
         else:
+            is_shared = db_session.query(ShareSpend).filter_by(transaction_id=transaction.transaction_id, is_paid=True)
             transaction.amount_remaining = current_amount + transaction.amount
         current_amount = transaction.amount_remaining
     db_session.commit()
@@ -1052,7 +1053,6 @@ def accept_ss_request(sharespend_id):
         db_session.add(receiver_transaction)
         ss_request.is_paid = True
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
-        ss_request.init_transaction.amount = float(ss_request.init_transaction.amount) - amount_split
         db_session.commit()
         db_session.close()
         update_balance(account_id)
