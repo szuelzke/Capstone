@@ -1242,24 +1242,33 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
-        # Initialize messages if not already done
         if 'messages' not in session:
             session['messages'] = []
 
         if request.method == 'POST':
             user_message = request.form['message']
-            # Append user's message to session messages
             session['messages'].append({'role': 'user', 'content': user_message})
 
-            # Simulated API response, replace with actual API call and handle exceptions
-            api_response = "Simulated response based on user's message."
-            session['messages'].append({'role': 'assistant', 'content': api_response})
+            # OpenAI API call
+            try:
+                completion = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
+                        {"role": "user", "content": user_message}
+                    ]
+                )
+                chatbot_response = completion.choices[0].message['content']
+                session['messages'].append({'role': 'assistant', 'content': chatbot_response})
+            except Exception as e:
+                session['messages'].append({'role': 'error', 'content': str(e)})
 
-        # Ensure messages are saved in session
-        session.modified = True
+            session.modified = True
+
         return render_template('chatbot.html', messages=session['messages'])
     else:
         return redirect(url_for('login'))
+
 
 # @app.route('/chatbot', methods=['GET', 'POST'])
 # def chatbot():
