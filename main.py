@@ -872,7 +872,7 @@ def addtransaction(account_id):
             if account: # add transaction to account
                 amount = 0
                 if request.form.get('c_or_d') == "credit":
-                    amount = request.form.get('amount') * -1
+                    amount = request.form.get('amount') * -1.0
                 else:
                     amount = request.form.get('amount')
 
