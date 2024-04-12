@@ -1,92 +1,53 @@
-/* Basic resets */
-body,
-html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
-
-/* General styling for the chat container */
-#chat-container {
+/* Scoped chat container */
+#chat-container.chatbot-container {
     width: 80%;
-    max-width: 800px;
-    margin: 20px auto;
+    margin: auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling for chat history section */
-.chat-history {
-    height: 500px;
+/* Scoped chat history */
+.chat-history.chatbot-history {
+    height: 400px;
     overflow-y: auto;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
     padding: 10px;
     background-color: #f9f9f9;
+    border: 1px solid #ccc;
 }
 
-/* Common styling for messages */
-.user-message,
-.assistant-response {
+/* Scoped message styling */
+.chatbot-message {
     margin-bottom: 10px;
     padding: 10px;
-    border-radius: 10px;
-    line-height: 1.5;
+    border-radius: 5px;
 }
 
-/* Specific styling for user messages */
-.user-message {
+.user-message.chatbot-user {
     background-color: #e7f3fe;
-    border: 1px solid #bde0fe;
+    color: #333;
     text-align: left;
 }
 
-/* Specific styling for assistant responses */
-.assistant-response {
+.assistant-response.chatbot-assistant {
     background-color: #f4f4f4;
-    border: 1px solid #e4e4e4;
-    text-align: left;
+    color: #666;
+    text-align: right;
 }
 
-/* Form styling for input and send button */
-form {
-    display: flex;
-    gap: 10px;
-}
-
-input[type="text"] {
+/* Scoped form input */
+.chatbot-form input[type="text"] {
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-input[type="submit"] {
+.chatbot-form input[type="submit"] {
     padding: 10px 20px;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    font-weight: bold;
-}
-
-/* Interactive states for better usability */
-input[type="submit"]:hover,
-input[type="submit"]:focus {
-    background-color: #0056b3;
-}
-
-/* Responsive design for smaller devices */
-@media (max-width: 600px) {
-    #chat-container {
-        width: 95%;
-        margin: 10px auto;
-    }
-
-    .chat-history {
-        height: 300px;
-    }
 }

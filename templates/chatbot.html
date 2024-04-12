@@ -19,16 +19,17 @@
         <h1>HI</h1>
     </div>
 
-    <div id="chat-container">
-        <h1>Flashy</h1>
-        <div class="chat-history">
+    <div id="chat-container" class="chatbot-container">
+        <h1>Chatbot Conversation</h1>
+        <div class="chat-history chatbot-history">
             {% for message in messages %}
-            <div class="{{ 'user-message' if message.role == 'user' else 'assistant-response' }}">
+            <div
+                class="{{ 'user-message chatbot-user' if message.role == 'user' else 'assistant-response chatbot-assistant' if message.role == 'assistant' }}">
                 {{ message.content }}
             </div>
             {% endfor %}
         </div>
-        <form action="{{ url_for('chatbot') }}" method="post">
+        <form action="{{ url_for('chatbot') }}" method="post" class="chatbot-form">
             <input type="text" name="message" placeholder="Type your message here..." required>
             <input type="submit" value="Send">
         </form>
