@@ -356,7 +356,7 @@ def get_notifications(account_id):
 def get_sharespend_requests():
     user_id = session['user_id']
     db_session = Session()
-    ss_requests = db_session.query(ShareSpend).filter_by(receiver_id=user_id).filter(ShareSpend.is_paid == False).all()
+    ss_requests = db_session.query(ShareSpend).filter_by(receiver_id=user_id).filter_by(is_paid=False).all()
     ss_list = {}
     if ss_requests:
         for request in ss_requests:
@@ -1046,6 +1046,7 @@ def accept_ss_request(sharespend_id):
         db_session.commit()
         db_session.close()
         update_balance(account_id)
+        return redirect(url_for('account', account_id=account_id))
     else:
         return redirect(url_for('login'))
     
