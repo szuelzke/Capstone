@@ -956,25 +956,22 @@ def sharetransaction(account_id, transaction_id):
             receiver_user = db_session.query(User).filter_by(user_id=receiver_id).first()
             # user is found, send request
             if receiver_user:
-                new_sharespend = ShareSpend(
-                    transaction_id=transaction_id,
-                    sender_id = user.user_id,
-                    receiver_id = receiver_user.user_id,
-                    amount_split = split_amount
-                )
-                db_session.add(new_sharespend)
-                db_session.commit()
-                db_session.close()
-            # receiver user is sender user
-            elif receiver_user.user_id == user_id: 
-                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='Cant share transaction with self')
-            # receiver couldn't be found
-            else:
+                if receiver_user.user_id == user_id: # receiver user is sender user
+                    return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='Cant share transaction with self')
+                else:
+                    new_sharespend = ShareSpend(
+                        transaction_id=transaction_id,
+                        sender_id = user.user_id,
+                        receiver_id = receiver_user.user_id,
+                        amount_split = split_amount
+                    )
+                    db_session.add(new_sharespend)
+                    db_session.commit()
+                    db_session.close()
+                    return render_template('transactions', account_id=account_id)
+            
+            else: # receiver couldn't be found
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='User not found')
-
-            db_session.close()
-            return redirect(url_for('transactions', account_id=account_id))
-
     else:
         return redirect(url_for('login'))
 
