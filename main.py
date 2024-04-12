@@ -1232,7 +1232,7 @@ def chatbot():
             completion = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
+                    {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
                     {"role": "user", "content": user_message}
                 ]
             )

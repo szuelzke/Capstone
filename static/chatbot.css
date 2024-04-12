@@ -1,0 +1,32 @@
+.chat-history {
+    height: calc(100vh - 100px);
+    /* Adjusted to account for header and form height */
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f0f0f0;
+    /* Example background color */
+}
+
+.chat-input {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    width: calc(100% - 90px);
+    /* Adjust based on your button width */
+    padding: 8px;
+}
+
+input[type="submit"] {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    /* Example button color */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
