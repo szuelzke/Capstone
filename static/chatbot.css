@@ -1,52 +1,69 @@
 #chat-container {
     max-width: 800px;
-    /* Limit the width of the chat container */
     margin: auto;
-    /* Center align the chat container */
     padding: 20px;
-    /* Ensure there is padding around the contents */
     border: 1px solid #ccc;
-    /* Add a border for visibility */
     height: auto;
-    /* Allow the container to grow with content */
     overflow-y: auto;
-    /* Enable scrolling if content is too long */
 }
 
 h1 {
     color: black;
-    /* Ensure the title is visible */
     text-align: center;
-    /* Center the title */
 }
 
 .chat-history {
     height: 400px;
-    /* Limit the height of the chat history */
     overflow-y: scroll;
-    /* Enable scrolling inside the chat history */
+}
+
+.user-message,
+.chatbot-response {
+    padding: 8px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    max-width: 75%;
+}
+
+.user-message {
+    background-color: #f4f4f8;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+}
+
+.chatbot-response {
+    background-color: #e2e2e2;
+    align-self: flex-start;
+    text-align: left;
 }
 
 input[type="text"] {
     display: block;
-    /* Ensure the input box is visible */
     width: calc(100% - 20px);
-    /* Take full width minus padding */
     margin: 10px auto;
-    /* Center the input box and add margin */
     padding: 10px;
-    /* Add padding inside the input box */
 }
 
 input[type="submit"] {
     display: block;
-    /* Ensure the submit button is visible */
     width: 100px;
-    /* Set a fixed width for the button */
     margin: 10px auto;
-    /* Center the button and add margin */
     padding: 10px;
-    /* Add padding for better clickability */
     cursor: pointer;
-    /* Change cursor to pointer on hover */
+}
+
+@media (max-width: 600px) {
+    #chat-container {
+        padding: 10px;
+    }
+
+    .chat-history {
+        height: 300px;
+    }
+
+    .user-message,
+    .chatbot-response {
+        max-width: 90%;
+    }
 }

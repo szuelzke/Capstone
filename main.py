@@ -1240,7 +1240,8 @@ def chatbot():
                     messages=[
                         {"role": "system", "content": "Your System Description Here."},
                         {"role": "user", "content": user_message}
-                    ]
+                    ],
+                    max_tokens=75
                 )
                 chatbot_response = response.choices[0].message.content
                 session['messages'].append({"user": user_message, "bot": chatbot_response})

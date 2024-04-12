@@ -18,12 +18,13 @@
 </head>
 
 <body>
-    <div id="chat-container" style="padding: 20px;">
+    <div id="chat-container">
         <h1>Chatbot Conversation</h1>
         <div class="chat-history">
             {% for message in messages %}
-            <div class="user-message">{{ message.user }}</div>
-            <div class="chatbot-response">{{ message.bot }}</div>
+            <div class="{{ 'user-message' if message.role == 'user' else 'chatbot-response' }}">
+                {{ message.content }}
+            </div>
             {% if message.error %}
             <div class="error-message">{{ message.error }}</div>
             {% endif %}
@@ -31,14 +32,14 @@
         </div>
 
         <form action="{{ url_for('chatbot') }}" method="post">
-            <input type="text" name="message" placeholder="Type your message here..." required>
+            <label for="message-input" class="visually-hidden">Type your message:</label>
+            <input id="message-input" type="text" name="message" placeholder="Type your message here..." required>
             <input type="submit" value="Send">
         </form>
     </div>
 </body>
 
 </html>
-
 
 
 
