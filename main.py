@@ -865,10 +865,12 @@ def transactions(account_id):
     else:
         return redirect(url_for('login'))
     
-@app.route('/<account_id>/transactions/<start_date>/<end_date>', methods=['GET'])
-def filter_transactions(account_id, start_date, end_date):
+@app.route('/<account_id>/transactions/<start_date>/<end_date>', methods=['POST'])
+def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
+        start_date = request.form.get('start_date')
+        end_date = request.form.get('end_date')
         # getting info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
@@ -1043,6 +1045,7 @@ def accept_ss_request(sharespend_id):
         )
         db_session.add(receiver_transaction)
         ss_request.is_paid = True
+        ss_request.init_transaction.amount = ss_request.init_transaction.amount - amount_split
         db_session.commit()
         db_session.close()
         update_balance(account_id)
