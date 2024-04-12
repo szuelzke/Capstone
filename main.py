@@ -972,6 +972,10 @@ def deletetransaction(account_id, transaction_id):
         db_session = Session()
         transaction = db_session.query(Transaction).filter_by(account_id=account_id, transaction_id=transaction_id).first()
         if transaction:
+            is_shared = db_session.query(ShareSpend).filter_by(transaction_id=transaction.transaction_id).first()
+            if is_shared:
+                db_session.delete(db_session.query(Transaction).filter_by(transaction_id=is_shared.receiver_transaction_id).first())
+                db_session.delete(is_shared)
             db_session.delete(transaction)
             db_session.commit()
             db_session.close()
