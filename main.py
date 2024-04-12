@@ -973,11 +973,16 @@ def deletetransaction(account_id, transaction_id):
         db_session = Session()
         transaction = db_session.query(Transaction).filter_by(account_id=account_id, transaction_id=transaction_id).first()
         if transaction:
+            # checks if transaction is connected to sharespend
             is_shared = db_session.query(ShareSpend).filter_by(transaction_id=transaction.transaction_id).first()
             if is_shared:
+                # is the parent transaction
                 receiver_transaction = db_session.query(Transaction).filter_by(transaction_id=is_shared.receiver_transaction_id).first()
                 if receiver_transaction:
                     db_session.delete(receiver_transaction)
+                # is the child transaction
+                else:
+                    return redirect(url_for('transactions', account_id=account_id))
                 db_session.delete(is_shared)
             db_session.delete(transaction)
             db_session.commit()
