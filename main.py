@@ -1242,8 +1242,8 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
-        if 'messages' not in session:
-            session['messages'] = []
+        # Clear existing messages each time this route is accessed
+        session['messages'] = []
 
         if request.method == 'POST':
             user_message = request.form['message']
@@ -1256,20 +1256,17 @@ def chatbot():
                     messages=[
                         {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
                         {"role": "user", "content": user_message}
-                    ]
+                    ],
+                    max_tokens=75
                 )
-                # Accessing the message content correctly
-                chatbot_response = completion.choices[0].message.content  # Accessing using dot notation
+                chatbot_response = completion.choices[0].message.content
                 session['messages'].append({'role': 'assistant', 'content': chatbot_response})
             except Exception as e:
                 session['messages'].append({'role': 'error', 'content': str(e)})
 
-            session.modified = True
-
         return render_template('chatbot.html', messages=session['messages'])
     else:
         return redirect(url_for('login'))
-
 
 # @app.route('/chatbot', methods=['GET', 'POST'])
 # def chatbot():
