@@ -1223,16 +1223,22 @@ def flashcash_transaction(student_id):
     
 
 #### ------------------------ Chatbot ------------------
+import logging
+
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
+    logging.debug("Entering chatbot route")
     if 'user_id' not in session or not session.get('mfa_completed', False):
+        logging.debug("Redirecting to login - user_id or MFA not completed")
         return redirect(url_for('login'))
 
     if 'messages' not in session:
         session['messages'] = []
+        logging.debug("Initialized empty message list in session")
 
     if request.method == 'POST':
         user_message = request.form.get('message')
+        logging.debug(f"Received message from user: {user_message}")
         if user_message:
             try:
                 response = client.chat.completions.create(
@@ -1245,10 +1251,13 @@ def chatbot():
                 )
                 chatbot_response = response.choices[0].message.content
                 session['messages'].append({"user": user_message, "bot": chatbot_response})
+                logging.debug(f"Bot response: {chatbot_response}")
             except Exception as e:
                 session['messages'].append({"error": "Failed to fetch response."})
+                logging.error("Error fetching response from API", exc_info=True)
 
     return render_template('chatbot.html', messages=session['messages'])
+
 
 
 
