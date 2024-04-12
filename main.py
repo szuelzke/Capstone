@@ -303,14 +303,16 @@ def get_category_balance(category_id, budget_id):
 
 # Alerts 
 # Function to send email
-def send_email(recipient, subject, body):
-    msg = Message(subject, recipients=[recipient])
-    msg.body = body
-    mail.send(msg)
+#def send_email(recipient, subject, body):
+#    msg = Message(subject, recipients=[recipient])
+#    msg.body = body
+#    mail.send(msg)
 
 # Function to check balance and send alert
 def check_balance_and_send_alert(account_id):
+    user_id = session['user_id']
     db_session = Session()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
     try:
         # Query the latest transaction for the account
         latest_transaction = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).first()
@@ -329,12 +331,24 @@ def check_balance_and_send_alert(account_id):
                 ) 
                 db_session.add(new_notification)
                 db_session.commit()
+
+                subject = "Alert: Low Account Balance"
+                sender = "flashfin.alerts@gmail.com"
+                recipients = [user.email]
+                text_body = f"Hello,\n\nAn account in your FlashFin account has a low balance. Balanace is below $50.00.\n\nBest regards,\nYour FlashFin Team"
+                html_body = f"<p>Hello,</p><p>An account in your FlashFin account has a low balance. Balanace is below $50.00.</p><p>Best regards,<br>Your FlashFin Team</p>"
+
+                msg = Message(subject, sender=sender, recipients=recipients)
+                msg.body = text_body
+                msg.html = html_body
+
+                mail.send(msg)
+
     except Exception as e:
         print("Error while checking balance and sending alert:", e)
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-    #subject = "Alert: Low Account Balance"
     #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
     #send_email(user_email, subject, body)
 
