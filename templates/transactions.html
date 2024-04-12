@@ -43,7 +43,9 @@
                     <td>
                         <!-- buttons for transaction -->
                         <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        {% if transaction.amount|float < 0 %}
                         <a href="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-share"></i>Share</button></a>
+                        {% endif %}
                         <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
                             <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
                         </form>
