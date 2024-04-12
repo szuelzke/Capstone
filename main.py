@@ -1032,7 +1032,7 @@ def accept_ss_request(sharespend_id):
         ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
 
         account_id = request.form.get("account_id")
-        amount_split = ss_request.amount_split * -1.0
+        amount_split = float(ss_request.amount_split) * -1.0
 
         receiver_transaction = Transaction(
             account_id = account_id,
