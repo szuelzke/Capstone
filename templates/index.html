@@ -36,6 +36,7 @@
 
         </div>-->
         <h2>{{user.first_name}} {{user.last_name}}</h2>
+        <h3>{{user.user_id}}
 
         <div class="nav">
             <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
@@ -97,8 +98,9 @@
         <div class="row">
 
             {% for id, obj in accounts_list.items() %}
+            {% set account_stats = get_account_stats(id) %}
             <a href="{{url_for('account', account_id=id)}}" class="card no-bg view-balance">
-                <h1 class="hide-text">{{ obj["balance"]}}</h1>
+                <h1 class="hide-text">{{ account_stats["balance"]}}</h1>
                 <h2>{{ obj["name"] }}</h2>
             </a>
             {% endfor %}
