@@ -1251,7 +1251,6 @@ def chatbot():
 
             # OpenAI API call
             try:
-
                 completion = client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
@@ -1259,7 +1258,8 @@ def chatbot():
                         {"role": "user", "content": user_message}
                     ]
                 )
-                chatbot_response = completion.choices[0].message['content']
+                # Accessing the message content correctly
+                chatbot_response = completion['choices'][0]['message']['content']
                 session['messages'].append({'role': 'assistant', 'content': chatbot_response})
             except Exception as e:
                 session['messages'].append({'role': 'error', 'content': str(e)})
