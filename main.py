@@ -355,6 +355,7 @@ def get_sharespend_requests():
     ss_list = {}
     if ss_requests:
         for request in ss_requests:
+            ss_list[request.share_id] = {}
             ss_list[request.share_id]['sender_id'] = request.sender_id
             ss_list[request.share_id]['amount_split'] = request.amount_split
         return ss_list
