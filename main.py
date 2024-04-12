@@ -1242,17 +1242,21 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
+        # Initialize messages if not already done
         if 'messages' not in session:
             session['messages'] = []
 
         if request.method == 'POST':
             user_message = request.form['message']
+            # Append user's message to session messages
             session['messages'].append({'role': 'user', 'content': user_message})
 
-            # Simulating API response for the example. Replace this with your actual API call and handling.
-            api_response = "Hey there, finance is like the secret sauce that keeps the financial world sizzling! It's all about managing money - be it saving, investing, budgeting, or understanding how money flows in the world. Think of finance as the wizardry behind making smart decisions with your money to help you reach your financial goals. So buckle up, because with the right financial know-how, you can turn your financial dreams into reality!"
+            # Simulated API response, replace with actual API call and handle exceptions
+            api_response = "Simulated response based on user's message."
             session['messages'].append({'role': 'assistant', 'content': api_response})
 
+        # Ensure messages are saved in session
+        session.modified = True
         return render_template('chatbot.html', messages=session['messages'])
     else:
         return redirect(url_for('login'))

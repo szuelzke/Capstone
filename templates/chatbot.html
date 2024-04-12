@@ -12,8 +12,7 @@
         <h1>Chatbot Conversation</h1>
         <div class="chat-history">
             {% for message in messages %}
-            <div
-                class="{{ 'user-message' if message.role == 'user' else 'assistant-response' if message.role == 'assistant' }}">
+            <div class="{{ 'user-message' if message.role == 'user' else 'assistant-response' }}">
                 {{ message.content }}
             </div>
             {% endfor %}
