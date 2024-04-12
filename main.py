@@ -12,7 +12,7 @@ import qrcode
 import base64
 import secrets
 import datetime
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import logging
 import time
 
