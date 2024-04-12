@@ -1049,6 +1049,7 @@ def accept_ss_request(sharespend_id):
         )
         db_session.add(receiver_transaction)
         ss_request.is_paid = True
+        ss_request.receiver_transaction_id = receiver_transaction.transaction_id
         ss_request.init_transaction.amount = ss_request.init_transaction.amount - amount_split
         db_session.commit()
         db_session.close()
