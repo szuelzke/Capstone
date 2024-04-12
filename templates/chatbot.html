@@ -9,35 +9,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
-    <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
 </head>
 
-<div id="chat-container">
-    <h1>Chatbot Conversation</h1>
-    <div class="chat-history">
-        {% for message in messages %}
-        <div class="{{ 'user-message' if message['role'] == 'user' else 'chatbot-response' }}">
-            {{ message['content'] }}
+<body>
+    <div id="chat-container">
+        <h1>Chatbot Conversation</h1>
+        <div class="chat-history">
+            {% for message in messages %}
+            <div
+                class="{{ 'user-message' if message.role == 'user' else 'chatbot-response' if message.role == 'bot' else 'error-message' }}">
+                {{ message.content }}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <form action="{{ url_for('chatbot') }}" method="post">
+            <input type="text" name="message" placeholder="Type your message here..." required>
+            <input type="submit" value="Send">
+        </form>
     </div>
-    <form action="{{ url_for('chatbot') }}" method="post">
-        <input type="text" name="message" placeholder="Type your message here..." required>
-        <input type="submit" value="Send">
-    </form>
-</div>
-
 </body>
 
 </html>
-
-
-
 
 
 

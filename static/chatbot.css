@@ -1,33 +1,41 @@
 #chat-container {
     max-width: 800px;
-    margin: 20px auto;
-    padding: 10px;
+    margin: auto;
+    padding: 20px;
     border: 1px solid #ccc;
-    overflow: hidden;
-    /* Changed from auto to prevent content from being hidden */
+    overflow-y: auto;
+}
+
+h1 {
+    color: black;
+    text-align: center;
 }
 
 .chat-history {
     height: 400px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-    /* Light background for the chat area */
+    overflow-y: scroll;
 }
 
 .user-message {
     background-color: #daf1da;
-    /* Light green for user messages */
-    margin: 5px;
     padding: 10px;
-    border-radius: 10px;
+    margin: 5px;
+    border-radius: 5px;
     text-align: right;
 }
 
 .chatbot-response {
     background-color: #f1f1da;
-    /* Light yellow for bot responses */
-    margin: 5px;
     padding: 10px;
-    border-radius: 10px;
+    margin: 5px;
+    border-radius: 5px;
     text-align: left;
+}
+
+.error-message {
+    color: red;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: center;
 }
