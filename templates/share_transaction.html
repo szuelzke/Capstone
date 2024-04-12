@@ -11,6 +11,7 @@
     {% endif %}
     <div class="card">
         <form class="form-deco" action="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
+            {% set transaction_amt = transaction.amount * -1 %}
             <!-- displays info about transaction -->
             <label for="id">Date of Transaction</label>
             <input 
@@ -24,7 +25,7 @@
                 type="number"
                 id="amount"  
                 name="amount" 
-                value="{{ transaction.amount }} * -1" 
+                value="{{ transaction_amt }}" 
                 readonly />
             <label for="title">Title</label>
             <input 
@@ -39,9 +40,9 @@
                 type="number"
                 id="split_amount"
                 name="split_amount"
-                value=" {{ transaction.amount }} * -1"
+                value=" {{ transaction_amt }}"
                 min="0"
-                max="{{ transaction.amount }} * -1" />
+                max="{{ transaction_amt }}" />
             <label for="receiver">Share With</label>
             <input
                 type="text"
