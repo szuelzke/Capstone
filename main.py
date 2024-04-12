@@ -331,24 +331,24 @@ def check_balance_and_send_alert(account_id):
                 ) 
                 db_session.add(new_notification)
                 db_session.commit()
+
+                subject = "Alert: Low Account Balance"
+                sender = "flashfin.alerts@gmail.com"
+                recipients = [user.email]
+                text_body = f"Hello,\n\nAn account in your FlashFin account has a low balance. Balanace is below $50.00.\n\nBest regards,\nYour FlashFin Team"
+                html_body = f"<p>Hello,</p><p>An account in your FlashFin account has a low balance. Balanace is below $50.00.</p><p>Best regards,<br>Your FlashFin Team</p>"
+
+                msg = Message(subject, sender=sender, recipients=recipients)
+                msg.body = text_body
+                msg.html = html_body
+
+                mail.send(msg)
+
     except Exception as e:
         print("Error while checking balance and sending alert:", e)
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-
-        subject = "Alert: Low Account Balance"
-        sender = "flashfin.alerts@gmail.com"
-        recipients = [user.email]
-        text_body = f"Hello,\n\nAn account in your FlashFin account has a low balance. Balanace is below $50.00.\n\nBest regards,\nYour FlashFin Team"
-        html_body = f"<p>Hello,</p><p>An account in your FlashFin account has a low balance. Balanace is below $50.00.</p><p>Best regards,<br>Your FlashFin Team</p>"
-
-        msg = Message(subject, sender=sender, recipients=recipients)
-        msg.body = text_body
-        msg.html = html_body
-
-        mail.send(msg)
-    #subject = "Alert: Low Account Balance"
     #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
     #send_email(user_email, subject, body)
 
