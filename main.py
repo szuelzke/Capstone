@@ -970,7 +970,7 @@ def sharetransaction(account_id, transaction_id):
         if request.method == 'GET':
             db_session.close()
             if transaction.amount > 0:
-                return redirect(url_for('transactions', account=account))
+                return redirect(url_for('transactions', account_id=account_id))
             else:
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
