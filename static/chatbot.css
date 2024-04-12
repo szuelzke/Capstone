@@ -1,69 +1,33 @@
 #chat-container {
     max-width: 800px;
-    margin: auto;
-    padding: 20px;
+    margin: 20px auto;
+    padding: 10px;
     border: 1px solid #ccc;
-    height: auto;
-    overflow-y: auto;
-}
-
-h1 {
-    color: black;
-    text-align: center;
+    overflow: hidden;
+    /* Changed from auto to prevent content from being hidden */
 }
 
 .chat-history {
     height: 400px;
-    overflow-y: scroll;
-}
-
-.user-message,
-.chatbot-response {
-    padding: 8px;
-    margin-bottom: 2px;
-    border-radius: 5px;
-    max-width: 75%;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    /* Light background for the chat area */
 }
 
 .user-message {
-    background-color: #f4f4f8;
-    align-self: flex-end;
-    margin-left: auto;
+    background-color: #daf1da;
+    /* Light green for user messages */
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
     text-align: right;
 }
 
 .chatbot-response {
-    background-color: #e2e2e2;
-    align-self: flex-start;
+    background-color: #f1f1da;
+    /* Light yellow for bot responses */
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
     text-align: left;
-}
-
-input[type="text"] {
-    display: block;
-    width: calc(100% - 20px);
-    margin: 10px auto;
-    padding: 10px;
-}
-
-input[type="submit"] {
-    display: block;
-    width: 100px;
-    margin: 10px auto;
-    padding: 10px;
-    cursor: pointer;
-}
-
-@media (max-width: 600px) {
-    #chat-container {
-        padding: 10px;
-    }
-
-    .chat-history {
-        height: 300px;
-    }
-
-    .user-message,
-    .chatbot-response {
-        max-width: 90%;
-    }
 }
