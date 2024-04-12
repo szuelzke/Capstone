@@ -144,6 +144,9 @@ class ShareSpend(Base):
     receiver_id = Column(Integer, ForeignKey(User.user_id))
     amount_split = Column(DECIMAL(10, 2))
     is_paid = Column(Boolean)
+    
+    sender = relationship('User', foreign_keys='ShareSpend.sender_id')
+    receiver = relationship('User', foreign_keys='ShareSpend.receiver_id')
 
 
 
@@ -357,7 +360,7 @@ def get_sharespend_requests():
     if ss_requests:
         for request in ss_requests:
             ss_list[request.share_id] = {}
-            ss_list[request.share_id]['sender_id'] = request.sender_id
+            ss_list[request.share_id]['sender_name'] = request.sender.social_name
             ss_list[request.share_id]['amount_split'] = request.amount_split
         return ss_list
     else:
