@@ -22,6 +22,12 @@
             <input type="submit" value="Send">
         </form>
     </div>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            fetch('/clear_chat', { method: 'GET' });  // Send a request to clear the session
+        });
+    </script>
+
 </body>
 
 </html>
