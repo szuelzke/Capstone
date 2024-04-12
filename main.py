@@ -969,7 +969,10 @@ def sharetransaction(account_id, transaction_id):
 
         if request.method == 'GET':
             db_session.close()
-            return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
+            if transaction.amount > 0:
+                return redirect(url_for('transactions', account=account))
+            else:
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
             split_amount = request.form.get("split_amount")
             receiver_id = request.form.get("receiver")
