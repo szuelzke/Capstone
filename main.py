@@ -1225,33 +1225,6 @@ def flashcash_transaction(student_id):
 #### ------------------------ Chatbot ------------------
 
 
-@app.route('/chatbot', methods=['GET', 'POST'])
-def chatbot():
-    if 'user_id' not in session or not session.get('mfa_completed', False):
-        return redirect(url_for('login'))
-
-    if 'messages' not in session:
-        session['messages'] = []
-
-    if request.method == 'POST':
-        user_message = request.form.get('message')
-        if user_message:
-            try:
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system", "content": "Your System Description Here."},
-                        {"role": "user", "content": user_message}
-                    ],
-                    max_tokens=75
-                )
-                chatbot_response = response['choices'][0]['message']['content']
-                session['messages'].append({"role": "user", "content": user_message})
-                session['messages'].append({"role": "bot", "content": chatbot_response})
-            except Exception as e:
-                session['messages'].append({"role": "error", "content": "Failed to fetch response."})
-
-    return render_template('chatbot.html', messages=session['messages'])
 
 
 # @app.route('/chatbot', methods=['GET', 'POST'])
@@ -1292,41 +1265,41 @@ def chatbot():
 
 
 
-# @app.route('/chatbot', methods=['GET', 'POST'])
-# def chatbot():
-#     if 'user_id' in session and session.get('mfa_completed', False):
-#         if request.method == 'POST':
-#             user_message = request.form['message']
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if 'user_id' in session and session.get('mfa_completed', False):
+        if request.method == 'POST':
+            user_message = request.form['message']
 
-#             completion = client.chat.completions.create(
-#                 model="gpt-3.5-turbo",
-#                 messages=[
-#                     {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
-#                     {"role": "user", "content": user_message}
-#                 ]
-#             )
+            completion = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
+                    {"role": "user", "content": user_message}
+                ]
+            )
 
-#             chatbot_response = completion.choices[0].message  # Use .message to access the response
-#             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-#         return render_template('chatbot.html')
-#     else:
-#         return redirect(url_for('login'))
-# @app.route("/chatbot", methods=["POST"])
-# def chatbot():
-#     user_input = request.form["message"]
-#     prompt = f"User: {user_input}\nChatbot "
-#     chat_history = []
-#     response = openai.Completion.create(
-#         engine = "text-davinci-002",
-#         prompt = prompt,
-#         temperature =0.5,
-#         max_tokens = 60,
-#         top_p = 1,
-#         frequency_penalty = 0,
-#         stop = ["\nUser: ", "\nChatbot: "]
-#     )
-#     bot_response = response.choices[0].text.strip()
-#     chat_history.append(f"User: {user_input}")
+            chatbot_response = completion.choices[0].message  # Use .message to access the response
+            return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
+        return render_template('chatbot.html')
+    else:
+        return redirect(url_for('login'))
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    user_input = request.form["message"]
+    prompt = f"User: {user_input}\nChatbot "
+    chat_history = []
+    response = openai.Completion.create(
+        engine = "text-davinci-002",
+        prompt = prompt,
+        temperature =0.5,
+        max_tokens = 60,
+        top_p = 1,
+        frequency_penalty = 0,
+        stop = ["\nUser: ", "\nChatbot: "]
+    )
+    bot_response = response.choices[0].text.strip()
+    chat_history.append(f"User: {user_input}")
 
 # @app.route("/chatbot", methods=["POST"])
 # def chatbot():
