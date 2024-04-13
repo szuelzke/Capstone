@@ -32,8 +32,10 @@
 
 <body>
     <div id="sidebar" class="sidebar">
-        <img src="{{ url_for('static', filename='FlashFinLogo.png') }}" alt="Logo" class="Logo">
-        <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
+        <div class="Logo">
+            <img src="{{ url_for('static', filename='FlashFinLogo.png') }}" alt="Logo">
+        </div>
+        <h1><a href=" {{ url_for('home') }}">FlashFin</a></h1>
         <!--<div class='profile-img'>
             <img src="{{ user.image_link }}"></img>
 
