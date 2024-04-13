@@ -13,15 +13,10 @@
     border: 1px solid #ccc;
     background-color: #002955;
     padding: 20px;
-    width: 60%;
+    width: 80%;
+    height: 80%;
     /* Adjust based on preference */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.conversation-title {
-    font-family: Arial, sans-serif;
-    color: #333;
-    text-align: center;
 }
 
 /* Styles for the chat history */
@@ -78,4 +73,11 @@
 
 .chatbot-form input[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+.conversation-title {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
 }
