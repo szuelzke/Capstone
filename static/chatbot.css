@@ -17,6 +17,8 @@
     height: 80%;
     /* Adjust based on preference */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 /* Styles for the chat history */
@@ -27,7 +29,6 @@
     /* Adds scrollbar when content overflows */
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
     background-color: #002955;
 }
 
