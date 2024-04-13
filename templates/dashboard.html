@@ -96,7 +96,7 @@
 </div>
 
 <div class="row">
-    <div class="card" id="graph">
+    <div class="card" id="piegraph">
     </div>
     <script>
        var budgetsStats = JSON.parse('{{ budgets_stats | tojson | safe }}');
@@ -119,30 +119,24 @@
         };
 
         // Plotting the chart
-        Plotly.newPlot('graph', [{
+        Plotly.newPlot('piegraph', [{
             values: data.map(item => item.value),
             labels: data.map(item => item.label),
             type: 'pie'
         }], layout);
     </script>
-    <div class="card">
-        <ul>
-            <li>{{ account_stats["name"]}}</li>
-            <li>account id = {{ account_stats["id"]}}</li>
-            <li>balance = {{ account_stats["balance"]}}</li>
-            <li>credit = {{ account_stats["credit"]}}</li>
-            <li>debit = {{ account_stats["debit"]}}</li>
-            <li>total transactions = {{ account_stats["transaction_count"]}}</li>
-        </ul>
-        {% for id, obj in budgets_stats.items() %}
-        <ul>
-        <li>{{ id }}</li>
-        <li>total transactions = {{ obj["count"]}}</li>
-        <li>allotted amount = {{ obj["amount"]}}</li>
-        <li>available = {{ obj["available"]}}</li>
-        <li>activity = {{ obj["activity"]}}</li>
-        </ul>
-        {% endfor%}
+    <div class="card" id="linegraph">
+        <script>
+        var trace1 = {
+            x: [1, 2, 3, 4],
+            y: [10, 15, 13, 17],
+            type: 'scatter'
+          };
+          
+          var data = [trace1, trace2];
+          
+          Plotly.newPlot('linegraph', data);
+          </script>
     </div>
 </div>
 {% endblock %}
