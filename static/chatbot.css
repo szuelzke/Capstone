@@ -1,6 +1,7 @@
 /* Scoped chat container */
 #chat-container.chatbot-container {
     width: 80%;
+    height: 80%;
     margin: auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -50,4 +51,8 @@
     color: white;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.conversation-title {
+    text-align: center
 }

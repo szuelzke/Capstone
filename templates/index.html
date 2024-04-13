@@ -108,33 +108,34 @@
 
         <div class="row">
             <div class="card">
-            <!-- display share spend requests -->
-            {% set ss_list = get_sharespend_requests() %}
-            {% if ss_list != "No requests" %}
+                <!-- display share spend requests -->
+                {% set ss_list = get_sharespend_requests() %}
+                {% if ss_list != "No requests" %}
                 <h2>Share Spend Requests</h2>
                 {% for ss_id, ss_info in ss_list.items() %}
-                    <p>{{ ss_info['sender_name']}} requests ${{ ss_info['amount_split']}} from you.</p>
-                    <li><select name="account_id" id="account_selector" form="accept-ss-request">
-                            {% for id, obj in accounts_list.items() %}
-                            <option value="{{ id }}">{{ obj["name"] }}</option>
-                            {% endfor %}
-                          </select></li>
-                        <li>
-                            <form id="accept-ss-request" action="{{ url_for('accept_ss_request', sharespend_id=ss_id)}}" method="post">
-                                <input type="submit" value="Accept" />
-                            </form>
-                            <form action="{{ url_for('deny_ss_request', sharespend_id=ss_id)}}" method="post">
-                                <input type="submit" value="Deny" />
-                            </form>
-                        </li>
-                          
+                <p>{{ ss_info['sender_name']}} requests ${{ ss_info['amount_split']}} from you.</p>
+                <li><select name="account_id" id="account_selector" form="accept-ss-request">
+                        {% for id, obj in accounts_list.items() %}
+                        <option value="{{ id }}">{{ obj["name"] }}</option>
+                        {% endfor %}
+                    </select></li>
+                <li>
+                    <form id="accept-ss-request" action="{{ url_for('accept_ss_request', sharespend_id=ss_id)}}"
+                        method="post">
+                        <input type="submit" value="Accept" />
+                    </form>
+                    <form action="{{ url_for('deny_ss_request', sharespend_id=ss_id)}}" method="post">
+                        <input type="submit" value="Deny" />
+                    </form>
+                </li>
+
                 {% endfor %}
-            {% else %}
-                    <h2>No Share Spend Requests</h2>
-            {% endif %}
-                </div>
+                {% else %}
+                <h2>No Share Spend Requests</h2>
+                {% endif %}
             </div>
-            {% endblock %}
+        </div>
+        {% endblock %}
     </div>
 
 </body>
