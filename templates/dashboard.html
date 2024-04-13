@@ -97,23 +97,20 @@
 
 <div class="row">
     <div class="card">
-        <ul>
-            <li>{{ account_stats["name"]}}</li>
-            <li>account id = {{ account_stats["id"]}}</li>
-            <li>balance = {{ account_stats["balance"]}}</li>
-            <li>credit = {{ account_stats["credit"]}}</li>
-            <li>debit = {{ account_stats["debit"]}}</li>
-            <li>total transactions = {{ account_stats["transaction_count"]}}</li>
-        </ul>
-        {% for id, obj in budgets_stats.items() %}
-        <ul>
-        <li>{{ id }}</li>
-        <li>total transactions = {{ obj["count"]}}</li>
-        <li>allotted amount = {{ obj["amount"]}}</li>
-        <li>available = {{ obj["available"]}}</li>
-        <li>activity = {{ obj["activity"]}}</li>
-        </ul>
-        {% endfor%}
+        <script>
+        var data = [{
+            values: [19, 26, 55],
+            labels: ['Test', 'Test', 'Test'],
+            type: 'pie'
+          }];
+          
+          var layout = {
+            height: 400,
+            width: 500
+          };
+          
+          Plotly.newPlot('card', data, layout);
+        </script>
     </div>
     <div class="card">
         <ul>
