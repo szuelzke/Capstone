@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
     /* Full height of the viewport */
     background-color: #003875;
     /* Light grey background */
@@ -15,7 +15,7 @@
     padding: 20px;
     width: 80%;
     justify-content: space-between;
-    height: 70%;
+    height: 80%;
     /* Adjust based on preference */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
