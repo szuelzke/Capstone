@@ -132,10 +132,12 @@
             y: [10, 15, 13, 17],
             type: 'scatter'
           };
-          
+          var layout = {
+            title: 'Monthly Budget'
+          }
           var data = [trace1];
           
-          Plotly.newPlot('linegraph', data);
+          Plotly.newPlot('linegraph', data, layout);
           </script>
 </div>
 {% endblock %}
