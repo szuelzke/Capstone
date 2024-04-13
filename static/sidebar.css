@@ -12,17 +12,16 @@
     z-index: 1;
 }
 
-.Logo {
-    display: block;
-    width: 100px;
-    margin: 20px auto -10px;
+
+.LogoTitle {
+    display: flex;
+    align-items: center;
 }
 
 .Logo img {
-    max-width: 100%;
-    /* Ensure the image doesn't exceed its container */
-    height: auto;
-    /* Maintain aspect ratio */
+    width: auto;
+    height: 50px;
+    margin-right: 10px;
 }
 
 
