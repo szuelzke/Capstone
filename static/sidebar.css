@@ -12,8 +12,17 @@
     z-index: 1;
 }
 
+.Logo {
+    img {
+        width: 10vw;
+        height: 10vh;
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
 .sidebar h1 a {
-    color:#FFF;
+    color: #FFF;
     text-decoration: none;
 }
 
@@ -27,17 +36,18 @@
 
 @media screen and (max-width: 400px) {
     .sidebar a {
-      text-align: center;
-      float: none;
+        text-align: center;
+        float: none;
     }
-  }
+}
 
 /* sidebar styling */
 .profile-img {
     position: relative;
-    width:max-content;
-    margin:0px auto;
+    width: max-content;
+    margin: 0px auto;
 }
+
 .profile-img img {
     width: 100px;
     padding: 5px;
