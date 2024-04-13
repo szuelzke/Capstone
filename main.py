@@ -1260,12 +1260,12 @@ def chatbot():
                     model="gpt-3.5-turbo",
                     messages=[
                         {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
-                        {"role": "user", "content": user_message}
+                        {"role": "user", "content": user_message},
+                        max_tokens = 75
                     ],
-                    max_tokens = 75
                 )
                 # Accessing the message content correctly
-                chatbot_response = completion.choices[0].message.content  # Accessing using dot notation
+                chatbot_response = completion.choices[0].message.content  
                 session['messages'].append({'role': 'assistant', 'content': chatbot_response})
             except Exception as e:
                 session['messages'].append({'role': 'error', 'content': str(e)})
