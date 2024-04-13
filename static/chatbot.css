@@ -25,18 +25,24 @@
 }
 
 .user-message.chatbot-user {
-    background-color: #e7f3fe;
-    color: #333;
+    background-color: #d1e8ff;
+    /* Light blue for better visibility */
+    color: #202020;
     text-align: left;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 2px 2px 4px #b0b0b0;
 }
 
 .assistant-response.chatbot-assistant {
-    background-color: #f4f4f4;
-    color: #666;
+    background-color: #fff2cc;
+    color: #202020;
     text-align: right;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: -2px 2px 4px #b0b0b0;
 }
 
-/* Scoped form input */
 .chatbot-form input[type="text"] {
     flex-grow: 1;
     padding: 10px;
@@ -54,5 +60,5 @@
 }
 
 .conversation-title {
-    text-align: center
+    text-align: center;
 }
