@@ -2,22 +2,20 @@
 {% block title %}Flashy{% endblock %}
 {% block content %}
 <div class="row row-v">
-    <div class='card'>
-        <div id="chat-container" class="chatbot-container">
-            <h1 class="conversation-title">Conversation History</h1>
-            <div class="chat-history chatbot-history">
-                {% for message in messages %}
-                <div
-                    class="{{ 'user-message chatbot-user' if message.role == 'user' else 'assistant-response chatbot-assistant' if message.role == 'assistant' }}">
-                    {{ message.content }}
-                </div>
-                {% endfor %}
+    <div id="chat-container" class="chatbot-container">
+        <h1 class="conversation-title">Conversation History</h1>
+        <div class="chat-history chatbot-history">
+            {% for message in messages %}
+            <div
+                class="{{ 'user-message chatbot-user' if message.role == 'user' else 'assistant-response chatbot-assistant' if message.role == 'assistant' }}">
+                {{ message.content }}
             </div>
-            <form action="{{ url_for('chatbot') }}" method="post" class="chatbot-form">
-                <input type="text" name="message" placeholder="Type your message here..." required>
-                <input type="submit" value="Send">
-            </form>
+            {% endfor %}
         </div>
+        <form action="{{ url_for('chatbot') }}" method="post" class="chatbot-form">
+            <input type="text" name="message" placeholder="Type your message here..." required>
+            <input type="submit" value="Send">
+        </form>
     </div>
     <script>
         window.addEventListener('beforeunload', function (e) {
