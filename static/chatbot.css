@@ -28,7 +28,7 @@
     margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ddd;
-    background-color: #fafafa;
+    background-color: #002955;
 }
 
 .user-message {
@@ -39,10 +39,11 @@
 }
 
 .assistant-response {
-    background-color: #e0ffe0;
+    background-color: #002955;
     padding: 5px 10px;
     margin: 5px;
     border-radius: 10px;
+    color: white;
 }
 
 /* Flexbox setup for form */
