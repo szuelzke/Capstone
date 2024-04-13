@@ -15,6 +15,7 @@
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
+
 }
 
 /* Scoped message styling */
@@ -74,5 +75,5 @@
     flex-wrap: wrap;
     gap: 10px 10px;
     margin: 12px;
-    width: 90%;
+    width: 90vh;
 }
