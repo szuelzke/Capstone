@@ -8,7 +8,7 @@
             {% for message in messages %}
             <div
                 class="{{ 'user-message chatbot-user' if message.role == 'user' else 'assistant-response chatbot-assistant' if message.role == 'assistant' }}">
-                {{ message.content }}
+                <strong>{{ 'You:' if message.role == 'user' else 'Flashy:' }}</strong> {{ message.content }}
             </div>
             {% endfor %}
         </div>
