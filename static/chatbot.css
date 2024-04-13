@@ -1,5 +1,6 @@
 /* Scoped chat container */
 #chat-container.chatbot-container {
+    display: flex;
     width: 60vw;
     height: 80%;
     margin: auto;
