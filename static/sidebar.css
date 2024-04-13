@@ -12,6 +12,19 @@
     z-index: 1;
 }
 
+.Logo {
+    display: block;
+    width: 100px;
+    /* Adjust width as needed */
+    margin: 20px auto;
+    /* Adjust margin as needed */
+}
+
+.Logo img {
+    width: 100%;
+    height: auto;
+}
+
 
 .sidebar h1 a {
     color: #FFF;
