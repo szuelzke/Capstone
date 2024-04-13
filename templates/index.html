@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <img src="{{ url_for('static', filename='FlashFinLogo.png') }}" alt="Logo" class="Logo">
     <title>Flashfin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,6 +32,7 @@
 
 <body>
     <div id="sidebar" class="sidebar">
+        <img src="{{ url_for('static', filename='FlashFinLogo.png') }}" alt="Logo" class="Logo">
         <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
         <!--<div class='profile-img'>
             <img src="{{ user.image_link }}"></img>
