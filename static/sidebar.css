@@ -19,12 +19,10 @@
 }
 
 .Logo img {
-    width: 100%;
-    /* Ensure the image takes up the full width of its container */
+    max-width: 100%;
+    /* Ensure the image doesn't exceed its container */
     height: auto;
     /* Maintain aspect ratio */
-    max-width: 100px;
-    /* Limit the maximum width of the image */
 }
 
 
