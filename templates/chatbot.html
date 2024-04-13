@@ -3,37 +3,20 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Flashfin</title>
-    <meta name="description" content="">
+    <title>Chatbot - Flashfin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
 
-    {% block stylesheet %}
-    {% endblock %}
-
-    <!--font awesome icons-->
-    <script src="https://kit.fontawesome.com/29dc434267.js" crossorigin="anonymous"></script>
-
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-
-
 </head>
 
 <body>
-
     <div id="sidebar" class="sidebar">
         <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
- 
-
         <div class="nav">
             <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
             <a href="{{ url_for('settings') }}"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
@@ -43,27 +26,9 @@
 
 
     </div>
-    <div id="main-content" class="main">
-        <div class="row">
-            <div class="topbar">
-                <ul>
-                    <li class="page-title">{% block title %}<a href="/">Home</a>{% endblock %}</li>
-                    <form action="{{ url_for('logout') }}" method="post">
-                        <button class='fa-solid fa-power-off'></button>
-                    </form>
-                    <form action="{{ url_for('chatbot')}}" method="get">
-                        <button class="fa-solid fa-comments"></button>
-                    </form>
-                    <form action="{{ url_for('display_notifications')}}" method="post">
-                        <button class="fa-solid fa-bell"></button>
-                    </form>
-                </ul>
-            </div>
-        </div>
-        {% block content %}
 
-        <div id="chat-container" class="chatbot-container">
-            <h1>Chatbot Conversation</h1>
+    <div id="chat-container" class="chatbot-container">
+        <h1>Chatbot Conversation</h1>
         <div class="chat-history chatbot-history">
             {% for message in messages %}
             <div
@@ -82,7 +47,6 @@
             fetch('/clear_chat', { method: 'GET' });  // Send a request to clear the session
         });
     </script>
-    </div>
 
 </body>
 
