@@ -1258,12 +1258,14 @@ def chatbot():
             try:
                 completion = client.chat.completions.create(
                     model="gpt-3.5-turbo",
+                    max_tokens = 75,
+                    temperature = .3,
                     messages=[
                         {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope. You keep your responses within the token limit which is 75 tokens."},
                         {"role": "user", "content": user_message},
                         
                     ],
-                    max_tokens = 75
+                   
                 )
                 # Accessing the message content correctly
                 chatbot_response = completion.choices[0].message.content  
