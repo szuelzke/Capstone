@@ -24,7 +24,6 @@
 
 /* Styles for the chat history */
 .chat-history {
-    height: 300px;
     /* Fixed height for chat history */
     overflow-y: auto;
     /* Adds scrollbar when content overflows */
