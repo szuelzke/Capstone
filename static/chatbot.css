@@ -15,7 +15,7 @@
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
-
+    border-radius: 20%;
 }
 
 /* Scoped message styling */
@@ -75,4 +75,5 @@
     flex-wrap: wrap;
     gap: 10px 10px;
     margin: 12px;
+    color: white;
 }
