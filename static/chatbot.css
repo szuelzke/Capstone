@@ -60,12 +60,13 @@
 
 .chatbot-form input[type="submit"] {
     padding: 10px 20px;
+    flex-shrink: 0;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    width: 10vh;
+    width: auto;
 }
 
 .conversation-title {
