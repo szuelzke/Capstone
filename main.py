@@ -1242,11 +1242,12 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = session['user_id'] #
-        # Getting user info
-        db_session = Session() #
-        user = db_session.query(User).filter_by(user_id=user_id).first() #
-        db_session.close() #
+        user_id = session['user_id']
+        # Retrieve user info
+        db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
+        db_session.close()
+
         if 'messages' not in session:
             session['messages'] = []
 
@@ -1254,28 +1255,31 @@ def chatbot():
             user_message = request.form['message']
             session['messages'].append({'role': 'user', 'content': user_message})
 
-            # OpenAI API call
+            # Trim conversation history if necessary to keep it manageable
+            max_conversation_length = 10  # Maintain last 10 interactions
+            trimmed_messages = session['messages'][-max_conversation_length:]
+
+            # Construct messages for API, including system-level instructions and user conversation history
+            messages_for_api = [
+                {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope. You keep your responses within the token limit which is 75 tokens."}
+            ] + trimmed_messages
+
+            # OpenAI API call to generate a response
             try:
                 completion = client.chat.completions.create(
                     model="gpt-3.5-turbo",
-                    max_tokens = 75,
-                    temperature = .3,
-                    messages=[
-                        {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope. You keep your responses within the token limit which is 75 tokens."},
-                        {"role": "user", "content": user_message},
-                        
-                    ],
-                   
+                    max_tokens=75,
+                    temperature=0.3,
+                    messages=messages_for_api
                 )
-                # Accessing the message content correctly
-                chatbot_response = completion.choices[0].message.content  
+                chatbot_response = completion.choices[0].message.content
                 session['messages'].append({'role': 'assistant', 'content': chatbot_response})
             except Exception as e:
                 session['messages'].append({'role': 'error', 'content': str(e)})
 
             session.modified = True
 
-        return render_template('chatbot.html', user=user,messages=session['messages'])
+        return render_template('chatbot.html', user=user, messages=session['messages'])
     else:
         return redirect(url_for('login'))
     
