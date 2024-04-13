@@ -97,21 +97,36 @@
 
 <div class="row">
     <div class="card" id="graph">
-        <script>
-            var data = [{
-                values: [19, 26, 55],
-                labels: ['Test', 'Test 2', 'Test 3'],
-                type: 'pie'
-              }];
-              
-              var layout = {
-                height: 500,
-                width: 400
-              };
-              
-              Plotly.newPlot('graph', data, layout);
-        </script>
     </div>
+    <script>
+        // Extracting data from the account_stats and budgets_stats variables
+        var labels = [];
+        var values = [];
+                
+        // Extracting data from budgets_stats
+
+        for (var id in budgets_stats.items()){
+            labels.push(id);
+            for(obj in budgets_stats.items()){
+                values.push(obj.count);
+            };
+        };
+        
+        // Creating Plotly data object
+        var data = [{
+            values: values,
+            labels: labels,
+            type: 'pie'
+        }];
+        
+        var layout = {
+            height: 500,
+            width: 400
+        };
+        
+        // Plotting the chart
+        Plotly.newPlot('graph', data, layout);
+    </script>
     <div class="card">
         <ul>
             <li>{{ account_stats["name"]}}</li>
