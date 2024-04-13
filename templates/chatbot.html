@@ -57,6 +57,7 @@
 {% block title %}Chatbot{% endblock %}
 {% block content %}
 <div class="row row-v">
+    <div class='card'>
     <div id="chat-container" class="chatbot-container">
         <h1>Chatbot Conversation</h1>
         <div class="chat-history chatbot-history">
@@ -71,6 +72,7 @@
             <input type="text" name="message" placeholder="Type your message here..." required>
             <input type="submit" value="Send">
         </form>
+    </div>
     </div>
     <script>
         window.addEventListener('beforeunload', function (e) {
