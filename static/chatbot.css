@@ -34,14 +34,14 @@
 }
 
 .user-message {
-    background-color: #e9e9ff;
+    background-color: #002955;
     padding: 5px 10px;
     margin: 5px;
     border-radius: 10px;
 }
 
 .assistant-response {
-    background-color: #002955;
+    background-color: #e9e9ff;
     padding: 5px 10px;
     margin: 5px;
     border-radius: 10px;
