@@ -1255,11 +1255,11 @@ def chatbot():
             user_message = request.form['message']
             session['messages'].append({'role': 'user', 'content': user_message})
 
-            # Trim conversation history if necessary to keep it manageable
+            # manage history context
             max_conversation_length = 10  # Maintain last 10 interactions
             trimmed_messages = session['messages'][-max_conversation_length:]
 
-            # Construct messages for API, including system-level instructions and user conversation history
+            # Construct messages for API, including context for behavior instructions and conversation history
             messages_for_api = [
                 {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope. You keep your responses within the token limit which is 75 tokens."}
             ] + trimmed_messages
