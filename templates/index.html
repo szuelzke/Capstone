@@ -36,11 +36,16 @@
 
 <body>
     <div id="sidebar" class="sidebar">
-        <div class="LogoTitle">
+        <!--<div class="LogoTitle">
             <a href=" {{ url_for('home') }}"><img src="{{ url_for('static', filename='FlashFinLogo.png') }}"
                     alt="Logo"></a>
 
             <h1><a href=" {{ url_for('home') }}">FlashFin</a></h1>
+        </div>-->
+        <h1><a href=" {{ url_for('home') }}">FlashFin</a></h1>
+        <div class='profile-img'>
+            <img src="{{ url_for('static', filename='FlashFinLogo.png') }}"></img>
+
         </div>
         <!--<div class='profile-img'>
             <img src="{{ user.image_link }}"></img>
