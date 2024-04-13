@@ -1,58 +1,3 @@
-<!--<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>Chatbot - Flashfin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
-
-</head>
-
-<body>
-    <div id="sidebar" class="sidebar">
-        <h1><a href="{{ url_for('home') }}">FlashFin</a></h1>
-        <div class="nav">
-            <a href="{{ url_for('home') }}"><i class="fa-solid fa-house pd-5"></i>Homepage</a>
-            <a href="{{ url_for('settings') }}"><i class="fa-solid fa-gear pd-5"></i>Settings</a>
-            <a href="{{ url_for('chatbot')}}" class="btn btn-primary">Talk to Chatbot</a>
-
-        </div>
-
-
-    </div>
-
-    <div id="chat-container" class="chatbot-container">
-        <h1>Chatbot Conversation</h1>
-        <div class="chat-history chatbot-history">
-            {% for message in messages %}
-            <div
-                class="{{ 'user-message chatbot-user' if message.role == 'user' else 'assistant-response chatbot-assistant' if message.role == 'assistant' }}">
-                {{ message.content }}
-            </div>
-            {% endfor %}
-        </div>
-        <form action="{{ url_for('chatbot') }}" method="post" class="chatbot-form">
-            <input type="text" name="message" placeholder="Type your message here..." required>
-            <input type="submit" value="Send">
-        </form>
-    </div>
-    <script>
-        window.addEventListener('beforeunload', function (e) {
-            fetch('/clear_chat', { method: 'GET' });  // Send a request to clear the session
-        });
-    </script>
-
-</body>
-
-</html>-->
-
-
 {% extends 'index.html' %}
 {% block title %}Chatbot{% endblock %}
 {% block content %}
@@ -81,20 +26,3 @@
     </script>
 </div>
 {% endblock %}
-
-<!-- <body>
-    <h1>Chatbot Conversation</h1>
-    <div id="chat-container">
-        {% if user_message %}
-        <div class="user-message">{{ user_message }}</div>
-        <div class="chatbot-response">{{ chatbot_response }}</div>
-        {% endif %}
-        {% if error_message %}
-        <div class="error-message">{{ error_message }}</div>
-        {% endif %}
-    </div>
-    <form action="{{ url_for('chatbot') }}" method="post">
-        <input type="text" name="message" placeholder="Type your message here...">
-        <input type="submit" value="Send" />
-    </form>
-</body> -->
