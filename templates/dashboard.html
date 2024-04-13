@@ -125,19 +125,18 @@
             type: 'pie'
         }], layout);
     </script>
-    <div class="card" id="linegraph">
-        <script>
+    <div class="card" id="linegraph"></div>
+    <script>
         var trace1 = {
             x: [1, 2, 3, 4],
             y: [10, 15, 13, 17],
             type: 'scatter'
           };
           
-          var data = [trace1, trace2];
+          var data = [trace1];
           
           Plotly.newPlot('linegraph', data);
           </script>
-    </div>
 </div>
 {% endblock %}
 {% endblock %}
