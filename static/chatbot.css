@@ -14,6 +14,7 @@
     background-color: #002955;
     padding: 20px;
     width: 80%;
+    justify-content: space-between;
     height: 80%;
     /* Adjust based on preference */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -30,6 +31,7 @@
     margin-bottom: 20px;
     padding: 10px;
     background-color: #002955;
+    overflow-y: auto;
 }
 
 .user-message {
@@ -52,6 +54,7 @@
     display: flex;
     width: 100%;
     gap: 8px;
+    margin-top: auto;
 }
 
 .chatbot-form input[type="text"] {
