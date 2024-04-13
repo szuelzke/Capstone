@@ -55,7 +55,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 80vw;
+    width: 50vw;
 }
 
 .chatbot-form input[type="submit"] {
@@ -65,7 +65,7 @@
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    width: 20vh;
+    width: 10vh;
 }
 
 .conversation-title {
