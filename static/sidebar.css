@@ -15,15 +15,16 @@
 .Logo {
     display: block;
     width: 100px;
-    /* Adjust width as needed */
     margin: 20px auto;
-    /* Adjust margin as needed */
 }
 
 .Logo img {
-    width: 5vw;
-
-    height: 5vw;
+    width: 100%;
+    /* Ensure the image takes up the full width of its container */
+    height: auto;
+    /* Maintain aspect ratio */
+    max-width: 100px;
+    /* Limit the maximum width of the image */
 }
 
 
