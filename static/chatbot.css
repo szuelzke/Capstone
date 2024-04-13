@@ -1,6 +1,6 @@
 /* Scoped chat container */
 #chat-container.chatbot-container {
-    width: 80%;
+    width: 80vh;
     height: 80%;
     margin: auto;
     padding: 20px;
@@ -75,5 +75,4 @@
     flex-wrap: wrap;
     gap: 10px 10px;
     margin: 12px;
-    width: 90vh;
 }
