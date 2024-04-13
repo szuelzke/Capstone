@@ -1242,6 +1242,11 @@ def flashcash_transaction(student_id):
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id'] #
+        # Getting user info
+        db_session = Session() #
+        user = db_session.query(User).filter_by(user_id=user_id).first() #
+        db_session.close() #
         if 'messages' not in session:
             session['messages'] = []
 
@@ -1267,7 +1272,7 @@ def chatbot():
 
             session.modified = True
 
-        return render_template('chatbot.html', messages=session['messages'])
+        return render_template('chatbot.html', user=user,messages=session['messages'])
     else:
         return redirect(url_for('login'))
     
