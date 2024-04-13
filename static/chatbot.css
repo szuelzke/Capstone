@@ -68,3 +68,10 @@
 .conversation-title {
     text-align: center;
 }
+
+.parentContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+    margin: 12px;
+}
