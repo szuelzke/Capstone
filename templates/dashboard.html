@@ -99,33 +99,30 @@
     <div class="card" id="graph">
     </div>
     <script>
-        // Extracting data from the account_stats and budgets_stats variables
-        var labels = [];
-        var values = [];
-                
-        // Extracting data from budgets_stats
+       var budgetsStats = JSON.parse('{{ budgets_stats | tojson | safe }}');
 
-        for (var id in budgets_stats.items()){
-            labels.push(id);
-            for(obj in budgets_stats.items()){
-                values.push(obj.count);
-            };
-        };
-        
-        // Creating Plotly data object
-        var data = [{
-            values: values,
-            labels: labels,
-            type: 'pie'
-        }];
-        
+        // Extracting data from budgets_stats
+        var data = [];
+        for (var id in budgetsStats) {
+            if (budgetsStats.hasOwnProperty(id)) {
+                data.push({
+                    label: "Budget: " + id,
+                    value: budgetsStats[id].count
+                });
+            }
+        }
+
         var layout = {
             height: 500,
             width: 400
         };
-        
+
         // Plotting the chart
-        Plotly.newPlot('graph', data, layout);
+        Plotly.newPlot('graph', [{
+            values: data.map(item => item.value),
+            labels: data.map(item => item.label),
+            type: 'pie'
+        }], layout);
     </script>
     <div class="card">
         <ul>
