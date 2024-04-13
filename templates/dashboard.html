@@ -129,39 +129,7 @@
     <div class="card" id="linegraph"></div>
     <script>
         // Convert transaction_data to JSON
-    var transactionData = JSON.parse('{{ transaction_data | tojson | safe }}');
-
-    // Extracting data from transaction_data
-    var dates = [];
-    var balances = [];
-
-    transactionData.forEach(function(transaction) {
-        dates.push(transaction.date);
-        balances.push(transaction.balance);
-    });
-
-    var data = [{
-        x: dates,
-        y: balances,
-        type: 'scatter',
-        mode: 'lines',
-        name: 'Balance Over Time'
-    }];
-    
-    var layout = {
-        title: 'Balance Over Time', // Title for the graph
-        xaxis: {
-            title: 'Date' // Label for X axis
-        },
-        yaxis: {
-            title: 'Balance' // Label for Y axis
-        },
-        height: 500,
-        width: 800 // Adjust width to fit the graph properly
-    };
-    
-    // Plotting the chart
-    Plotly.newPlot('linegraph', data, layout);
+   
     </script>
 </div>
 {% endblock %}
