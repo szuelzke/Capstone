@@ -114,6 +114,10 @@ body {
 }
 
 /* styling forms */
+.form-deco {
+  text-align: center;
+}
+
 .form-deco input {
   display: block;
   margin: 10px auto;

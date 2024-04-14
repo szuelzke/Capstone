@@ -882,7 +882,7 @@ def account(account_id):
             return redirect(url_for('home'))
         
         # get most recent transactions
-        transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(10).all()
+        transactions = db_session.query(Transaction).filter_by(account_id=account.account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).limit(5).all()
         db_session.close()
 
         return render_template('dashboard.html', user=user, account=account,transactions=transactions)
