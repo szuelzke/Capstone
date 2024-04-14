@@ -916,8 +916,7 @@ def filter_transactions(account_id):
         user_id = session['user_id']
         start_date = request.form.get('start_date')
         end_date = request.form.get('end_date')
-        # debugging
-        msg = start_date + " " + end_date
+
         # getting info
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
@@ -926,7 +925,7 @@ def filter_transactions(account_id):
         if account:
             # get transactions 
             transactions_list = db_session.query(Transaction).filter(account_id=account_id).filter(func.DATE(Transaction.date) >= start_date).filter(func.DATE(Transaction.date) <= end_date)
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories, msg=msg)
+            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:
             return redirect(url_for('add_account'))
     else:

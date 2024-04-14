@@ -15,11 +15,11 @@
         <form action="{{ url_for('filter_transactions', account_id=account.account_id)}}", method="get">
             <input type="date"
                 id="start_date"
-                for="start_date"
+                name="start_date"
                 value="" />
             <input type="date"
                 id="end_date"
-                for="end_date"
+                name="end_date"
                 value="" />
             <input type="submit" value="Search" />
         </form>
