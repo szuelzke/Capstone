@@ -1133,9 +1133,9 @@ def accept_ss_request(sharespend_id):
         ss_request.is_paid = True
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
         db_session.commit()
+        update_balance(ss_request.init_transaction.account_id)
         db_session.close()
         update_balance(account_id)
-        update_balance(ss_request.init_transaction.account_id)
         return redirect(url_for('account', account_id=account_id))
     else:
         return redirect(url_for('login'))
