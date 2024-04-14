@@ -14,6 +14,8 @@ from datetime import date, datetime, timedelta
 import logging
 import time
 
+from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
+
 ### ------------------------------- Application Setup --------------------------------------------------------
 
 with open('/var/www/html/Capstone/.env', 'r') as file:
@@ -40,9 +42,11 @@ mail = Mail(app)
 
 engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
 
-Base = declarative_base()
+#Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
+# Set up database
+Base.metadata.create_all(engine)
 
 # test database connection
 try:
@@ -52,7 +56,7 @@ except Exception as e:
     print("Connection failed:", e)
 
 #### ------------------------------- Models --------------------------------------------------------
-
+'''
 class User(Base):
     __tablename__ = 'user'
 
@@ -151,7 +155,7 @@ class ShareSpend(Base):
     init_transaction = relationship('Transaction', foreign_keys='ShareSpend.transaction_id')
     sender = relationship('User', foreign_keys='ShareSpend.sender_id')
     receiver = relationship('User', foreign_keys='ShareSpend.receiver_id')
-
+'''
 
 #### ------------------------------- Utility Functions --------------------------------------------------------
 
