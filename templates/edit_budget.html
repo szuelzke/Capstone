@@ -31,20 +31,19 @@
             <input type="submit" />
         </form>
 
-        <button onclick="toggleConfirm()"><i class="fa-solid fa-trash"></i>Delete</button>
+        <button onclick="toggleConfirm()" class="delete-button"><i class="fa-solid fa-trash pd-5"></i>Delete</button>
 
     </div>
 </div>
 
 <div id="confirm-delete" class="dimmer" style="display: none;">
-    <h2>Delete {{ budget.category.category_name }}</h2>
     <div class="row card">
-        <p>All transactions in this category will be deleted as well. Are you sure about proceeding?</p>
+        <p>All transactions categorized as <em>{{ budget.category.name }}</em> will be deleted along with the category itself. Are you sure you want to proceed?</p>
         <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
             method="post">
             <button type="submit"><i class="fa-solid fa-trash"></i>Confirm</button>
-            <button onclick="toggleConfirm()">Cancel</button>
         </form>
+        <button onclick="toggleConfirm()">Cancel</button>
 
     </div>
 </div>

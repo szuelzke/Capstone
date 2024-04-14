@@ -204,3 +204,15 @@ a {
 .txt-c {
   text-align: center;
 }
+
+.delete-button {
+  text-transform: uppercase;
+  background-color: var(--red);
+  color: #FFFFFF;
+  border: 1px solid var(--accentred);
+  padding: 5px 20px;
+  border-radius: 5px;
+  text-shadow: 1px 1px 1px var(--accentred);
+  font-family: inherit;
+  font-weight: bold;
+}
