@@ -1,22 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract, func, or_
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
-from flask_mail import Mail, Message
-from dotenv import load_dotenv
-import os
-import openai
-import bcrypt
-import pyotp
+from datetime import datetime, timedelta
+from flask_mail import Message
 import secrets
-import datetime
-from datetime import date, datetime, timedelta
-import logging
-import time
-
-from main import Session, mail
-from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
-
+from main import session, Session, mail  # Importing Session and mail from main
+from models import User,Transaction, ShareSpend, Notification
 
 # Login Utility Functions
 
@@ -46,7 +32,6 @@ def send_reset_password_email(user_email, reset_token):
     msg.html = html_body
 
     mail.send(msg)
-
 
 # Settings Utility Functions
 
