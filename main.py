@@ -1124,7 +1124,7 @@ def accept_ss_request(sharespend_id):
             account_id = ss_request.init_transaction.account_id,
             date = ss_request.init_transaction.date,
             amount = ss_request.amount_split,
-            title = "Income from " + user.social_name
+            title = "Income from " + user.social_name + " for " + ss_request.init_transaction.title
         )
 
         db_session.add(receiver_transaction)
@@ -1135,6 +1135,7 @@ def accept_ss_request(sharespend_id):
         db_session.commit()
         db_session.close()
         update_balance(account_id)
+        update_balance(ss_request.init_transaction.account_id)
         return redirect(url_for('account', account_id=account_id))
     else:
         return redirect(url_for('login'))
