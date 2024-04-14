@@ -47,9 +47,10 @@
                     <td>{{transaction.title}}</td>
                     <td>{{transaction.amount}}</td>
                     <td>${{transaction.amount_remaining}}</td>
-                    <td><span class="category-style pd-5" style="background-color:{{transaction.category.color}};">
+                    <td>
+                        {% if transaction.category %}<span class="category-style pd-5" style="background-color:{{transaction.category.color}};">
                             <i
-                                class="fa-solid fa-{{transaction.category.symbol}} pd-5"></i>{{transaction.category.category_name}}</span>
+                                class="fa-solid fa-{{transaction.category.symbol}} pd-5"></i>{{transaction.category.category_name}}</span>{% endif %}
                     </td>
                     <td class="hide-item">
                         <!-- buttons for transaction -->
@@ -130,7 +131,6 @@
     window.onload = function () {
         const categories = document.getElementsByClassName("category-style");
         for (let i = 0; i < categories.length; i++) {
-            console.log('test')
             let color = categories[i].style.backgroundColor;
             let textColor = pickTextColorBasedOnBgColorAdvanced(color);
             categories[i].style.color = textColor
