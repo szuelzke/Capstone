@@ -910,7 +910,7 @@ def transactions(account_id):
     else:
         return redirect(url_for('login'))
     
-@app.route('/<account_id>/transactions', methods=['GET'])
+@app.route('/<account_id>/transactions/filter', methods=['GET'])
 def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
