@@ -1062,13 +1062,13 @@ def sharetransaction(account_id, transaction_id):
 
         if request.method == 'GET':
             active_share = db_session.query(ShareSpend).filter(ShareSpend.transaction_id==transaction_id).first()
-            db_session.close()
             if active_share:
                 other_social = ""
                 if active_share.sender_id == user_id:
                     other_social = active_share.receiver.social_name
                 else:
                     other_social = active_share.sender.social_name
+                db_session.close()
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, active_share=active_share, other_social=other_social, msg='This transaction is already shared with another user')
             else:
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
