@@ -10,7 +10,7 @@
     </div>
     {% endif %}
     <div class="card">
-        <form class="form-deco" action="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
+        <form class="form-deco" action="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="get">
             {% set transaction_amt = transaction.amount * -1 %}
             <!-- displays info about transaction -->
             <label for="id">Date of Transaction</label>
