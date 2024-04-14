@@ -71,32 +71,6 @@
 </div>
 
 <div class="row">
-    <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Budgeted</th>
-                    <th>Activity</th>
-                    <th>Available</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for id, obj in budgets_stats.items() %}
-                <tr>
-                    <td>{{ id }}</td>
-                    <td>{{ obj["amount"] }}</td>
-                    <td>{{ obj["activity"] }}</td>
-                    <td>{{ obj["available"] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="row">
     <div class="card" id="piegraph">
     </div>
     <script>
@@ -165,6 +139,32 @@
         Plotly.newPlot('linegraph', data, layout);
    
     </script>
+</div>
+
+<div class="row">
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Budgeted</th>
+                    <th>Activity</th>
+                    <th>Available</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id, obj in budgets_stats.items() %}
+                <tr>
+                    <td>{{ id }}</td>
+                    <td>{{ obj["amount"] }}</td>
+                    <td>{{ obj["activity"] }}</td>
+                    <td>{{ obj["available"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
 {% endblock %}
