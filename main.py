@@ -1168,10 +1168,15 @@ def get_budgets(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
+
+        allocated = 0
+        for budget in budgets:
+            allocated = allocated + budget.amount
+
         
         if request.method == "GET":
             db_session.close()
-            return render_template('budget.html', user=user, account=account, budgets=budgets)
+            return render_template('budget.html', user=user, account=account, budgets=budgets, allocated = allocated)
     else:
         return redirect(url_for('login'))
 
