@@ -9,31 +9,56 @@
     {% endif %}
     <div class="card">
         <h2>Edit Budget</h2>
-        <form action="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id )}}" method="post" class="form-deco">
+        <form action="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id )}}"
+            method="post" class="form-deco">
             <label for="id">Money Goal</label>
-            <input type="number"
-                name="amount"
-                id="amount"
-                value="{{budget.amount}}" />
+            <input type="number" name="amount" id="amount" value="{{budget.amount}}" />
             <h3>Customization</h3>
             <label for="color">Color</label>
             <input type="color" id="color" name="color" value="{{ budget.category.color }}" />
-            <label for="symbol">Symbol</label>
+            <label for="symbol">Symbol</label><br>
             {% set symbol_list = category_symbols() %}
             {% for symbol in symbol_list %}
-                {% if symbol == budget.category.symbol %}
-                    <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" checked /><label for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
-                {% else %}
-                    <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
-                {% endif %}
+            {% if symbol == budget.category.symbol %}
+            <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" checked /><label
+                for="{{ symbol }}"><i class="fa-solid fa-{{ symbol }}"></i></label>
+            {% else %}
+            <input type="radio" id="{{ symbol }}" name="symbol" value="{{ symbol }}" /><label for="{{ symbol }}"><i
+                    class="fa-solid fa-{{ symbol }}"></i></label>
+            {% endif %}
             {% endfor %}
 
             <input type="submit" />
         </form>
 
-        <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}" method="post">
-            <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
-        </form>
+        <button onclick="toggleConfirm()"><i class="fa-solid fa-trash"></i>Delete</button>
+        
     </div>
 </div>
+
+<div id="confirm-delete" class="dimmer">
+    <h2>Delete {{ budget.category.category_name }}</h2>
+    <div class="row card">
+        <p>Deleting this category will also delete transactions in category. Are you sure you want to proceed?</p>
+        <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
+            method="post">
+            <button type="submit"><i class="fa-solid fa-trash"></i>Confirm</button>
+        </form>
+        <button onclick="toggleConfirm()">Cancel</button>
+
+    </div>
+</div>
+
+<script>
+    /* toggles add transactions popup */
+    function toggleConfirm() {
+        let add = document.getElementById("confirm-delete");
+        if (add.style.display === "none") {
+            add.style.display = "block";
+        } else {
+            add.style.display = "none";
+        }
+    }
+</script>
+
 {% endblock %}
