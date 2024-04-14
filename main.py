@@ -1065,9 +1065,9 @@ def sharetransaction(account_id, transaction_id):
             if active_share:
                 other_social = ""
                 if active_share.sender_id == user_id:
-                    other_social = active_share.sender.social_name
-                else:
                     other_social = active_share.receiver.social_name
+                else:
+                    other_social = active_share.sender.social_name
                 db_session.close()
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, active_share=active_share, other_social=other_social, msg='This transaction is already shared with another user')
             else:
@@ -1104,19 +1104,31 @@ def sharetransaction(account_id, transaction_id):
 @app.route('/<sharespend_id>/accept', methods=['POST'])
 def accept_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
+        user_id = session['user_id']
         db_session = Session()
+        user = db_session.query(User).filter_by(user_id=user_id).first()
         ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
 
         account_id = request.form.get("account_id")
         amount_split = float(ss_request.amount_split) * -1.0
 
+        # credit transaction to user that accepts request
         receiver_transaction = Transaction(
             account_id = account_id,
             date = ss_request.init_transaction.date,
             amount = amount_split,
             title = ss_request.init_transaction.title
         )
+        # debit transaction to user that sent request
+        sender_transaction = Transaction(
+            account_id = ss_request.init_transaction.account_id,
+            date = ss_request.init_transaction.date,
+            amount = ss_request.amount_split,
+            title = "Income from " + user.social_name
+        )
+
         db_session.add(receiver_transaction)
+        db_session.add(sender_transaction)
         db_session.commit()
         ss_request.is_paid = True
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
