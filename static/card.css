@@ -61,6 +61,13 @@
     font-size: 40px;
 }
 
+/* for display filter forms at top left */
+.card-filter {
+    position: absolute;
+    top: 20px;
+  }
+  
+
 /* show account balance */
 .view-balance {
     color:#FFFFFF;
