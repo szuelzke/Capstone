@@ -43,14 +43,15 @@
                     name="split_amount"
                     value=" {{ active_share.split_amount }}"
                     min="0"
-                    max="{{ transaction_amt }}" />
+                    max="{{ transaction_amt }}" 
+                    readonly />
                 <label for="receiver">Share With</label>
                 <input
                     type="text"
                     id="receiver"
                     name="receiver" 
-                    value="{{ active_share.receiver.social_name }}" 
-                    required />
+                    value="" 
+                    readonly />
                 <input type="submit" disabled />
             {% else %}
                 <label for="split_amount">Share Amount
@@ -60,7 +61,8 @@
                     name="split_amount"
                     value=" {{ transaction_amt }}"
                     min="0"
-                    max="{{ transaction_amt }}" />
+                    max="{{ transaction_amt }}" 
+                    required />
                 <label for="receiver">Share With</label>
                 <input
                     type="text"
