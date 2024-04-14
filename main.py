@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract, func
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, ForeignKey, Date, DECIMAL, extract, func, or_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from flask_mail import Mail, Message
@@ -1061,9 +1061,10 @@ def sharetransaction(account_id, transaction_id):
         transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
 
         if request.method == 'GET':
+            active_share = db_session.query(ShareSpend).filter(or_(ShareSpend.sender_id==user_id, ShareSpend.receiver_id==user_id))
             db_session.close()
-            if transaction.amount > 0:
-                return redirect(url_for('transactions', account_id=account_id))
+            if active_share:
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, active_share=active_share, msg='This transaction is already shared with another user')
             else:
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
