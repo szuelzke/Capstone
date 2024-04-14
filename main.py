@@ -15,6 +15,8 @@ import logging
 import time
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
+from config import app, Session, mail, engine
+
 
 ### ------------------------------- Application Setup --------------------------------------------------------
 
@@ -23,12 +25,13 @@ with open('/var/www/html/Capstone/.env', 'r') as file:
      
 client = openai
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
-
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+'''
+app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -46,6 +49,7 @@ Session = sessionmaker(bind=engine)
 
 # Set up database
 Base.metadata.create_all(engine)
+'''
 
 # test database connection
 try:
