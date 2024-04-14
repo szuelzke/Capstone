@@ -15,7 +15,6 @@ import datetime
 from datetime import date, datetime, timedelta
 import logging
 import time
-import utility
 
 
 
@@ -160,7 +159,7 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
-'''
+
 #### ------------------------------- Utility Functions --------------------------------------------------------
 
 def get_user_id(email):
@@ -412,7 +411,7 @@ def get_sharespend_requests():
         return ss_list
     else:
         return "No requests"
-'''
+
 
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
@@ -568,15 +567,15 @@ def forgot_password():
 
         if user:
             # Generate and store reset token
-            reset_token = utility.generate_reset_token()
+            reset_token = generate_reset_token()
             user.reset_token = reset_token
-            user.reset_token_expiry = utility.calculate_expiry_time()
+            user.reset_token_expiry = calculate_expiry_time()
 
 
             db_session.commit()
             db_session.close()
             
-            utility.send_reset_password_email(email, reset_token)
+            send_reset_password_email(email, reset_token)
 
             #return render_template('password_reset_link_sent.html', email=email)
             return redirect(url_for('password_reset_link_sent', email=email))
@@ -967,9 +966,9 @@ def addtransaction(account_id):
                 #account_id = account.account_id
         
                 # update transaction.amount_remaining
-                utility.update_balance(account_id) 
+                update_balance(account_id) 
 
-                utility.check_balance_and_send_alert(account_id)
+                check_balance_and_send_alert(account_id)
 
                 return redirect(url_for('transactions', account_id=account_id))
             else:
@@ -1003,7 +1002,7 @@ def edittransaction(account_id, transaction_id):
             db_session.commit()
             db_session.close()
             # update transaction.amount_remaining
-            utility.update_balance(account_id) 
+            update_balance(account_id) 
             return redirect(url_for('transactions', account_id=account_id))
         else:
             db_session.close()
@@ -1037,7 +1036,7 @@ def deletetransaction(account_id, transaction_id):
         else:
             db_session.close()
             flash('Transaction not found.')
-        utility.update_balance(account_id)
+        update_balance(account_id)
         return redirect(url_for('transactions', account_id=account_id))
     else:
         return redirect(url_for('login'))
@@ -1107,7 +1106,7 @@ def accept_ss_request(sharespend_id):
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
         db_session.commit()
         db_session.close()
-        utility.update_balance(account_id)
+        update_balance(account_id)
         return redirect(url_for('account', account_id=account_id))
     else:
         return redirect(url_for('login'))
@@ -1181,7 +1180,7 @@ def delete_budget(account_id, budget_id):
             db_session.delete(budget)
         db_session.commit()
         db_session.close()
-        utility.update_balance(account_id)
+        update_balance(account_id)
         return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
