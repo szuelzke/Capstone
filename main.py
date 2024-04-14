@@ -839,7 +839,7 @@ def add_account():
             ## prevents user from adding more than 5 accounts
             if (db_session.query(Account).filter_by(user_id=user_id).count() >= 5):
                 db_session.close()
-                return render_template('add_account.html',
+                return render_template('add_account.html', user=user,
                 error="User cannot have more than 5 accounts.")
 
             account_name = request.form['accountname']
