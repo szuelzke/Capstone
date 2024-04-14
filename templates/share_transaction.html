@@ -36,7 +36,6 @@
                 readonly />
             <br />
             {% if active_share %}
-            <h3>{{ other_social }}
                 <label for="split_amount">Share Amount
                 <input
                     type="number"
@@ -51,7 +50,7 @@
                     type="text"
                     id="receiver"
                     name="receiver" 
-                    value="" 
+                    value="{{ other_social }}" 
                     readonly />
                 <input type="submit" disabled />
             {% else %}
