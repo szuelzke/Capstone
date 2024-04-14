@@ -900,11 +900,12 @@ def transactions(account_id):
         user = db_session.query(User).filter_by(user_id=user_id).first()
         account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
         categories = db_session.query(Budget).filter_by(account_id=account_id).all()
+        date_cutoff = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.asc()).first().date
         if account:
             # get transactions 
             transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
             db_session.close()
-            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
+            return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories, min_date=date_cutoff)
         else:
             return redirect(url_for('add_account'))
     else:

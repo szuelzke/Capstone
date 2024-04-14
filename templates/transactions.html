@@ -82,7 +82,7 @@
         <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method="post" class="form-deco"
             id="add-transaction">
             <label for="date">Date</label>
-            <input type="date" id="date" name="date" value="" required />
+            <input type="date" id="date" name="date" value="" min="{{ min_date }}" required />
             <label for="title">Title</label>
             <input type="text" id="title" name="title" value="" required />
             <label for="amount">Sum</label>
