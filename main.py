@@ -15,16 +15,7 @@ import logging
 import time
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
-# Importing functions from utility.py
-from utility import (
-    get_user_id,
-    generate_reset_token,
-    calculate_expiry_time,
-    send_reset_password_email,
-    allowed_file,
-    update_balance,
-    check_balance_and_send_alert
-)
+
 ### ------------------------------- Application Setup --------------------------------------------------------
 
 with open('/var/www/html/Capstone/.env', 'r') as file:
@@ -51,7 +42,6 @@ mail = Mail(app)
 
 engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/FLASHFIN?unix_socket=/var/lib/mysql/mysql.sock')
 
-#Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
 # Set up database
@@ -64,8 +54,9 @@ try:
 except Exception as e:
     print("Connection failed:", e)
 
+
 #### ------------------------------- Utility Functions --------------------------------------------------------
-'''
+
 # Login Utility Functions
 
 def get_user_id(email):
@@ -102,7 +93,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-'''
+
 # Accounts Utility Functiosns
 
 # returns dictionary of accounts connected to user
@@ -210,7 +201,7 @@ def get_transaction_data(account_id):
 
 
 # More Transactions Utility Functions
-'''
+
 # math for getting current balance after an add/edit
 # updates transaction.amount_remaining
 def update_balance(account_id):
@@ -225,7 +216,6 @@ def update_balance(account_id):
         current_amount = transaction.amount_remaining
     db_session.commit()
     db_session.close()
-'''
 
 # math for all transactions amount remaining 
 @app.template_global()
@@ -242,7 +232,7 @@ def get_category_balance(category_id, budget_id):
     return balance
 
 # Alerts 
-'''
+
 # Function to check balance and send alert/email to user
 def check_balance_and_send_alert(account_id):
     user_id = session['user_id']
@@ -284,7 +274,7 @@ def check_balance_and_send_alert(account_id):
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-'''
+
 # Function to get notifications for a specific account
 @app.template_global()
 def get_notifications(account_id):
