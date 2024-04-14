@@ -35,22 +35,41 @@
                 value="{{ transaction.title }}"
                 readonly />
             <br />
-            <label for="split_amount">Share Amount
-            <input
-                type="number"
-                id="split_amount"
-                name="split_amount"
-                value=" {{ transaction_amt }}"
-                min="0"
-                max="{{ transaction_amt }}" />
-            <label for="receiver">Share With</label>
-            <input
-                type="text"
-                id="receiver"
-                name="receiver" 
-                value="" 
-                required />
-            <input type="submit" />
+            {% if active_share %}
+                <label for="split_amount">Share Amount
+                <input
+                    type="number"
+                    id="split_amount"
+                    name="split_amount"
+                    value=" {{ active_share.split_amount }}"
+                    min="0"
+                    max="{{ transaction_amt }}" />
+                <label for="receiver">Share With</label>
+                <input
+                    type="text"
+                    id="receiver"
+                    name="receiver" 
+                    value="{{ active_share.receiver.social_name }}" 
+                    required />
+                <input type="submit" disabled />
+            {% else %}
+                <label for="split_amount">Share Amount
+                <input
+                    type="number"
+                    id="split_amount"
+                    name="split_amount"
+                    value=" {{ transaction_amt }}"
+                    min="0"
+                    max="{{ transaction_amt }}" />
+                <label for="receiver">Share With</label>
+                <input
+                    type="text"
+                    id="receiver"
+                    name="receiver" 
+                    value="" 
+                    required />
+                <input type="submit" />
+            {% endif%}
         </form>
     </div>
 </div>
