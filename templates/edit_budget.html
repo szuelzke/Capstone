@@ -7,10 +7,12 @@
         <h3>{{ success }}</h3>
     </div>
     {% endif %}
-    <div class="card">
+    <div class="card" style="text-align: center;">
         <h2>Edit Budget</h2>
         <form action="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id )}}"
             method="post" class="form-deco">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="{{budget.category.category_name}}" />
             <label for="id">Money Goal</label>
             <input type="number" name="amount" id="amount" value="{{budget.amount}}" />
             <h3>Customization</h3>
@@ -38,7 +40,7 @@
 
 <div id="confirm-delete" class="dimmer" style="display: none;">
     <div class="row card">
-        <p>All transactions categorized as <em>{{ budget.category.name }}</em> will be deleted along with the category itself. Are you sure you want to proceed?</p>
+        <p>All transactions categorized as <em>{{ budget.category.category_name }}</em> will be deleted along with the category itself. Are you sure you want to proceed?</p>
         <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
             method="post">
             <button type="submit"><i class="fa-solid fa-trash"></i>Confirm</button>

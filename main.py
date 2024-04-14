@@ -1201,6 +1201,7 @@ def edit_budget(account_id, budget_id):
             db_session.close()
             return render_template('edit_budget.html', user=user, account=account, budget=budget)
         else:
+            budget.category.category_name = request.form.get('title')
             budget.category.symbol=request.form.get('symbol')
             budget.amount=request.form.get('amount')
             budget.category.color=request.form.get('color')
