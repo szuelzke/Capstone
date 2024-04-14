@@ -39,12 +39,12 @@
 <div id="confirm-delete" class="dimmer" style="display: none;">
     <h2>Delete {{ budget.category.category_name }}</h2>
     <div class="row card">
-        <p>Deleting this category will also delete transactions in category. Are you sure you want to proceed?</p>
+        <p>All transactions in this category will be deleted as well. Are you sure about proceeding?</p>
         <form action="{{ url_for('delete_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"
             method="post">
             <button type="submit"><i class="fa-solid fa-trash"></i>Confirm</button>
+            <button onclick="toggleConfirm()">Cancel</button>
         </form>
-        <button onclick="toggleConfirm()">Cancel</button>
 
     </div>
 </div>
