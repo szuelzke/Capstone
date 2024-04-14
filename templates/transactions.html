@@ -134,6 +134,7 @@
     function changeCategoryTextColor() {
         const categories = document.getElementsByClassName("category-style");
         for (let i = 0; i < categories.length; i++) {
+            console.log('test')
             let color = categories[i].style.backgroundColor;
             let textColor = pickTextColorBasedOnBgColorAdvanced(color, '#FFFFFF', '#000000');
             categories[i].style.color = textColor
