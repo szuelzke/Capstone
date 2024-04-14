@@ -194,6 +194,7 @@ a {
 /* used for adding padding to font awesome icons */
 .pd-5 {
   padding: 5px;
+  border-radius: 5px;
 }
 
 .txt-c {
