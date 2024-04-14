@@ -910,7 +910,7 @@ def transactions(account_id):
     else:
         return redirect(url_for('login'))
     
-@app.route('/<account_id>/transactions', methods=['POST'])
+@app.route('/<account_id>/transactions', methods=['GET'])
 def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
@@ -923,7 +923,7 @@ def filter_transactions(account_id):
         categories = db_session.query(Budget).filter_by(account_id=account_id).all()
         if account:
             # get transactions 
-            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).filter(Transaction.date.between(start_date, end_date)).all()
+            transactions_list = db_session.query(Transaction).filter(account_id=account_id).filter(func.DATE(Transaction.date) >= start_date).filter(func.DATE(Transaction.date) >= end_date)
             return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:
             return redirect(url_for('add_account'))
