@@ -1038,6 +1038,7 @@ def deletetransaction(account_id, transaction_id):
                 else:
                     return redirect(url_for('transactions', account_id=account_id))
                 db_session.delete(is_shared)
+                db_session.commit()
             db_session.delete(transaction)
             db_session.commit()
             db_session.close()
