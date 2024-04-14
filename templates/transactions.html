@@ -12,7 +12,7 @@
     <div class="card">
         <h2>All Transactions</h2>
         View from:
-        <form action="{{ url_for('filter_transactions', account_id=account.account_id)}}", method="post">
+        <form action="{{ url_for('filter_transactions', account_id=account.account_id)}}", method="get">
             <input type="date"
                 id="start_date"
                 for="start_date"
