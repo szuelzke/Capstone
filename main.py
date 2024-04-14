@@ -1179,6 +1179,7 @@ def delete_budget(account_id, budget_id):
             db_session.delete(budget)
         db_session.commit()
         db_session.close()
+        update_balance(account_id)
         return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
