@@ -32,11 +32,11 @@
         </form>
 
         <button onclick="toggleConfirm()"><i class="fa-solid fa-trash"></i>Delete</button>
-        
+
     </div>
 </div>
 
-<div id="confirm-delete" class="dimmer">
+<div id="confirm-delete" class="dimmer" style="display: none;">
     <h2>Delete {{ budget.category.category_name }}</h2>
     <div class="row card">
         <p>Deleting this category will also delete transactions in category. Are you sure you want to proceed?</p>
