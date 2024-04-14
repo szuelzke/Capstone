@@ -1064,8 +1064,7 @@ def sharetransaction(account_id, transaction_id):
             active_share = db_session.query(ShareSpend).filter(ShareSpend.transaction_id==transaction_id).first()
             db_session.close()
             if active_share:
-                share_request = active_share.filter(or_(ShareSpend.sender_id==user_id, ShareSpend.receiver_id==user_id)).first()
-                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, active_share=share_request, msg='This transaction is already shared with another user')
+                return render_template('share_transaction.html', user=user, account=account, transaction=transaction, active_share=active_share, msg='This transaction is already shared with another user')
             else:
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction)
         else:
