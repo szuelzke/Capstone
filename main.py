@@ -914,8 +914,8 @@ def transactions(account_id):
 def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
         user_id = session['user_id']
-        start_date = request.form.get('start_date')
-        end_date = request.form.get('end_date')
+        start_date = request.args.get('start_date')
+        end_date = request.args.get('end_date')
 
         # getting info
         db_session = Session()
