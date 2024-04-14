@@ -14,19 +14,6 @@
     text-align: center;
 }
 
-.card-budget{
-    background-color: #FFFFFF;
-    padding: 5px;
-    margin: 5px 5px;
-    border-radius: 1px;
-    flex: 100%;
-    position: relative;
-    font-family: 'Roboto', sans-serif;
-    overflow-y: none;
-    color: #000;
-    height: 85%;
-    width: 85%;
-}
 .card-row2 {
     width: 100%;
     height: 100%;

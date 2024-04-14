@@ -16,7 +16,7 @@
 {% endif %}
 <div class="row">
     {% for budget in budgets %}
-    <div class="card hover-link" style="margin:5px 5px">
+    <div class="card hover-link card-budget" style="margin:5px 5px">
         <i class="fa-solid fa-{{ budget.category.symbol }}"></i>
         <h1>{{ budget.category.category_name }}</h1>
         <a href="{{ url_for('edit_budget', account_id=account.account_id, budget_id=budget.budget_id)}}"><button>Edit</button></a>
@@ -24,7 +24,7 @@
     {% endfor %}
 
     <!-- add budget button -->
-    <button class="card card-link" onclick="toggleAdd()"><i class='fa-solid fa-plus'></i>Add Budget</button>
+    <button class="card card-link card-budget" onclick="toggleAdd()"><i class='fa-solid fa-plus'></i>Add Budget</button>
 </div>
 
 
