@@ -71,11 +71,11 @@
 </div>
 
 <!-- add transaction popup -->
-<div id="add-transaction" class="dimmer" style="display:none;">
+<div class="dimmer" style="display:none;">
     <h2>Add Transaction</h2>
     <div class="row card">
         <button class="card-x-button fa-solid fa-x" onclick="toggleAdd()"></button>
-        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method="post" class="form-deco">
+        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method="post" class="form-deco" id="add-transaction">
             <label for="date">Date</label>
             <input
                 type="date"
@@ -115,14 +115,11 @@
             <label for="debit">Debit</label>
             <h3>Select Category</h3>
             {% if categories %}
-            {% for item in categories %}
-            <input 
-                type="radio"
-                id="{{item.category.category_id}}"
-                name="category_id"    
-                value="{{item.category.category_id}}" />
-            <label for="{{item.category.category_id}}">{{item.category.category_name}}</label>
-            {% endfor%}
+            <select name="category_id" id="category" form="add-transaction">
+                {% for item in categories %}
+                <option value="{{item.category.category_id}}">{{item.category.category_name}}
+                </option>
+                {% endfor%}
             {% else %}
             <a href="{{ url_for('get_budgets', account_id=account.account_id)}}">Add Category</a>
             {% endif %}
