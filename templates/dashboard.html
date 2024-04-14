@@ -3,6 +3,7 @@
 <!-- account variables -->
 {% set account_stats = get_account_stats(account.account_id) %}
 {% set budgets_stats = get_budget_stats(account.account_id) %}
+{% set transaction_data = get_transaction_data(account.account_id) %}
 
 {% block title %}<a href="{{ url_for('account', account_id=account.account_id)}}">Dashboard</a><span style="text-decoration: none;">{% block subtitle %}{% endblock%}</span>
 {% endblock %}
@@ -128,7 +129,40 @@
 
     <div class="card" id="linegraph"></div>
     <script>
-        // Convert transaction_data to JSON
+          // Convert transaction_data to JSON
+        var transactionData = JSON.parse('{{ transaction_data | tojson | safe }}');
+
+        // Extracting data from transaction_data
+        var dates = [];
+        var balances = [];
+
+        transactionData.transactions.forEach(function(transaction) {
+            dates.push(transaction.date);
+            balances.push(transaction.amount_remaining); // Assuming amount_remaining represents the balance
+        });
+
+        var data = [{
+            x: dates,
+            y: balances,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Balance Over Time'
+        }];
+
+        var layout = {
+            title: 'Balance Over Time', // Title for the graph
+            xaxis: {
+                title: 'Date' // Label for X axis
+            },
+            yaxis: {
+                title: 'Balance' // Label for Y axis
+            },
+            height: 500,
+            width: 800 // Adjust width to fit the graph properly
+        };
+
+        // Plotting the chart
+        Plotly.newPlot('linegraph', data, layout);
    
     </script>
 </div>

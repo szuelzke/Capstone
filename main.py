@@ -271,6 +271,36 @@ def get_account_stats(account_id):
     db_session.close()
     return stats
 
+@app.template_global()
+def get_transaction_data(account_id):
+    transaction_data = []
+    db_session = Session()
+
+    # Query transactions for the specified account
+    transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
+
+    # Calculate total balance change over time
+    total_balance_change = db_session.query(func.sum(Transaction.amount)).filter_by(account_id=account_id).scalar()
+
+    if transactions:
+        for transaction in transactions:
+            transaction_data.append({
+                'date': transaction.date.strftime('%Y-%m-%d'),  # Assuming date is stored as a datetime object
+                'amount': transaction.amount,
+                'title': transaction.title,
+                'category_id': transaction.category_id,
+                'amount_remaining': transaction.amount_remaining
+            })
+
+    db_session.close()
+    return {
+        'transactions': transaction_data,
+        'total_balance_change': total_balance_change
+    }
+
+
+
+
 # Handling Transactions
 # math for getting current balance after an add/edit
 # updates transaction.amount_remaining
