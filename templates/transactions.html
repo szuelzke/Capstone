@@ -12,19 +12,13 @@
     <div class="card">
         <h2>All Transactions</h2>
         View from:
-        <form action="{{ url_for('filter_transactions', account_id=account.account_id)}}", method="get">
-            <input type="date"
-                id="start_date"
-                name="start_date"
-                value="" />
-            <input type="date"
-                id="end_date"
-                name="end_date"
-                value="" />
+        <form action="{{ url_for('filter_transactions', account_id=account.account_id)}}" , method="get">
+            <input type="date" id="start_date" name="start_date" value="" />
+            <input type="date" id="end_date" name="end_date" value="" />
             <input type="submit" value="Search" />
         </form>
 
-        <table id="transactions-tbl">
+        <table id="transactions-tbl" onload="changeCategoryTextColor()">
             <thead>
                 <tr>
                     <th class="tooltip"><i class="fa-regular fa-calendar"></i><span class="tooltiptext">Date</span></th>
@@ -42,7 +36,8 @@
 
             <tbody>
                 <tr>
-                    <td colspan="6"><button onclick="toggleAdd()"><i class="fa-solid fa-plus pd-5"></i>Add Transaction</button></td>
+                    <td colspan="6"><button onclick="toggleAdd()"><i class="fa-solid fa-plus pd-5"></i>Add
+                            Transaction</button></td>
                 </tr>
                 {% for transaction in transactions %}
                 <tr>
@@ -50,17 +45,24 @@
                     <td>{{transaction.title}}</td>
                     <td>{{transaction.amount}}</td>
                     <td>{{transaction.amount_remaining}}</td>
-                    <td><span style="background-color:{{transaction.category.color}};"> 
-                        <i class="fa-solid fa-{{transaction.category.symbol}}"></i>{{transaction.category.category_name}}</span></td>
+                    <td><span class="category-style" style="background-color:{{transaction.category.color}};">
+                            <i
+                                class="fa-solid fa-{{transaction.category.symbol}}"></i>{{transaction.category.category_name}}</span>
+                    </td>
                     <td>
                         <!-- buttons for transaction -->
-                        <a href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-pen-to-square"></i>Edit</button></a>
-                        {% if transaction.amount|float < 0 %}
-                        <a href="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i class="fa-solid fa-share"></i>Share</button></a>
-                        {% endif %}
-                        <form action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}" method="post">
-                            <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
-                        </form>
+                        <a
+                            href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i
+                                    class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                        {% if transaction.amount|float < 0 %} <a
+                            href="{{ url_for('sharetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}">
+                            <button><i class="fa-solid fa-share"></i>Share</button></a>
+                            {% endif %}
+                            <form
+                                action="{{ url_for('deletetransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"
+                                method="post">
+                                <button type="submit"><i class="fa-solid fa-trash"></i>Delete</button>
+                            </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -75,43 +77,17 @@
     <h2>Add Transaction</h2>
     <div class="row card">
         <button class="card-x-button fa-solid fa-x" onclick="toggleAdd()"></button>
-        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method="post" class="form-deco" id="add-transaction">
+        <form action="{{ url_for('addtransaction', account_id=account.account_id)}}" method="post" class="form-deco"
+            id="add-transaction">
             <label for="date">Date</label>
-            <input
-                type="date"
-                id="date"
-                name="date"
-                value=""
-                required />
+            <input type="date" id="date" name="date" value="" required />
             <label for="title">Title</label>
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value=""
-                required />
+            <input type="text" id="title" name="title" value="" required />
             <label for="amount">Sum</label>
-            <input
-                type="number"
-                id="debit"
-                name="amount"
-                value=""
-                min="0"
-                step="0.01"
-                required /> 
-            <input 
-                type="radio"
-                id="credit"
-                name="c_or_d"
-                value="credit"
-                checked />
+            <input type="number" id="amount" name="amount" value="" min="0" step="0.01" required />
+            <input type="radio" id="credit" name="c_or_d" value="credit" checked />
             <label for="credit">Credit</label>
-            <input 
-                type="radio"
-                id="credit"
-                name="c_or_d"
-                value="debit"
-                />
+            <input type="radio" id="credit" name="c_or_d" value="debit" />
             <label for="debit">Debit</label>
             <h3>Select Category</h3>
             {% if categories %}
@@ -120,10 +96,10 @@
                 <option value="{{item.category.category_id}}">{{item.category.category_name}}
                 </option>
                 {% endfor%}
-            {% else %}
-            <a href="{{ url_for('get_budgets', account_id=account.account_id)}}">Add Category</a>
-            {% endif %}
-            <input type="submit" />
+                {% else %}
+                <a href="{{ url_for('get_budgets', account_id=account.account_id)}}">Add Category</a>
+                {% endif %}
+                <input type="submit" />
         </form>
     </div>
 </div>
@@ -136,6 +112,31 @@
             add.style.display = "block";
         } else {
             add.style.display = "none";
+        }
+    }
+
+    function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
+        var color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
+        var r = parseInt(color.substring(0, 2), 16); // hexToR
+        var g = parseInt(color.substring(2, 4), 16); // hexToG
+        var b = parseInt(color.substring(4, 6), 16); // hexToB
+        var uicolors = [r / 255, g / 255, b / 255];
+        var c = uicolors.map((col) => {
+            if (col <= 0.03928) {
+                return col / 12.92;
+            }
+            return Math.pow((col + 0.055) / 1.055, 2.4);
+        });
+        var L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
+        return (L > 0.179) ? darkColor : lightColor;
+    }
+
+    function changeCategoryTextColor() {
+        const categories = document.getElementsByClassName("category-style");
+        for (let i = 0; i < categories.length; i++) {
+            let color = categories[i].style.backgroundColor;
+            let textColor = pickTextColorBasedOnBgColorAdvanced(color, '#FFFFFF', '#000000');
+            categories[i].style.color = textColor
         }
     }
 </script>
