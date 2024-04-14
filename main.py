@@ -1061,7 +1061,7 @@ def sharetransaction(account_id, transaction_id):
         transaction = db_session.query(Transaction).filter_by(transaction_id=transaction_id).first()
 
         if request.method == 'GET':
-            active_share = db_session.query(ShareSpend).filter(ShareSpend.transaction_id==transaction_id)
+            active_share = db_session.query(ShareSpend).filter(ShareSpend.transaction_id==transaction_id).first()
             db_session.close()
             if active_share:
                 share_request = active_share.filter(or_(ShareSpend.sender_id==user_id, ShareSpend.receiver_id==user_id)).first()
