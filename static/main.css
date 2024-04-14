@@ -48,6 +48,8 @@ body {
   flex-direction: column;
 }
 
+.row-justify { justify-content: space-between; }
+
 .row-title {
   color: #FFFFFF;
   margin: 15px 15px;
