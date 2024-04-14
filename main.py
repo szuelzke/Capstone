@@ -902,20 +902,14 @@ def transactions(account_id):
         categories = db_session.query(Budget).filter_by(account_id=account_id).all()
         if account:
             # get transactions 
-            if request.method == 'get':
-                start_date = request.form.get('start_date')
-                end_date = request.form.get('end_date')
-                transactions_list = db_session.query(Transaction).filter(account_id=account_id).filter(func.DATE(Transaction.date) >= start_date).filter(func.DATE(Transaction.date) >= end_date)
-            else:
-                transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
+            transactions_list = db_session.query(Transaction).filter_by(account_id=account_id).order_by(Transaction.date.desc(), Transaction.transaction_id.desc()).all()
             db_session.close()
             return render_template('transactions.html',transactions=transactions_list, user=user, account=account, categories=categories)
         else:
             return redirect(url_for('add_account'))
     else:
         return redirect(url_for('login'))
-
-'''
+    
 @app.route('/<account_id>/transactions', methods=['GET'])
 def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -935,7 +929,7 @@ def filter_transactions(account_id):
             return redirect(url_for('add_account'))
     else:
         return redirect(url_for('login'))
-'''
+
 
 # add new transaction to account
 @app.route('/<account_id>/transactions/add', methods=['POST'])
