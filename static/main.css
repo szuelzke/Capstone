@@ -74,11 +74,11 @@ body {
   color: #FFFFFF;
 }
 
-.hover-link:hover > a {
+.hover-link:hover > a, .hover-container:hover > .hide-item {
   visibility: visible;
 }
 
-.hover-link > a {
+.hover-link > a, .hover-container > .hide-item {
   visibility: hidden;
 }
 

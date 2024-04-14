@@ -40,7 +40,7 @@
                             Transaction</button></td>
                 </tr>
                 {% for transaction in transactions %}
-                <tr>
+                <tr class="hover-container">
                     <td>{{transaction.date}}</td>
                     <td>{{transaction.title}}</td>
                     <td>{{transaction.amount}}</td>
@@ -49,7 +49,7 @@
                             <i
                                 class="fa-solid fa-{{transaction.category.symbol}} pd-5"></i>{{transaction.category.category_name}}</span>
                     </td>
-                    <td>
+                    <td class="hide-item">
                         <!-- buttons for transaction -->
                         <a
                             href="{{ url_for('edittransaction', account_id=account.account_id, transaction_id=transaction.transaction_id)}}"><button><i
