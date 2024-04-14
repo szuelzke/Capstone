@@ -8,26 +8,19 @@ import os
 import openai
 import bcrypt
 import pyotp
-import qrcode
-import base64
 import secrets
 import datetime
 from datetime import date, datetime, timedelta
 import logging
 import time
 
-
-
-# load_dotenv()
-# api_key = os.getenv('OPENAI_API_KEY')
-# openai.api_key = api_key
+### ------------------------------- Application Setup --------------------------------------------------------
 
 with open('/var/www/html/Capstone/.env', 'r') as file:
      openai.api_key = file.read().replace('\n', '')
      
 client = openai
 
-#### ------------------------------- Setup/Classes --------------------------------------------------------
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -49,6 +42,16 @@ engine = create_engine('mysql+mysqlconnector://capstone:CapStone2024@localhost/F
 
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
+
+
+# test database connection
+try:
+    connection = engine.connect()
+    print("Connection successful!")
+except Exception as e:
+    print("Connection failed:", e)
+
+#### ------------------------------- Models --------------------------------------------------------
 
 class User(Base):
     __tablename__ = 'user'
@@ -150,17 +153,9 @@ class ShareSpend(Base):
     receiver = relationship('User', foreign_keys='ShareSpend.receiver_id')
 
 
-
-
-
-try:
-    connection = engine.connect()
-    print("Connection successful!")
-except Exception as e:
-    print("Connection failed:", e)
-
-
 #### ------------------------------- Utility Functions --------------------------------------------------------
+
+# Login Utility Functions
 
 def get_user_id(email):
     db_session = Session()
@@ -175,6 +170,7 @@ def calculate_expiry_time():
     expiry_time = datetime.now() + timedelta(hours=1)
     return expiry_time
 
+# reset password email sent to user email
 def send_reset_password_email(user_email, reset_token):
     subject = "Reset Your Password"
     sender = "flashfin.alerts@gmail.com"
@@ -188,13 +184,15 @@ def send_reset_password_email(user_email, reset_token):
 
     mail.send(msg)
 
-# Handling Settings
+
+# Settings Utility Functions
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Handling Accounts
+
+# Accounts Utility Functiosns
 
 # returns dictionary of accounts connected to user
 # used in sidebar nav 
@@ -300,8 +298,8 @@ def get_transaction_data(account_id):
 
 
 
+# More Transactions Utility Functions
 
-# Handling Transactions
 # math for getting current balance after an add/edit
 # updates transaction.amount_remaining
 def update_balance(account_id):
@@ -332,13 +330,8 @@ def get_category_balance(category_id, budget_id):
     return balance
 
 # Alerts 
-# Function to send email
-#def send_email(recipient, subject, body):
-#    msg = Message(subject, recipients=[recipient])
-#    msg.body = body
-#    mail.send(msg)
 
-# Function to check balance and send alert
+# Function to check balance and send alert/email to user
 def check_balance_and_send_alert(account_id):
     user_id = session['user_id']
     db_session = Session()
@@ -379,9 +372,6 @@ def check_balance_and_send_alert(account_id):
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-    #body = f"Dear User,\n\nYour account balance is below $50.00. Please consider reviewing your finances.\n\nRegards,\nYour Bank"
-    #send_email(user_email, subject, body)
-
 
 # Function to get notifications for a specific account
 @app.template_global()
@@ -413,9 +403,10 @@ def get_sharespend_requests():
         return "No requests"
 
 
+
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
-
+# route to home screen, routes to landing page if user not logged in
 @app.route('/', methods=['GET','POST'])
 def home():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -431,6 +422,7 @@ def home():
         msg = ''
         return render_template('landing.html', msg=msg)
 
+# testing route
 @app.route('/test')
 def test():
     if 'user_id' in session:
@@ -445,6 +437,7 @@ def test():
     else:
         return redirect(url_for('login'))
 
+# Route to login screen
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     start_time = time.time()  # Performance monitoring - start time
@@ -462,7 +455,7 @@ def login():
 
             if user.mfa_key is None:
                 otp_secret = pyotp.random_base32() # generate secret setup key
-                user.mfa_key = otp_secret
+                user.mfa_key = otp_secret # stores user setup key in user model
                 db_session.commit()
 
             db_session.close()  # Close the session after all database operations
@@ -473,7 +466,7 @@ def login():
             return redirect(url_for('mfa'))
         else:
            db_session.close()
-           logger.error("Invalid email or password")
+           logger.error("Invalid email or password") # handling for invalid credentials
            return render_template('login.html', error='Invalid email or password')
     
     end_time = time.time()  # Performance monitoring - end time
@@ -481,6 +474,7 @@ def login():
     
     return render_template('login.html')
 
+# multi-factor authentication route
 @app.route('/mfa', methods=['GET', 'POST'])
 def mfa():
     if 'user_id' in session:
@@ -491,13 +485,13 @@ def mfa():
             mfa_key = user.mfa_key
             if request.method == 'POST':
                 otp = request.form['otp']
-                if mfa_key and pyotp.TOTP(mfa_key).verify(otp):
+                if mfa_key and pyotp.TOTP(mfa_key).verify(otp): # verifies OTP 
                     session['mfa_completed'] = True
                     db_session.close()
                     return redirect(url_for('home'))
                 else:
                     db_session.close()
-                    return render_template('mfa.html', error='Invalid OTP', user=user)
+                    return render_template('mfa.html', error='Invalid OTP', user=user) # handling for invalid code
             db_session.close()
             return render_template('mfa.html', user=user)
         else:
@@ -505,11 +499,13 @@ def mfa():
             return redirect(url_for('login'))  # Redirect to login if user not found
     return render_template('login.html')
 
+# signup page route
 @app.route('/signup', methods=['GET','POST'])
 def signup():
     start_time = time.time()  # Performance monitoring - start ti
     if request.method == 'POST':
        
+        # gets data from signup form
         username = request.form['username']
         first_name = request.form['firstname']
         last_name = request.form['lastname']
@@ -521,16 +517,17 @@ def signup():
         db_session = Session()
         check_username = db_session.query(User).filter_by(social_name=username).first()
         db_session.close()
-        if check_username:
+        if check_username: # check username is unique
             return render_template('signup.html', error='Username already taken, try something else')
        
-        if password != confirm_password:
+        if password != confirm_password: # check passwords match
             return render_template('signup.html', error='Passwords do not match')
 
        
+       # encrypt password
         password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        
+        # adds new user to database
         new_user = User(
             social_name=username,
             first_name=first_name,
@@ -557,6 +554,7 @@ def signup():
     return render_template('signup.html')
 
 
+# forgot password route
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -575,13 +573,13 @@ def forgot_password():
             db_session.commit()
             db_session.close()
             
+            # calls utility function to send email
             send_reset_password_email(email, reset_token)
 
-            #return render_template('password_reset_link_sent.html', email=email)
             return redirect(url_for('password_reset_link_sent', email=email))
         else:
             db_session.close()
-            return render_template('forgot_password.html', error='Email not found')
+            return render_template('forgot_password.html', error='Email not found') # error message if email not in system
     return render_template('forgot_password.html')
 
 # Define the route for showing password reset link sent page
@@ -590,6 +588,7 @@ def password_reset_link_sent():
     email = request.args.get('email')
     return render_template('password_reset_link_sent.html', email=email)
 
+# Define the route for reset password page
 @app.route('/reset-password/<reset_token>', methods=['GET', 'POST'])
 def reset_password(reset_token):
     if request.method == 'POST':
@@ -600,7 +599,7 @@ def reset_password(reset_token):
         user = session.query(User).filter_by(reset_token=reset_token).first()
 
         if user:
-            if user.reset_token_expiry and user.reset_token_expiry > datetime.now():
+            if user.reset_token_expiry and user.reset_token_expiry > datetime.now(): # checks token expired
                 if new_password == confirm_password:
                     hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
 
@@ -623,11 +622,14 @@ def reset_password(reset_token):
             return render_template('reset_password.html', error='Invalid Token. Please go back to Reset Password.')
     return render_template('reset_password.html')
 
+# logout route
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Clear session data
     session.clear()
     return redirect(url_for('login'))
+
+
 
 
 ###------------------------------- Handling Settings --------------------------------------------------------
@@ -650,7 +652,7 @@ def settings():
     else:
         return redirect(url_for('login'))
     
-
+# function for uploading picture - not tested
 @app.route('/upload_picture', methods=['POST'])
 def upload_picture():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -769,6 +771,7 @@ def delete_account(account_id):
     else:
         return redirect(url_for('login'))
 
+# route to edit account popupup
 @app.route('/edit_popup/<int:account_id>', methods=['GET'])
 def edit_popup(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -778,7 +781,8 @@ def edit_popup(account_id):
         return render_template('edit_account.html', account_id=account_id, user=user)
     else:
         return redirect(url_for('login'))
-    
+
+# function to update account info
 @app.route('/edit_account/<int:account_id>', methods=['POST'])
 def edit_account(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -797,15 +801,15 @@ def edit_account(account_id):
                 flash('Account updated successfully.')
             else:
                 db_session.close()
-                flash('Account not found.')
+                flash('Account not found.') # error handling
         else:
             db_session.close()
-            flash('Incorrect current password.')
+            flash('Incorrect current password.') # error handling
         return redirect(url_for('settings'))
     else:
         return redirect(url_for('login'))
 
-
+# function to add student id to user account
 @app.route('/add-studentid', methods=['GET','POST'])
 def add_studentid():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -826,8 +830,11 @@ def add_studentid():
     else:
         return redirect(url_for('login'))
 
+
+
 #### ---------------------------- Handling Accounts ---------------------------------
 
+# function for adding account
 @app.route('/add-account', methods=['GET','POST'])
 def add_account():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -843,12 +850,16 @@ def add_account():
                 error="User cannot have more than 5 accounts.")
 
             account_name = request.form['accountname']
+
+            # adds account to database, tied to current user
             new_account = Account(
                 account_name=account_name,
                 user_id=session['user_id'],
                 is_active=True
             )
             amount = request.form['startbalance']
+
+            # adds starting transaction to database, tied to account  
             start_transaction = Transaction(
                 date=datetime.now(),
                 amount=amount,
@@ -889,7 +900,9 @@ def account(account_id):
     else:
         return redirect(url_for('login'))
 
+
 #### ---------------------------- Handling Transactions ---------------------------------
+
 # view all transactions in account
 @app.route('/<account_id>/transactions', methods=['GET'])
 def transactions(account_id):
@@ -910,7 +923,8 @@ def transactions(account_id):
             return redirect(url_for('add_account'))
     else:
         return redirect(url_for('login'))
-    
+
+# function to filter transactions based on dates
 @app.route('/<account_id>/transactions/filter', methods=['GET'])
 def filter_transactions(account_id):
     if 'user_id' in session  and session.get('mfa_completed', False):
@@ -960,11 +974,6 @@ def addtransaction(account_id):
                 db_session.commit()
                 db_session.close()
 
-                # Sending alert if balance is low
-                #balance = transactions.amount_remaining
-                #user_email = user.email 
-                #account_id = account.account_id
-        
                 # update transaction.amount_remaining
                 update_balance(account_id) 
 
@@ -1041,7 +1050,7 @@ def deletetransaction(account_id, transaction_id):
     else:
         return redirect(url_for('login'))
     
-    # share transaction 
+# share transaction 
 @app.route('/<account_id>/<transaction_id>/share', methods=['POST', 'GET'])
 def sharetransaction(account_id, transaction_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1084,7 +1093,8 @@ def sharetransaction(account_id, transaction_id):
                 return render_template('share_transaction.html', user=user, account=account, transaction=transaction, msg='User not found')
     else:
         return redirect(url_for('login'))
-    
+
+# routing for accepting share request
 @app.route('/<sharespend_id>/accept', methods=['POST'])
 def accept_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1110,7 +1120,8 @@ def accept_ss_request(sharespend_id):
         return redirect(url_for('account', account_id=account_id))
     else:
         return redirect(url_for('login'))
-    
+
+# route for denying share spend request
 @app.route('/<sharespend_id>/deny', methods=['POST'])
 def deny_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1124,7 +1135,10 @@ def deny_ss_request(sharespend_id):
         return redirect(url_for('login'))
 
 
+
 #### ---------------------------- Handling Budget ---------------------------------
+
+# route to budget page within an account
 @app.route('/<account_id>/budget', methods=['GET'])
 def get_budgets(account_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1210,20 +1224,11 @@ def edit_budget(account_id, budget_id):
             return redirect(url_for('get_budgets', account_id=account_id))
     else:
         return redirect(url_for('login'))
+    
+
 
 # ------------------------ Notification System ---------------------------------------
 
-'''
-# Get Notifications
-@app.route('/<account_id>/notifications', methods = ['GET','POST'])
-def display_notifications(account_id):
-    if 'user_id' in session and session.get('mfa_completed', False):
-        user_id = session["user_id"]
-        db_session = Session()
-        user = db_session.query(User).filter_by(user_id=user_id).first()
-        account = db_session.query(Account).filter_by(user_id=user_id, account_id=account_id).first()
-        return render_template('notifications.html', user=user, account=account, notifications=get_notifications(account.account_id))
-'''
 # Get Notifications
 @app.route('/notifications', methods=['GET', 'POST'])
 def display_notifications():
@@ -1247,8 +1252,11 @@ def display_notifications():
     else:
         return redirect(url_for('login'))
 
+
+
 #### ---------------------- Manage FlashCard - FlashCash Balance and Transactions -----------------------------
 
+# route to flashcard screen
 @app.route('/<student_id>/flashcash-transactions', methods=['GET','POST'])
 def flashcash_transaction(student_id):
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1269,9 +1277,9 @@ def flashcash_transaction(student_id):
         return redirect(url_for('login'))
     
 
-#### ------------------------ Chatbot ------------------
+#### ------------------------------------------- Chatbot -----------------------------------------------------
 
-
+# route to chatbot
 @app.route('/chatbot', methods=['GET', 'POST'])
 def chatbot():
     if 'user_id' in session and session.get('mfa_completed', False):
@@ -1315,99 +1323,12 @@ def chatbot():
         return render_template('chatbot.html', user=user, messages=session['messages'])
     else:
         return redirect(url_for('login'))
-    
+
+# function to clear chatbot conversations
 @app.route('/clear_chat')
 def clear_chat():
     session.pop('messages', None)  # Clear the chat history from the session
     return '', 204  # No content to return
-
-
-
-# @app.route('/chatbot', methods=['GET', 'POST'])
-# def chatbot():
-#     logging.debug("Entering chatbot route")
-#     if 'user_id' not in session or not session.get('mfa_completed', False):
-#         logging.debug("Redirecting to login - user_id or MFA not completed")
-#         return redirect(url_for('login'))
-
-#     if 'messages' not in session:
-#         session['messages'] = []
-#         logging.debug("Initialized empty message list in session")
-
-#     if request.method == 'POST':
-#         user_message = request.form.get('message')
-#         logging.debug(f"Received message from user: {user_message}")
-#         if user_message:
-#             try:
-#                 response = client.chat.completions.create(
-#                     model="gpt-3.5-turbo",
-#                     messages=[
-#                         {"role": "system", "content": "Your System Description Here."},
-#                         {"role": "user", "content": user_message}
-#                     ],
-#                     max_tokens=75
-#                 )
-#                 chatbot_response = response.choices[0].message.content
-#                 session['messages'].append({"user": user_message, "bot": chatbot_response})
-#                 logging.debug(f"Bot response: {chatbot_response}")
-#             except Exception as e:
-#                 session['messages'].append({"error": "Failed to fetch response."})
-#                 logging.error("Error fetching response from API", exc_info=True)
-
-#     return render_template('chatbot.html', messages=session['messages'])
-
-
-
-
-# @app.route('/chatbot', methods=['GET', 'POST'])
-# def chatbot():
-#     if 'user_id' in session and session.get('mfa_completed', False):
-#         if request.method == 'POST':
-#             user_message = request.form['message']
-
-#             completion = client.chat.completions.create(
-#                 model="gpt-3.5-turbo",
-#                 messages=[
-#                     {"role": "system", "content": "You are Flashy, adept at breaking down intricate financial concepts into easy-to-understand tips and tricks, sprinkled with engaging anecdotes to keep users hooked. You only answer questions related to financial tips or advice, any questions outside of this scope and you will say that it beyond your scope."},
-#                     {"role": "user", "content": user_message}
-#                 ]
-#             )
-
-#             chatbot_response = completion.choices[0].message  # Use .message to access the response
-#             return render_template('chatbot.html', user_message=user_message, chatbot_response=chatbot_response)
-#         return render_template('chatbot.html')
-#     else:
-#         return redirect(url_for('login'))
-    
-# @app.route("/chatbot", methods=["POST"])
-# def chatbot():
-#     user_input = request.form["message"]
-#     prompt = f"User: {user_input}\nChatbot "
-#     chat_history = []
-#     response = openai.Completion.create(
-#         engine = "text-davinci-002",
-#         prompt = prompt,
-#         temperature =0.5,
-#         max_tokens = 60,
-#         top_p = 1,
-#         frequency_penalty = 0,
-#         stop = ["\nUser: ", "\nChatbot: "]
-#     )
-#     bot_response = response.choices[0].text.strip()
-#     chat_history.append(f"User: {user_input}")
-
-# @app.route("/chatbot", methods=["POST"])
-# def chatbot():
-#     completion = client.chat.completions.create(
-#         model="gpt-3.5-turbo",
-#         messages=[
-#             {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
-#             {"role": "user", "content": "Compose a poem that explains the concept of recursion in programming."}
-#         ]
-#     )
-
-# print(completion.choices[0].message)
-    #hiiii
 
 
     
