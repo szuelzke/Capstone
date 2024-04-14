@@ -45,7 +45,7 @@
                     <td>{{transaction.title}}</td>
                     <td>{{transaction.amount}}</td>
                     <td>{{transaction.amount_remaining}}</td>
-                    <td><span class="category-style" style="background-color:{{transaction.category.color}};" onload="changeCategoryTextColor()">
+                    <td><span class="category-style" style="background-color:{{transaction.category.color}};">
                             <i
                                 class="fa-solid fa-{{transaction.category.symbol}}"></i>{{transaction.category.category_name}}</span>
                     </td>
@@ -131,7 +131,7 @@
         return (L > 0.179) ? darkColor : lightColor;
     }
 
-    function changeCategoryTextColor() {
+    window.onload = function() {
         const categories = document.getElementsByClassName("category-style");
         for (let i = 0; i < categories.length; i++) {
             console.log('test')
