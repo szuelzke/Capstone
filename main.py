@@ -16,7 +16,7 @@ import time
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
 from config import app, Session, mail, engine, client, logger
-
+'''
 from utility import (
     get_user_id,
     generate_reset_token,
@@ -25,11 +25,11 @@ from utility import (
     allowed_file,
     update_balance,
 )
-
+'''
 #### ------------------------------- Utility Functions --------------------------------------------------------
 
 # Login Utility Functions
-'''
+
 def get_user_id(email):
     db_session = Session()
     user = db_session.query(User).filter_by(email=email).first()
@@ -64,7 +64,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-'''
+
 # Accounts Utility Functiosns
 
 # returns dictionary of accounts connected to user
@@ -80,7 +80,7 @@ def get_account_list():
         account_list[account.account_id]["name"] = account.account_name
     db_session.close()
     return account_list
-'''
+
 # returns dict of stats for all budgets in an account
 @app.template_global()
 def get_budget_stats(account_id):
@@ -201,7 +201,7 @@ def get_category_balance(category_id, budget_id):
         balance = balance + transaction.amount
     db_session.close()
     return balance
-'''
+
 # Alerts 
 
 # Function to check balance and send alert/email to user
@@ -245,7 +245,7 @@ def check_balance_and_send_alert(account_id):
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-'''
+
 # Function to get notifications for a specific account
 @app.template_global()
 def get_notifications(account_id):
@@ -259,7 +259,7 @@ def get_notifications(account_id):
             opted_in_notifications[notification.notification_id] = notification
     
     return opted_in_notifications
-'''
+
 @app.template_global()
 def get_sharespend_requests():
     user_id = session['user_id']
