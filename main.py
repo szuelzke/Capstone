@@ -16,13 +16,14 @@ import time
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
 from config import app, Session, mail, engine, client, logger
+'''
 from utility import (
     get_user_id, generate_reset_token, calculate_expiry_time, send_reset_password_email, allowed_file,
     update_balance, check_balance_and_send_alert, get_category_balance, get_notifications, get_sharespend_requests
 )
-
-#### ------------------------------- Utility Functions --------------------------------------------------------
 '''
+#### ------------------------------- Utility Functions --------------------------------------------------------
+
 # Login Utility Functions
 
 def get_user_id(email):
@@ -270,7 +271,7 @@ def get_sharespend_requests():
     else:
         return "No requests"
 
-'''
+
 
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
