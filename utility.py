@@ -11,7 +11,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
 
-
 #### ------------------------------- Utility Functions --------------------------------------------------------
 
 # Login Utility Functions
