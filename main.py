@@ -16,29 +16,13 @@ import time
 
 from models import Base, User, Account, Category, Budget, Transaction, SvcPlan, FlashCash_Transaction, Notification, ShareSpend
 from config import app, Session, mail, engine, client, logger
+from utility import (
+    get_user_id, generate_reset_token, calculate_expiry_time, send_reset_password_email, allowed_file,
+    update_balance, check_balance_and_send_alert, get_category_balance, get_notifications, get_sharespend_requests
+)
 
-
-### ------------------------------- Application Setup --------------------------------------------------------
-'''
-with open('/var/www/html/Capstone/.env', 'r') as file:
-     openai.api_key = file.read().replace('\n', '')
-     
-client = openai
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
-# test database connection
-try:
-    connection = engine.connect()
-    print("Connection successful!")
-except Exception as e:
-    print("Connection failed:", e)
-'''
 #### ------------------------------- Utility Functions --------------------------------------------------------
-
+'''
 # Login Utility Functions
 
 def get_user_id(email):
@@ -286,7 +270,7 @@ def get_sharespend_requests():
     else:
         return "No requests"
 
-
+'''
 
 #### ------------------------------- Handling Login System --------------------------------------------------------
 
