@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from flask_mail import Mail, Message
-from flask import session
+#from flask import session
 from models import User, Notification, ShareSpend
 from config import app, Session as DBSession, mail
 import secrets
@@ -54,9 +54,11 @@ def allowed_file(filename):
 
 # returns dictionary of accounts connected to user
 # used in sidebar nav 
+'''
 @app.template_global()
-def get_account_list():
-    user_id = session['user_id']
+def get_account_list(session):
+    #user_id = session['user_id']
+    user_id = session.get('user_id')
     db_session = Session()
     accounts = db_session.query(Account).filter_by(user_id=user_id).all()
     account_list = {}
@@ -65,7 +67,7 @@ def get_account_list():
         account_list[account.account_id]["name"] = account.account_name
     db_session.close()
     return account_list
-
+'''
 # returns dict of stats for all budgets in an account
 @app.template_global()
 def get_budget_stats(account_id):
@@ -188,10 +190,11 @@ def get_category_balance(category_id, budget_id):
     return balance
 
 # Alerts 
-
+'''
 # Function to check balance and send alert/email to user
-def check_balance_and_send_alert(account_id):
-    user_id = session['user_id']
+def check_balance_and_send_alert(account_id, session):
+    #user_id = session['user_id']
+    user_id = session.get('user_id')
     db_session = Session()
     user = db_session.query(User).filter_by(user_id=user_id).first()
     try:
@@ -230,7 +233,7 @@ def check_balance_and_send_alert(account_id):
         db_session.rollback()  # Rollback the changes if an error occurs
     finally:
         db_session.close()
-
+'''
 # Function to get notifications for a specific account
 @app.template_global()
 def get_notifications(account_id):
@@ -244,10 +247,11 @@ def get_notifications(account_id):
             opted_in_notifications[notification.notification_id] = notification
     
     return opted_in_notifications
-
+'''
 @app.template_global()
-def get_sharespend_requests():
-    user_id = session['user_id']
+def get_sharespend_requests(session):
+    #user_id = session['user_id']
+    user_id = session.get('user_id')
     db_session = Session()
     ss_requests = db_session.query(ShareSpend).filter_by(receiver_id=user_id).filter_by(is_paid=False).all()
     ss_list = {}
@@ -259,3 +263,4 @@ def get_sharespend_requests():
         return ss_list
     else:
         return "No requests"
+    '''
