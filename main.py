@@ -628,11 +628,14 @@ def delete_account(account_id):
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
                 delete_budget(account_id, budget.budget_id)
-            # delete transactions shared with another user
-            db_session.query(ShareSpend).filter(ShareSpend.init_transaction.account_id == account_id).delete()
-            db_session.query(ShareSpend).filter(ShareSpend.receiver_transaction.account_id == account_id).delete()
+
             # delete uncategorized transactions
-            db_session.query(Transaction).filter_by(account_id=account_id).delete()
+            tran = db_session.query(Transaction).filter_by(account_id=account_id).all()
+            for transactions in tran:
+                ss = db_session.query(ShareSpend).filter(or_(ShareSpend.transaction_id==transactions.transaction_id, ShareSpend.receiver_transaction_id==transactions.transaction_id)).first()
+                db_session.delete(ss)
+            db_session.delete(tran)
+            
             db_session.query(Budget).filter_by(account_id=account_id).delete()
             db_session.delete(account)
             db_session.commit()
