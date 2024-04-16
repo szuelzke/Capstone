@@ -989,6 +989,7 @@ def accept_ss_request(sharespend_id):
         db_session = Session()
         user = db_session.query(User).filter_by(user_id=user_id).first()
         ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
+        other_social = db_session.query(User).filter(User.user_id==ss_request.sender_id).first().social_name
 
         account_id = request.form.get("account_id")
         amount_split = float(ss_request.amount_split) * -1.0
@@ -998,7 +999,7 @@ def accept_ss_request(sharespend_id):
             account_id = account_id,
             date = ss_request.init_transaction.date,
             amount = amount_split,
-            title = ss_request.init_transaction.title
+            title = ss_request.init_transaction.title + " with " + other_social
         )
         # debit transaction to user that sent request
         sender_transaction = Transaction(
