@@ -1000,8 +1000,19 @@ def accept_ss_request(sharespend_id):
             title = "Income from " + user.social_name + " for " + ss_request.init_transaction.title
         )
 
+        # notfication that gets sent to user
+        sender_notification = Notification(
+            account_id=ss_request.init_transaction.account_id,
+            notification_type="request",
+            notification_type_id=3,
+            is_opt_in=True,
+            timestamp=datetime.now(),
+            is_read=False
+        )
+
         db_session.add(receiver_transaction)
         db_session.add(sender_transaction)
+        db_session.add(sender_notification)
         db_session.commit()
         ss_request.is_paid = True
         ss_request.receiver_transaction_id = receiver_transaction.transaction_id
