@@ -165,7 +165,7 @@
                 y: categoriesData[category_id].balances,
                 type: 'scatter',
                 mode: 'lines',
-                //name: categoriesData[category_id].name,
+                name: categoriesData[category_id].name,
                 line: {
                     color: categoriesData[category_id].color
                 },
@@ -184,41 +184,11 @@
             },
             height: 500,
             width: 500, // Adjust width to fit the graph properly
-            legend: {
-                orientation: 'h',
-                x: 0,
-                y: 1.1
-            }
+         
         };
 
-        var legendItems= [];
-        for(var category_id in categoriesData){
-            legendItems.push({
-                name: categoriesData[category_id].name,
-                color: categoriesData[category_id].color
-            });
-        }
-
-        layout.annotations = [
-            {
-                x: 0,
-                y:1.05,
-                xref: 'paper',
-                yref: 'paper',
-                text: getLegendHTML(legendItems),
-                showarrow: false
-            }
-        ];
-
-        function getLegendHTML(items){
-            var html = '<table>';
-            items.forEach(function(items){
-                html += '<tr><td><div style="width: 10px; height: 10px; background-color: ' + items.color + ';"></div></td><td>' + items.name + '</td></tr>';
-            });
-            html += '</table>';
-            return html;
-        }
-
+     
+      
         // Plotting the chart
         Plotly.newPlot('linegraph', data, layout);
    
