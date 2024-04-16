@@ -102,5 +102,6 @@ class ShareSpend(Base):
     is_paid = Column(Boolean)
     
     init_transaction = relationship('Transaction', foreign_keys='ShareSpend.transaction_id')
+    receiver_transaction = relationship('Transaction', foreign_keys='ShareSpend.receiver_transaction_id')
     sender = relationship('User', foreign_keys='ShareSpend.sender_id')
     receiver = relationship('User', foreign_keys='ShareSpend.receiver_id')
