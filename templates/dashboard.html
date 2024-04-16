@@ -213,7 +213,7 @@
         function getLegendHTML(items){
             var html = '<table>';
             items.forEach(function(items){
-                html += '<tr><td><div style="width: 10px; height: 10px; background-color: ' + item.color + ';"></div></td><td>' + item.name + '</td></tr>';
+                html += '<tr><td><div style="width: 10px; height: 10px; background-color: ' + items.color + ';"></div></td><td>' + items.name + '</td></tr>';
             });
             html += '</table>';
             return html;
