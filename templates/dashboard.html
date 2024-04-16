@@ -132,7 +132,9 @@
         });
 
         function getCategoryName(category_id){
+            if(budgetsStats.hasOwnProperty(id)){
             var Name = budgetsStats[id].id;
+            }
             return Name;
         }
 
