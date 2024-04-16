@@ -40,8 +40,8 @@
         {% if notifications %}
             {% for notification_id, notification in notifications.items() %}
                 {% if notification.notification_type_id == 2 %}
-                    <a href="#">{{ notification.timestamp }} : Alert - User denied your share request</a>
-                {% else %}
+                    <a href="#">{{ notification.timestamp }} : Alert - User denied your share request</a></br>
+                {% elif notification.notification_type_id == 1 %}
                     <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a></br >
                 {% endif %}
             {% endfor %}
