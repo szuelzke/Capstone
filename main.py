@@ -149,7 +149,7 @@ def get_transaction_data(account_id):
 
     # Query transactions for the specified account
     transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
-
+    
     # Calculate total balance change over time
     total_balance_change = db_session.query(func.sum(Transaction.amount)).filter_by(account_id=account_id).scalar()
 

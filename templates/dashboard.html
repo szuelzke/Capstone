@@ -109,69 +109,68 @@
     <script>
           // Convert transaction_data to JSON
         var transactionData = JSON.parse('{{ transaction_data | tojson | safe }}');
-
+        var budgetsStats = JSON.parse('{{ budgets_stats | tojson | safe }}')
         // Extracting data from transaction_data
         var dates = [];
-        var balances = [];
-        var categories = [];
+        //var balances = [];
+        var categoriesData = [];
 
         var aggregatedTransactions = {};
 
         transactionData.transactions.forEach(function(transaction) {
             var date = transaction.date;
             var amount = transaction.amount_remaining;
-            var category = transaction.category_id;
+            var category_id = transaction.category_id;
+            
+            var key = date + "_" + category_id;
 
-            if(!aggregatedTransactions[date]){
-                aggregatedTransactions[date] = {date: date, totalAmount: 0, categories: {} };
+            if(!aggregatedTransactions[key]){
+                aggregatedTransactions[key] = {date: date, category_id: category_id, totalAmount: 0 };
             }
 
             aggregatedTransactions[date].totalAmount += amount;
-
-            if (!aggregatedTransactions[date].categories[category]){
-                aggregatedTransactions[date].categories[category] = 0;
-            }
-
-            aggregatedTransactions[date].categories[category] += amount;
-
         });
 
+        function getCategoryName(category_id){
+            return budgetsStats[id];
+        }
+
         var colors = ['blue', 'green', 'red', 'orange', 'purple'];
-        var categoryColors = {};
 
-        var colorIndex = 0;
+        for (var key in aggregatedTransactions){
+          var date = aggregatedTransactions[key].date;
+          var category_id = aggregatedTransactions[key].category_id;
+          var totalAmount = aggregatedTransactions[key].totalAmount;
+          var categegoryName = getCategoryName(category_id);
 
-        for (var date in aggregatedTransactions){
-            dates.push(aggregatedTransactions[date].date);
-            balances.push(aggregatedTransactions[date].totalAmount);
-            categories.push(Object.keys(aggregatedTransactions[date].categories).join(', '));
+           if(!categoriesData[category_id]){
+            categoriesData[category_id] = {
+                dates: [],
+                balances: [],
+                name: categegoryName,
+                color: colors[Object.keys(categoriesData).length % colors.length]
+                
+            };
+           }
 
-            for(var category in aggregatedTransactions[date].categories){
-                if (!categoryColors[category]){
-                    categoryColors[category] = colors[colorIndex % colors.length];
-                    colorIndex++;
-                }
-            }
+           categoriesData[category_id].dates.push(date);
+           categoriesData[category_id].balances.push(totalAmount);
         }
 
         var data = [];
 
-        for(var date in aggregatedTransactions){
-            var trace = {
-            x: dates,
-            y: balances,
-            type: 'scatter',
-            mode: 'lines',
-            name: 'Balance Over Time'
-            };
-
-            for(var category in aggregatedTransactions[date].categories){
-                trace.name = category;
-                trace.line = {color: categoryColors[category]};
-                data.push(trace);
-            }
-
-        };
+        for(var category_id in categoriesData){
+            data.push({
+                x: categoriesData[category_id].dates,
+                y: categoriesData[category_id].balances,
+                type: 'scatter',
+                mode: 'lines',
+                name: categoriesData[category_id].name,
+                line: {
+                    color: categoriesData[category_id].color
+                }
+            });
+        }
         
 
         var layout = {
