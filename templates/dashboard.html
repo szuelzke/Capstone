@@ -125,7 +125,7 @@
             aggregatedTransactions[date] += amount;
         });
 
-        var dates = Objects.keys(aggregatedTransactions).sort();
+        var dates = Object.keys(aggregatedTransactions).sort();
         var balances = dates.map(function(date) {
         return aggregatedTransactions[date];
         });
