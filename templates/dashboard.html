@@ -112,74 +112,33 @@
     <script>
           // Convert transaction_data to JSON
         var transactionData = JSON.parse('{{ transaction_data | tojson | safe }}');
-        var budgetsStats = JSON.parse('{{ budgets_stats | tojson | safe }}')
-        // Extracting data from transaction_data
-        var dates = [];
-        //var balances = [];
-        var categoriesData = [];
-
         var aggregatedTransactions = {};
 
         transactionData.transactions.forEach(function(transaction) {
             var date = transaction.date;
             var amount = transaction.amount_remaining;
-            var category_id = transaction.category_id;
-            
-            var key = date + "_" + category_id;
+        
+            if(!aggregatedTransactions[date]){
+                aggregatedTransactions[date] = 0;
+            };
 
-            if(!aggregatedTransactions[key]){
-                aggregatedTransactions[key] = {date: date, category_id: category_id, totalAmount: 0 };
-            }
-
-            aggregatedTransactions[key].totalAmount += amount;
+            aggregatedTransactions[date] += amount;
         });
 
-        function getCategoryName(category_id){
-            if(budgetsStats.hasOwnProperty(id)){
-            var Name = budgetsStats[id].id;
-            return Name;
+        var dates = Objects.keys(aggregatedTransactions).sort();
+        var balances = dates.map(function(date) {
+        return aggregatedTransactions[date];
+        });
+
+        var data = [{
+            x: dates,
+            y: balances,
+            type: 'scatter',
+            mode: 'lines',
+            line: {
+                color: 'green'
             }
-            //return Name;
-        }
-
-        var colors = ['blue', 'green', 'red', 'orange', 'purple'];
-
-        for (var key in aggregatedTransactions){
-          var date = aggregatedTransactions[key].date;
-          var category_id = aggregatedTransactions[key].category_id;
-          var totalAmount = aggregatedTransactions[key].totalAmount;
-          var categegoryName = getCategoryName(category_id);
-
-           if(!categoriesData[category_id]){
-            categoriesData[category_id] = {
-                dates: [],
-                balances: [],
-                name: categegoryName,
-                color: colors[Object.keys(categoriesData).length % colors.length]
-                
-            };
-           }
-
-           categoriesData[category_id].dates.push(date);
-           categoriesData[category_id].balances.push(totalAmount);
-        }
-
-        var data = [];
-
-        for(var category_id in categoriesData){
-            data.push({
-                x: categoriesData[category_id].dates,
-                y: categoriesData[category_id].balances,
-                type: 'scatter',
-                mode: 'lines',
-                name: categoriesData[category_id].name,
-                line: {
-                    color: categoriesData[category_id].color
-                },
-                
-            });
-        }
-        
+        }];
 
         var layout = {
             title: 'Balance Over Time', // Title for the graph
@@ -191,14 +150,9 @@
             },
             height: 500,
             width: 500, // Adjust width to fit the graph properly
-         
         };
-
-     
-      
         // Plotting the chart
         Plotly.newPlot('linegraph', data, layout);
-   
     </script>
 </div>
 
