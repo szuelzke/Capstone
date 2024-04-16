@@ -1027,8 +1027,9 @@ def deny_ss_request(sharespend_id):
             timestamp=datetime.now(),
             is_read=False
         )
-        db_session.delete(ss_request)
         db_session.add(sender_notification)
+        db_session.commit()
+        db_session.delete(ss_request)
         db_session.commit()
         db_session.close()
         return redirect(url_for('home'))
