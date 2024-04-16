@@ -39,7 +39,11 @@
         <!-- display account notifications -->
         {% if notifications %}
             {% for notification_id, notification in notifications.items() %}
-                <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a></br >
+                {% if notification_type_id == 2 %}
+                    <a href="#">{{ notification.timestamp }} : Alert - User denied your share request</a>
+                {% else %}
+                    <a href="#">{{ notification.timestamp }} : Alert - Low Account Balance</a></br >
+                {% endif %}
             {% endfor %}
         {% else %}
             <p>No notifications</p>

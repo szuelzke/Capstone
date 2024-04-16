@@ -1019,7 +1019,16 @@ def deny_ss_request(sharespend_id):
     if 'user_id' in session and session.get('mfa_completed', False):
         db_session = Session()
         ss_request = db_session.query(ShareSpend).filter_by(share_id=sharespend_id).first()
+        sender_notification = Notification(
+            account_id=ss_request.init_transaction.account_id,
+            notification_type="request",
+            notification_type_id=2,
+            is_opt_in=True,
+            timestamp=datetime.now(),
+            is_read=False
+        )
         db_session.delete(ss_request)
+        db_session.add(sender_notification)
         db_session.commit()
         db_session.close()
         return redirect(url_for('home'))
