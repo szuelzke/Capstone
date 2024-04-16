@@ -624,21 +624,22 @@ def delete_account(account_id):
 
         if account:
             db_session.query(Notification).filter_by(account_id=account_id).delete()
+
+            transactions = db_session.query(Transaction).filter_by(account_id=account_id).all()
             # delete sharespend connections
-            tran = db_session.query(Transaction).filter_by(account_id=account_id).all()
-            for transactions in tran:
-                ss = db_session.query(ShareSpend).filter(or_(ShareSpend.transaction_id==transactions.transaction_id, ShareSpend.receiver_transaction_id==transactions.transaction_id)).first()
+            for transaction in transactions:
+                ss = db_session.query(ShareSpend).filter(or_(ShareSpend.transaction_id==transaction.transaction_id, ShareSpend.receiver_transaction_id==transaction.transaction_id)).first()
                 if ss:
                     db_session.delete(ss)
-            # delete budgets and transactions in budget for account
+            # delete budgets and categories in account
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
-                delete_budget(account_id, budget.budget_id)
-
+                category = db_session.query(Category).filter(Category.category_id==budget.category_id).delete()
+            db_session.query(Budget).filter_by(account_id=account_id).delete()
+            
             # delete transactions
             db_session.query(Transaction).filter_by(account_id=account_id).delete()
 
-            db_session.query(Budget).filter_by(account_id=account_id).delete()
             db_session.delete(account)
             db_session.commit()
             db_session.close()
