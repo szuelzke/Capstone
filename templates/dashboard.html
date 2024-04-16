@@ -128,7 +128,7 @@
                 aggregatedTransactions[key] = {date: date, category_id: category_id, totalAmount: 0 };
             }
 
-            aggregatedTransactions[date].totalAmount += amount;
+            aggregatedTransactions[key].totalAmount += amount;
         });
 
         function getCategoryName(category_id){
