@@ -634,9 +634,13 @@ def delete_account(account_id):
             # delete budgets and categories in account
             budgets = db_session.query(Budget).filter_by(account_id=account_id).all()
             for budget in budgets:
-                category = db_session.query(Category).filter(Category.category_id==budget.category_id).delete()
+                category = db_session.query(Category).filter(Category.category_id==budget.category_id).first()
+                db_session.query(Transaction).filter_by(category_id=category.category_id).delete()
+                db_session.delete(category)
+                db_session.delete(budget)
+                
             db_session.query(Budget).filter_by(account_id=account_id).delete()
-            
+
             # delete transactions
             db_session.query(Transaction).filter_by(account_id=account_id).delete()
 
